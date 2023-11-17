@@ -1,13 +1,11 @@
 <script setup>
 import Nav from '../components/Nav.vue';
 import axios from 'axios';
-import { ref, onMounted, computed, watch  } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import Select2 from '../funciones/select2'
-
 const valor = ref(false)
 
-//formulari
-
+//SELECT CON DATA
 const medicionget = ref()
 const articuloget = ref()
 const tipoartget = ref()
@@ -15,6 +13,7 @@ const tamanoget = ref()
 const modeloget = ref()
 const marcaget = ref()
 
+// INPUT QUE SE MULTIPLICAN
 const cant = ref()
 const precio = ref()
 const multiplicationResult = ref(0);
@@ -23,6 +22,7 @@ watch([cant, precio], () => {
       multiplicationResult.value = cant.value * precio.value;
     });
 
+// INPUTS 
 const id_medicion = ref('')
 const id_art = ref('')
 const id_tipo = ref('')
@@ -36,6 +36,7 @@ const user_crea = ref(localStorage.usuario)
 
 
 const data = ref({
+
     id_medicion: "",
     id_art: "",
     id_tipo: "",
@@ -52,15 +53,12 @@ const data = ref({
 
 });
 
-
-
-// SELCCIONAR DATOS -------------------------------------------------------------------------- //
+// DATA
 async function getMediciones(){
     try{
         const response = await axios.get(`http://149.50.131.95:3001/api/v1/medicionAll`);
 
         medicionget.value =  response.data
-        //console.log(medicionget.value)
 
     } catch(error){
         console.log(error)
@@ -123,15 +121,10 @@ async function getMarca(){
 }
 
 
-
-
-
-
-
-// SELCCIONAR DATOS -------------------------------------------------------------------------- //
+// CREAR INVESTIGACION PROD
 async function crearInvestPro(dataJson){
    
-    // // // Usando promesas
+    // Usando promesas
     axios.post('http://149.50.131.95:3001/api/v1/invesProductCreated', dataJson)
         .then(response => {
             let rtaFromMysqlDb = Object.keys(response.data)
@@ -149,18 +142,11 @@ async function crearInvestPro(dataJson){
         })
         .catch(error => {
             // Hacer algo con el error
-            //console.log(error);
             alert('Error no controlado.')
         });
-        console.log(data.value);
 }
 
-const handleIconClick = (node, e) => {
-    node.props.suffixIcon = node.props.suffixIcon === 'eye' ? 'eyeClosed' : 'eye'
-    node.props.type = node.props.type === 'password' ? 'text' : 'password'
-}
-
-
+// STYLE DE SELECT 2
 Select2()
 
 //metodo change de la lista articulos
@@ -173,6 +159,7 @@ $(document).ready(function() {
       });
 
 });
+
 $(document).ready(function() {
     $('#id_art').on('change', function() {
         var valorSeleccionado = $(this).val()
@@ -181,9 +168,8 @@ $(document).ready(function() {
       });
 
 });
-const arrayTipoArticulo = ref([])
 
-//metodo change de la lista tipos
+const arrayTipoArticulo = ref([])
 $(document).ready(function() {
     $('#id_tipo').on('change', function() {
         var valorSeleccionado = $(this).val()
@@ -192,10 +178,8 @@ $(document).ready(function() {
       });
 
 });
+
 const arraytamano = ref([])
-
-
-//metodo change de la lista tamanos
 $(document).ready(function() {
     $('#id_tam_cap').on('change', function() {
         var valorSeleccionado = $(this).val()
@@ -204,6 +188,7 @@ $(document).ready(function() {
       });
 
 });
+
 const arraymodelo = ref([])
 
 $(document).ready(function() {
@@ -214,6 +199,7 @@ $(document).ready(function() {
       });
 
 });
+
 $(document).ready(function() {
     $('#id_marca').on('change', function() {
         var valorSeleccionado = $(this).val()
@@ -237,7 +223,7 @@ await getMarca();
 
 function crearDataInvest(){
 
-const dataJson = {
+    const dataJson = {
         id_medicion:id_medicion.value, 
         id_art:id_art.value,
         id_tipo:id_tipo.value,
@@ -250,14 +236,11 @@ const dataJson = {
         sub_total:sub_total.value ,
         cod_sim_daka:cod_sim_daka.value ,
         user_crea:user_crea.value
+    }
+    // FUNCTION PARA CREAR
+    crearInvestPro(dataJson)
 
 }
-crearInvestPro(dataJson)
-
-}
-
-
-
 
 </script>
 <template>

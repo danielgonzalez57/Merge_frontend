@@ -158,13 +158,17 @@ const jsonL = {
                                     }"
                             />
                             <FormKit
-                                type="text"
-                                label="Origen"
-                                validation="required"
+                                type="select"
+                               label="Origen del Articulo"
+                                name="origen"
+                                class="formKitt"
                                 v-model="origen"
-                                :validation-messages="{  
-                                    required: 'debe colocar un origen.'
-                                    }"
+                                placeholder="Escoge el Origen"
+                                :options="['NACIONAL', 'IMPORTADO']"
+                                validation="required"
+                                :validation-messages="{
+                                    required: 'Debes escoger el origen de la marca.',
+                                }"
                             />
                        
                             <FormKit

@@ -9,6 +9,7 @@ const route = useRoute()
 const router = useRouter()
 const valor = ref(false)
 const usuario = localStorage.usuario
+const lineas = ref([]);
 
 // URL
 const id = ref('')
@@ -58,8 +59,24 @@ async function articuloCreated(){
     }
 }
 
+// FUNCTION PARA LLENAR SELECT
+async function getLineas(){
+    try{
+        const response = await axios.get(`http://localhost:3001/api/v1/getLineas`);
+        lineas.value = response.data[0].map(linea => ({
+            label: linea.nombre,
+            value: linea.Id
+        }));
+
+    } catch(error){
+
+        console.log(error)
+    }
+}
+
 onMounted( async () => {
    
+    await getLineas();
   
 });
 
@@ -106,8 +123,9 @@ onMounted( async () => {
 
                             <FormKit
                                 type="text"
-                                label="Nombre de Articulo"
+                                label="Nombre del Articulo"
                                 validation="required"
+                                placeholder="Nombre del Articulo"
                                 v-model="jsonArticulo.nombre"
                                 :validation-messages="{  
                                     required: 'debe colocar un nombre.'
@@ -121,12 +139,7 @@ onMounted( async () => {
                                 class="formKitt"
                                 v-model="jsonArticulo.id_linea"
                                 placeholder="Escoge una Linea"
-                                :options="[ 
-                                    { label: 'LINEA BLANCA', value: 1 },
-                                    { label: 'LINEA CASA', value: 2 },
-                                    { label: 'LINEA DIGITAL', value: 3 },
-                                    { label: 'LINEA FERRETERIA', value: 4 },
-                                    { label: 'LINEA MARRON', value: 5 }]"
+                                :options="lineas"
                                 validation="required"
                                 :validation-messages="{
                                     required: 'Debes escoger una Linea.',

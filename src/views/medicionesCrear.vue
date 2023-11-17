@@ -3,6 +3,7 @@ import { MedicionCrud } from '../stores/mediciones.js';
 import { ref, onMounted } from 'vue';
 const usuario = localStorage.usuario;
 import Select2 from '../funciones/select2'
+const valor = ref();
 
 const mediciones = MedicionCrud();
 const info = ref();

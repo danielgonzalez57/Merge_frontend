@@ -10,6 +10,7 @@ const router = useRouter()
 const valor = ref(false)
 const usuario = localStorage.usuario;
 const TamCapEdit = ref([]);
+const tamCap = ref([]);
 
 
 const id_tipo = ref('')
@@ -79,9 +80,27 @@ async function UpdateTamCap(jsonTC, id){
     }
 }
 
+// FUNCTION PARA LLENAR SELECT
+async function getTipo(){
+    try{
+        const response = await axios.get(`http://localhost:3001/api/v1/tipoArticuloAll`);
+        tamCap.value = response.data.map(linea => ({
+            label: linea.nombre,
+            value: linea.id
+        }));
+
+        console.log(articulos.value)
+
+    } catch(error){
+
+        console.log(error)
+    }
+}
+
 onMounted( async () => {
     
     await getFilterTamCap();
+    await getTipo();
     
 
     id_tipo.value = TamCapEdit.value.id_tipo
@@ -131,7 +150,7 @@ function UpdateData(){
                 <!-- NAVBAR -->
                 <div class="title">
                     <i class="ri-pie-chart-box-line icono-dash"></i>
-                    <span class="text">Tamaño Capacidad</span>
+                    <span class="text">Editar Tamaño Capacidad</span>
                 </div>
 
             </div>
@@ -164,12 +183,7 @@ function UpdateData(){
                                 class="formKitt"
                                 v-model="id_tipo"
                                 placeholder="Escoge un articulo"
-                                :options="[ 
-                                    { label: 'NEVERAS', value: 1 },
-                                    { label: 'LAVADORAS', value: 2 },
-                                    { label: 'VINERA', value: 3 },
-                                    { label: 'SECADORAS', value: 4 },
-                                    { label: 'MICROONDAS', value: 5 }]"
+                                :options="tamCap"
                                 validation="required"
                                 :validation-messages="{
                                     required: 'Debes Escoger un Tipo Articulo.',

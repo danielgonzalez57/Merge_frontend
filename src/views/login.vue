@@ -1,37 +1,5 @@
 <script setup>
-// import axios from "axios";
-// // import  from "@/stores/auth.js";
-// export default {
-//   name: "Home",
-//   components: {},
-//   data: () => {
-//     return {
-//       usuario: "",
-//       password: "",
-//       error: false,
-//       error_msg: "",
-//     };
-//   },
-//   methods: {
-//     login() {
-//       let json = { 
-//         usuario: this.usuario,
-//         password: this.password,
-//       };
 
-//       axios.post("http://localhost:3000/auth", json).then((data) => {
-//         if (data.data.status == "ok") { 
-//           sessionStorage.token = data.data.token;
-//           this.$router.push("dashboard");
-          
-//         } else {
-//           this.error = true;
-//           this.error_msg = "Usuario o password incorrecto...";
-//         }
-//       });
-//     },
-//   },
-// };
 import { useAuthStore } from '../stores/counter.js';
 import { ref } from 'vue';
 

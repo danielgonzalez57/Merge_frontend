@@ -9,6 +9,8 @@ const route = useRoute()
 const router = useRouter()
 const valor = ref(false)
 const usuario = localStorage.usuario;
+const tamCap = ref([])
+
 // URL
 const id = ref('')
 id.value = route.params.key 
@@ -51,6 +53,29 @@ async function modeloCreated(){
 
     }
 }
+
+// FUNCTION PARA LLENAR SELECT
+async function getTamCap(){
+    try{
+        const response = await axios.get(`http://localhost:3001/api/v1/tamCapAll`);
+        tamCap.value = response.data.map(linea => ({
+            label: linea.nombre,
+            value: linea.id
+        }));
+
+    } catch(error){
+
+        console.log(error)
+    }
+}
+
+
+onMounted( async () => {
+
+await getTamCap();
+
+});
+
 
 
 </script>
@@ -112,12 +137,7 @@ async function modeloCreated(){
                                 class="formKitt"
                                 v-model="jsonMod.id_tam_cap"
                                 placeholder="Escoge un articulo"
-                                :options="[ 
-                                    { label: '32 PULGADAS', value: 1 },
-                                    { label: 'MATRIMONIAL', value: 2 },
-                                    { label: '1200000 BTU', value: 3 },
-                                    { label: '2000 BTU', value: 4 },
-                                    { label: '6 KG', value: 5 }]"
+                                :options="tamCap"
                                 validation="required"
                                 :validation-messages="{
                                     required: 'Debes Escoger un tamaño.',

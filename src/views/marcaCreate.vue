@@ -106,7 +106,8 @@ onMounted( async () => {
 
                             <FormKit
                                 type="text"
-                                label="Nombre de Articulo"
+                                label="Nombre del Articulo"
+                                placeholder="Nombre del Articulo"
                                 validation="required"
                                 v-model="jsonMarca.nombre"
                                 :validation-messages="{  
@@ -114,32 +115,19 @@ onMounted( async () => {
                                     }"
                             />
                             <FormKit
-                                type="text"
-                                label="Origen de Articulo"
-                                validation="required"
-                                v-model="jsonMarca.origen"
-                                :validation-messages="{  
-                                    required: 'debe colocar un origen.'
-                                    }"
-                            />
-                            <!-- <FormKit
                                 type="select"
-                                label="Linea Asociada"
-                                name="id_tienda"
+                               label="Origen del Articulo"
+                                name="origen"
                                 class="formKitt"
-                                v-model="jsonMarca.id_linea"
-                                placeholder="Escoge una Linea"
-                                :options="[ 
-                                    { label: 'LINEA BLANCA', value: 1 },
-                                    { label: 'LINEA CASA', value: 2 },
-                                    { label: 'LINEA DIGITAL', value: 3 },
-                                    { label: 'LINEA FERRETERIA', value: 4 },
-                                    { label: 'LINEA MARRON', value: 5 }]"
+                                v-model="jsonMarca.origen"
+                                placeholder="Escoge el Origen"
+                                :options="['NACIONAL', 'IMPORTADO']"
                                 validation="required"
                                 :validation-messages="{
-                                    required: 'Debes escoger una Linea.',
+                                    required: 'Debes escoger el origen de la marca.',
                                 }"
-                            /> -->
+                            />
+
 
                             <FormKit
                                 disabled 

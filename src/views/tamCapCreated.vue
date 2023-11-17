@@ -5,6 +5,7 @@ import '@formkit/themes/genesis'
 import { ref, onMounted, computed} from 'vue';
 import {  useRoute, useRouter } from 'vue-router'
 import Swal from 'sweetalert2'
+const tamCap = ref([]);
 
 const route = useRoute()
 const router = useRouter()
@@ -52,6 +53,28 @@ async function tamCapCreated(){
 
     }
 }
+
+// FUNCTION PARA LLENAR SELECT
+async function getTipo(){
+    try{
+        const response = await axios.get(`http://localhost:3001/api/v1/tipoArticuloAll`);
+        tamCap.value = response.data.map(linea => ({
+            label: linea.nombre,
+            value: linea.id
+        }));
+
+        console.log(articulos.value)
+
+    } catch(error){
+
+        console.log(error)
+    }
+}
+
+onMounted( async () => {
+   await getTipo();
+});
+
 
 
 </script>
@@ -113,13 +136,8 @@ async function tamCapCreated(){
                                 name="id_tipo"
                                 class="formKitt"
                                 v-model="jsonTamCap.id_tipo"
-                                placeholder="Escoge un articulo"
-                                :options="[ 
-                                    { label: 'NEVERAS', value: 1 },
-                                    { label: 'LAVADORAS', value: 2 },
-                                    { label: 'VINERA', value: 3 },
-                                    { label: 'SECADORAS', value: 4 },
-                                    { label: 'MICROONDAS', value: 5 }]"
+                                placeholder="Escoge un tipo articulo"
+                                :options="tamCap"
                                 validation="required"
                                 :validation-messages="{
                                     required: 'Debes Escoger un Tipo Articulo.',

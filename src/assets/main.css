@@ -64,6 +64,11 @@ body{
 .icono-dash{
   z-index: 1;
 }
+
+/* COLOR SOMBREADO */
+::selection {
+  background: #00aa3c; 
+}
 /* SCROLL COLOR */
 ::-webkit-scrollbar{
   width: .6rem;
@@ -122,6 +127,10 @@ nav{
 }
 nav.close{
   width: 70px;
+}
+
+.formkit-wrapper {
+  max-width: 100%;
 }
 
 nav .logo-name{

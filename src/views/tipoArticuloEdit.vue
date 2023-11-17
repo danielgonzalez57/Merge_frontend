@@ -10,6 +10,7 @@ const router = useRouter()
 const valor = ref(false)
 const usuario = localStorage.usuario;
 const tipoArticuloEdit = ref([]);
+const articulos = ref([]);
 
 
 const id_articulo = ref('')
@@ -80,9 +81,28 @@ async function UpdateTipoArticulo(jsonTA, id){
     }
 }
 
+// FUNCTION PARA LLENAR SELECT
+async function getArticulo(){
+    try{
+        const response = await axios.get(`http://localhost:3001/api/v1/articuloAll`);
+        articulos.value = response.data.map(linea => ({
+            label: linea.nombre,
+            value: linea.id
+        }));
+
+        console.log(articulos.value)
+
+    } catch(error){
+
+        console.log(error)
+    }
+}
+
+
 onMounted( async () => {
     
     await getFilterTipoArticulo();
+    await getArticulo();
     
 
     id_articulo.value = tipoArticuloEdit.value.id_articulo
@@ -163,12 +183,7 @@ function UpdateData(){
                                 class="formKitt"
                                 v-model="id_articulo"
                                 placeholder="Escoge un articulo"
-                                :options="[ 
-                                    { label: 'REFRIGERADORES', value: 1 },
-                                    { label: 'LAVADORA Y SECADO', value: 2 },
-                                    { label: 'COCINA', value: 3 },
-                                    { label: 'CALENTADORES', value: 4 },
-                                    { label: 'AUDIO Y VIDEO', value: 5 }]"
+                                :options="articulos"
                                 validation="required"
                                 :validation-messages="{
                                     required: 'Debes Escoger un Tipo Articulo.',

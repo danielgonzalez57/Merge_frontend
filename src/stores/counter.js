@@ -28,8 +28,33 @@ export const useAuthStore = defineStore('auth', {
               localStorage.token = this.authToken;
               localStorage.rol = this.authRol;
               localStorage.usuario = this.authUser;
-              router.push('/dashboard');
 
+              // SPINNER DE INICIO DE SESION
+              let timerInterval;
+              Swal.fire({
+                title: "Iniciando Sesion!",
+                html: "Se cerrara en <b></b> millisegundos.",
+                background: '#3A3B3C',
+                color: '#fff',
+                timer: 1000,
+                timerProgressBar: true,
+                didOpen: () => {
+                  Swal.showLoading();
+                  const timer = Swal.getPopup().querySelector("b");
+                  timerInterval = setInterval(() => {
+                    timer.textContent = `${Swal.getTimerLeft()}`;
+                  }, 100);
+                },
+                willClose: () => {
+                  clearInterval(timerInterval);
+                  router.push('/dashboard');
+                }
+              }).then((result) => {
+                /* Read more about handling dismissals below */
+                if (result.dismiss === Swal.DismissReason.timer) {
+                  console.log("I was closed by the timer");
+                }
+              });
               }else{
 
                 Swal.fire({

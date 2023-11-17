@@ -9,6 +9,7 @@ const route = useRoute()
 const router = useRouter()
 const valor = ref(false)
 const usuario = localStorage.usuario;
+const ciudades = ref([]);
 
 // URL
 const id = ref('')
@@ -26,6 +27,22 @@ direccion:'',
 user_crea: `${usuario}`
 
 });
+
+// FUNCTION PARA LLENAR TABLE
+async function getCiudades(){
+    try{
+        const response = await axios.get(`http://localhost:3001/api/v1/getCiudades`);
+        ciudades.value = response.data[0].map(ciudad => ({
+            label: ciudad.nombre,
+            value: ciudad.Id
+        }));
+
+    } catch(error){
+
+        console.log(error)
+    }
+}
+
 
 async function maestroTiendaCreated(){
     
@@ -62,7 +79,7 @@ async function maestroTiendaCreated(){
 
 onMounted( async () => {
    
-  
+  await getCiudades();
 });
 
 </script>
@@ -72,7 +89,7 @@ onMounted( async () => {
     
     <section class="dashboard">
 
-        <div class="top"  >
+        <div class="top" >
         <button id="sidebarToggle" class="boton_burguer" @click="valor = !valor"> 
             <i class="ri-menu-line sidebar-toggle"></i> 
         </button> 
@@ -123,13 +140,8 @@ onMounted( async () => {
                                 name="id_tienda"
                                 class="formKitt"
                                 v-model="jsonMaestroT.id_ciudad"
-                                placeholder="Escoge una tienda"
-                                :options="[ 
-                                    { label: 'Valencia', value: 1 },
-                                    { label: 'Barquisimeto', value: 2 },
-                                    { label: 'Caracas', value: 3 },
-                                    { label: 'Maturin', value: 4 },
-                                    { label: 'Maracaibo', value: 5 }]"
+                                placeholder="Escoge una ciudad"
+                                :options="ciudades"
                                 validation="required"
                                 :validation-messages="{
                                     required: 'Debes escoger una ciudad.',
@@ -138,21 +150,21 @@ onMounted( async () => {
 
                             <FormKit
                                 type="text"
-                                label="Latitud"
-                                name="Latitud"
-                                placeholder="Latitud"
+                                label="Sucursal"
+                                name="Sucursal"
+                                placeholder="Sucursal"
                                 v-model="jsonMaestroT.latitud"
                                 validation="required"
                                 :validation-messages="{
-                                    required: 'Debes colocar la latitud.'
+                                    required: 'Debes colocar la sucursal.'
                                 }"
                             />
                             
                             <FormKit
                                 type="text"
-                                label="Longitud"
+                                label="Latitud y Longitud"
                                 name="longitud"
-                                placeholder="Longitud"
+                                placeholder="Latitud y Longitud"
                                 validation="required"
                                 v-model="jsonMaestroT.longitud"
                                 :validation-messages="{
@@ -160,13 +172,13 @@ onMounted( async () => {
                                 }"
                             />
                             <FormKit
-                                type="select"
+                                type="select" 
                                 label="Tipo de Tienda"
                                 name="tipo_tienda"
                                 class="formKitt"
                                 v-model="jsonMaestroT.tipo_tienda"
                                 placeholder="Escoge el tipo"
-                                :options="['c', 'p']"
+                                :options="['C', 'P']"
                                 validation="required"
                                 :validation-messages="{
                                     required: 'Debes escoger el tipo de tienda.',
@@ -185,9 +197,9 @@ onMounted( async () => {
                             />
                             <FormKit
                                 type="text"
-                                label="User_crea"
+                                label="Creado por"
                                 name="user_crea"
-                                placeholder="user_crea"
+                                placeholder="creado por"
                                 validation="required"
                                 disabled
                                 v-model="jsonMaestroT.user_crea"
@@ -220,4 +232,42 @@ onMounted( async () => {
     }
 </style>
 
+<!-- <template>
+    <FormKit
+      type="select"
+      label="Ciudad"
+      name="id_tienda"
+      class="formKitt"
+      v-model="jsonMaestroT.id_ciudad"
+      placeholder="Escoge una tienda"
+      :options="ciudades"
+      validation="required"
+      :validation-messages="{
+        required: 'Debes escoger una ciudad.',
+      }"
+    />
+  </template>
+  
+  <script>
+  import axios from 'axios';
+  
+  export default {
+    data() {
+      return {
+        ciudades: [],
+        jsonMaestroT: {
+          id_ciudad: null,
+        },
+      };
+    },
+    async created() {
+      const response = await axios.get('URL_DE_TU_API');
+      this.ciudades = response.data.map(ciudad => ({
+        label: ciudad.nombre,
+        value: ciudad.id,
+      }));
+    },
+  };
+  </script>
 
+ -->

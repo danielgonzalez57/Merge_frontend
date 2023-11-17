@@ -10,6 +10,7 @@ const router = useRouter()
 const valor = ref(false)
 const maestroTiendaEdit = ref([]);
 const usuario = localStorage.usuario;
+const ciudades = ref([]);
 
 
 const nombre = ref('')
@@ -86,9 +87,27 @@ async function updateMaestroTienda(jsonMaestroTienda, id){
     }
 }
 
+// FUNCTION PARA LLENAR TABLE
+async function getCiudades(){
+    try{
+        const response = await axios.get(`http://localhost:3001/api/v1/getCiudades`);
+        ciudades.value = response.data[0].map(ciudad => ({
+            label: ciudad.nombre,
+            value: ciudad.Id
+        }));
+
+        console.log(ciudades.value[1])
+
+    } catch(error){
+
+        console.log(error)
+    }
+}
+
 onMounted( async () => {
 
     await getFilterMaestroTienda();
+    await getCiudades();
     
     nombre.value = maestroTiendaEdit.value.nombre
     id_ciudad.value = maestroTiendaEdit.value.id_ciudad
@@ -178,13 +197,8 @@ function UpdateDataMaestroT(){
                                 name="id_tienda"
                                 class="formKitt"
                                 v-model="id_ciudad"
-                                placeholder="Escoge una tienda"
-                                :options="[ 
-                                    { label: 'Valencia', value: 1 },
-                                    { label: 'Barquisimeto', value: 2 },
-                                    { label: 'Caracas', value: 3 },
-                                    { label: 'Maturin', value: 4 },
-                                    { label: 'Maracaibo', value: 5 }]"
+                                placeholder="Escoge una ciudad"
+                                :options="ciudades"
                                 validation="required"
                                 :validation-messages="{
                                     required: 'Debes escoger una ciudad.',
@@ -193,25 +207,25 @@ function UpdateDataMaestroT(){
 
                             <FormKit
                                 type="text"
-                                label="Latitud"
-                                name="Latitud"
+                                label="Sucursal"
+                                name="latitud"
                                 placeholder="Latitud"
                                 v-model="latitud"
                                 validation="required"
                                 :validation-messages="{
-                                    required: 'Debes colocar la latitud.'
+                                    required: 'Debes colocar la sucursal.'
                                 }"
                             />
                             
                             <FormKit
                                 type="text"
-                                label="Longitud"
+                                label="Latitud y longitud"
                                 name="longitud"
                                 placeholder="Longitud"
                                 validation="required"
                                 v-model="longitud"
                                 :validation-messages="{
-                                    required: 'Debes colocar la longitud.'
+                                    required: 'Debes colocar la latitud y longitud.'
                                 }"
                             />
                             <FormKit
@@ -240,30 +254,22 @@ function UpdateDataMaestroT(){
                             />
                             <FormKit
                                 type="text"
-                                label="User_crea"
+                                label="Creado por"
                                 name="user_crea"
-                                placeholder="user_crea"
+                                placeholder="Creado por"
                                 validation="required"
                                 disabled
                                 v-model="user_crea"
-                                :validation-messages="{
-                                    required: 'Debes colocar el user crea.'
-                                }"
                             />
                             <FormKit
                                 type="text"
-                                label="User_mod"
+                                label="Modificado por"
                                 name="user_mod"
-                                placeholder="user_mod"
+                                placeholder="Modificado por"
                                 validation="required"
                                 disabled
                                 v-model="user_mod"
-                                :validation-messages="{
-                                    required: 'Debes colocar el user mod.'
-                                }"
                             />
-
-                            <!-- <pre wrap>{{ value }}</pre> -->
                         </FormKit>
                     </div>
                     

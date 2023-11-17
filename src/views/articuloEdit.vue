@@ -10,6 +10,7 @@ const router = useRouter()
 const valor = ref(false)
 const articuloEdit = ref([]);
 const usuario = localStorage.usuario
+const lineasEdit = ref([]);
 
 
 const nombre = ref('')
@@ -20,7 +21,6 @@ const user_mod = ref('')
 // URL
 const id = ref('')
 id.value = route.params.key 
-console.log(id.value)
 
 const jsonArtEdit = ref({
 
@@ -79,9 +79,25 @@ async function postArticulo(jsonA, id){
     }
 }
 
+// FUNCTION PARA LLENAR SELECT
+async function getLineas(){
+    try{
+        const response = await axios.get(`http://localhost:3001/api/v1/getLineas`);
+        lineasEdit.value = response.data[0].map(linea => ({
+            label: linea.nombre,
+            value: linea.Id
+        }));
+
+    } catch(error){
+
+        console.log(error)
+    }
+}
+
 onMounted( async () => {
     
 await getFilterArticulo();      
+await getLineas();      
     
     nombre.value = articuloEdit.value.nombre
     id_linea.value = articuloEdit.value.id_linea
@@ -97,7 +113,7 @@ const jsonA = {
     nombre:nombre.value,
     id_linea:id_linea.value, 
     user_crea:user_crea.value ,
-    //user_mod:user_mod.value
+    user_mod:user_mod.value
 
 }
 
@@ -134,7 +150,7 @@ const jsonA = {
                 <!-- NAVBAR -->
                 <div class="title">
                     <i class="ri-pie-chart-box-line icono-dash"></i>
-                    <span class="text">Articulo</span>
+                    <span class="text">Editar Articulo</span>
                 </div>
             </div>
 
@@ -165,12 +181,7 @@ const jsonA = {
                                 class="formKitt"
                                 v-model="id_linea"
                                 placeholder="Escoge una Linea"
-                                :options="[ 
-                                    { label: 'LINEA BLANCA', value: 1 },
-                                    { label: 'LINEA CASA', value: 2 },
-                                    { label: 'LINEA DIGITAL', value: 3 },
-                                    { label: 'LINEA FERRETERIA', value: 4 },
-                                    { label: 'LINEA MARRON', value: 5 }]"
+                                :options="lineasEdit"
                                 validation="required"
                                 :validation-messages="{
                                     required: 'Debes escoger una Linea.',
