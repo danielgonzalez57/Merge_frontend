@@ -181,10 +181,7 @@ investigacionCreated(jsonInves)
                                 class="formKitt"
                                 v-model="motivo"
                                 placeholder="Escoge un motivo"
-                                :options="[ 
-                                    { label: 'RUTINA', value: 1 },
-                                    { label: 'INAUGURACION', value: 2 },
-                                    { label: 'RRSS', value: 3 }]"
+                                :options="['RUTINA', 'INAUGURACION', 'RRSS']"
                                 validation="required"
                                 :validation-messages="{
                                     required: 'Debes colocar el motivo de la investigacion.',

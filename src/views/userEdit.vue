@@ -57,8 +57,22 @@ const handleSubmit = async () => {
                 alert(response.data.errors[0].message);
             }else {
                 // REGISTRO CREADO EXITOSAMENTE
-                alert("Usuario editado con exito.!");
+                Swal.fire({
+                icon: 'question',
+                title: 'Alerta!',
+                text: '¿Deseas guardar los datos?',
+                background: '#3A3B3C',  
+                color: '#fff',
+                confirmButtonText: 'Guardar',
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                // REDIRECCIONA AL TABLE PRINCIPAL
                 router.push('/usuario');
+
+                }
+            })
+
             }
         
         })

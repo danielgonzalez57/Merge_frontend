@@ -4,6 +4,7 @@ import Nav from '../components/Nav.vue';
 import axios from 'axios';
 import { ref } from 'vue';
 import {  useRoute, useRouter } from 'vue-router'
+import Swal from 'sweetalert2'
 
 const router = useRouter()
 const data = ref({
@@ -24,9 +25,23 @@ const handleSubmit = async () => {
                 // EL DATO HA FALLADO AL CREARSE
                 alert(response.data.errors[0].message);
             }else {
+
                 // REGISTRO CREADO EXITOSAMENTE
-                alert("Usuario registrado con exito.!");
+                Swal.fire({
+                icon: 'question',
+                title: 'Alerta!',
+                text: '¿Deseas guardar los datos?',
+                background: '#3A3B3C',  
+                color: '#fff',
+                confirmButtonText: 'Guardar',
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                // REDIRECCIONA AL TABLE PRINCIPAL
                 router.push('/usuario');
+
+                }
+            })
 
             }
         

@@ -121,10 +121,7 @@ const jsonE = {
                                 class="formKitt"
                                 v-model="hora"
                                 placeholder="Escoge un corte"
-                                :options="[ 
-                                    { label: 'CORTE 1', value: 1 },
-                                    { label: 'CORTE 2', value: 2 },
-                                    { label: 'CORTE 3', value: 3 }]"
+                                :options="['MAÑANA', 'TARDE', 'TODO EL DIA']"
                                 validation="required"
                                 :validation-messages="{
                                     required: 'Debes escoger el corte horario.',
