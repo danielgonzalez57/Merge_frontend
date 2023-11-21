@@ -49,10 +49,14 @@ const columns = ref([
     {data:'user_crea'},
     {data:'fec_crea'},
     {data:'id', render: (data,type,row,meta) => `
-    <i class="ri-edit-2-line edit-table" onclick="location.href='/tamCapEdit/${data}';"></i>`},
+    <router-link :to="/tamCapEdit">
+        <i class="ri-edit-2-line edit-table"></i>
+    </router-link>`},
 
     {data:'id', render: (data,type,row,meta,) => `
-    <i class="ri-delete-bin-5-line delete-table" onclick="location.href='/tamCapDelete/${data}';"></i>`},                         
+    <router-link :to="'/tamCapDelete/' + ${data}">
+        <i class="ri-delete-bin-5-line delete-table"></i>
+    </router-link>`},                                    
 ]);
 
 

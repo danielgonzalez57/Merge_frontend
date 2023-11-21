@@ -57,7 +57,7 @@ async function tamCapCreated(){
 // FUNCTION PARA LLENAR SELECT
 async function getTipo(){
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/tipoArticuloAll`);
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/tipoArticuloAll`);
         tamCap.value = response.data.map(linea => ({
             label: linea.nombre,
             value: linea.id

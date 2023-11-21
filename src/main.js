@@ -6,13 +6,11 @@ import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net';
 import 'datatables.net-responsive';
 
-
 import App from './App.vue'
 import router from './router'
 import createPersistedState  from 'pinia-plugin-persistedstate'
 import axios from 'axios'
 import config from '/formkit.config.js'
-
 
 window.axios = axios;
 DataTable.use(DataTablesCore);

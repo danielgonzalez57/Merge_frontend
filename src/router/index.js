@@ -50,6 +50,7 @@ import InvesProducts from '../views/invesProducts.vue'
 import InvestProductsCreate from '../views/InvestProductsCreate.vue'
 import InvesProductsDelete from '../views/InvesProductsDelete.vue'
 import InvestProductsEdit from '../views/investProductsEdit.vue'
+import prueba from '../views/prueba.vue'
 
 
 const router = createRouter({
@@ -314,6 +315,11 @@ const router = createRouter({
       path: '/invesProductsEdit/:key',
       name: 'InvestProductsEdit', 
       component: InvestProductsEdit
+    },
+    {
+      path: '/prueba',
+      name: 'prueba', 
+      component: prueba
     },
     
   ]

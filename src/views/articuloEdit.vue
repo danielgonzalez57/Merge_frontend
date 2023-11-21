@@ -82,7 +82,7 @@ async function postArticulo(jsonA, id){
 // FUNCTION PARA LLENAR SELECT
 async function getLineas(){
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/getLineas`);
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/getLineas`);
         lineasEdit.value = response.data[0].map(linea => ({
             label: linea.nombre,
             value: linea.Id

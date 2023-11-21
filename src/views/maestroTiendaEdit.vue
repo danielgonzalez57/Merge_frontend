@@ -90,7 +90,7 @@ async function updateMaestroTienda(jsonMaestroTienda, id){
 // FUNCTION PARA LLENAR TABLE
 async function getCiudades(){
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/getCiudades`);
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/getCiudades`);
         ciudades.value = response.data[0].map(ciudad => ({
             label: ciudad.nombre,
             value: ciudad.Id
