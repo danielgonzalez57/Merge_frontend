@@ -25,7 +25,7 @@ id.value = route.params.key
 // FUNCTION PARA LLENAR TABLE
 async function getMedicion(){
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/medicionAll`);
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/medicionAll`);
 
         info.value =  response.data
 

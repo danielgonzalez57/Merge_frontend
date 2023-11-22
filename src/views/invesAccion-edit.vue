@@ -40,7 +40,7 @@ user_mod:''
 
 async function getTienda(){
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/maestroTiendaAll`);
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/maestroTiendaAll`);
         info.value =  response.data
         console.log(info.value)
     } catch(error){
@@ -51,7 +51,7 @@ async function getTienda(){
 async function getFilterInvestigacion(){
     
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/InvestigacionFilter/${id.value}`)
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/InvestigacionFilter/${id.value}`)
         console.log(response.data)
         investigacionEdit.value =  response.data
     } catch(error){
@@ -63,7 +63,7 @@ async function getFilterInvestigacion(){
 async function postInvestigacion(jsonInves, id){
     
     try{
-        const response = await axios.put(`http://localhost:3001/api/v1/investigacionUpdate/${id.value}`, jsonInves)
+        const response = await axios.put(`http://149.50.131.95:3001/api/v1/investigacionUpdate/${id.value}`, jsonInves)
         
         if(response.data.status === 'ok'){
 

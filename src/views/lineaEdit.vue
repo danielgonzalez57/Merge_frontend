@@ -34,7 +34,7 @@ user_crea:`${usuario}`//,
 async function getFilterLinea(){
     
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/lineasFilter/${id.value}`)
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/lineasFilter/${id.value}`)
         console.log(response)
 
         lineaEdit.value =  response.data
@@ -48,7 +48,7 @@ async function getFilterLinea(){
 async function postLinea(jsonM, id){
     
     try{
-        const response = await axios.put(`http://localhost:3001/api/v1/lineasUpdate/${id.value}`, jsonM)
+        const response = await axios.put(`http://149.50.131.95:3001/api/v1/lineasUpdate/${id.value}`, jsonM)
         
         if(response.data.status === 'ok'){
 

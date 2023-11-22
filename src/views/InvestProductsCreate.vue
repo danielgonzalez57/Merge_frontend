@@ -56,7 +56,7 @@ const data = ref({
 // DATA
 async function getMediciones(){
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/medicionAll`);
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/medicionAll`);
 
         medicionget.value =  response.data
 
@@ -66,7 +66,7 @@ async function getMediciones(){
 }
 async function getArticulo(){
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/articuloAll`);
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/articuloAll`);
 
         articuloget.value =  response.data
   
@@ -76,7 +76,7 @@ async function getArticulo(){
 }
 async function getTipoArt(){
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/tipoArticuloAll`);
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/tipoArticuloAll`);
 
         tipoartget.value =  response.data
  
@@ -87,7 +87,7 @@ async function getTipoArt(){
 }
 async function getTamano(){
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/tamCapAll`);
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/tamCapAll`);
 
         tamanoget.value =  response.data
         //console.log(tamanoget.value)
@@ -99,7 +99,7 @@ async function getTamano(){
 }
 async function getModelo(){ 
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/modeloAll`);
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/modeloAll`);
 
         modeloget.value =  response.data
         console.log(modeloget.value)
@@ -110,7 +110,7 @@ async function getModelo(){
 }
 async function getMarca(){ 
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/marcasAll`);
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/marcasAll`);
 
         marcaget.value =  response.data
         console.log(marcaget.value)
@@ -125,7 +125,7 @@ async function getMarca(){
 async function crearInvestPro(dataJson){
    
     // Usando promesas
-    axios.post('http://localhost:3001/api/v1/invesProductCreated', dataJson)
+    axios.post('http://149.50.131.95:3001/api/v1/invesProductCreated', dataJson)
         .then(response => {
             let rtaFromMysqlDb = Object.keys(response.data)
             let error = rtaFromMysqlDb.includes("errors");

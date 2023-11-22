@@ -28,7 +28,7 @@ const data = ref({
 async function getUser() {
     try {
         // CONSULTAR LA TABLA DE USUARIOS
-        const response = await axios.get(`http://localhost:3001/api/v1/getUser/${id.value}`);
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/getUser/${id.value}`);
         //info.value = response.data
         data.value.id = response.data[0].id;
         data.value.nombre = response.data[0].nombre;
@@ -48,7 +48,7 @@ onMounted(async () => {
 
 const handleSubmit = async () => {
     // // Usando promesas
-    axios.post('http://localhost:3001/api/v1/update/user', data.value)
+    axios.post('http://149.50.131.95:3001/api/v1/update/user', data.value)
         .then(response => {
             let rtaFromMysqlDb = Object.keys(response.data)
             let error = rtaFromMysqlDb.includes("errors");

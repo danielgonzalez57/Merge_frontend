@@ -27,7 +27,7 @@ console.log(id.value)
 async function getFilterTipoArtDelete(){
     
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/tipoArticuloFilter/${id.value}`)
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/tipoArticuloFilter/${id.value}`)
         
         tipoArticuloDelele.value =  response.data
         
@@ -41,7 +41,7 @@ async function getFilterTipoArtDelete(){
 async function eliminarTipoArt(){
           
     try{
-        await axios.delete(`http://localhost:3001/api/v1/tipoArticuloDelete/${id.value}`);
+        await axios.delete(`http://149.50.131.95:3001/api/v1/tipoArticuloDelete/${id.value}`);
 
     } catch(error){
         console.log(error)

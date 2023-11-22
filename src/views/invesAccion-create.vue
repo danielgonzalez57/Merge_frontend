@@ -38,7 +38,7 @@ user_crea:`${usuario}`
 
 async function getTienda(){
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/maestroTiendaAll`);
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/maestroTiendaAll`);
         info.value =  response.data
         console.log(info.value)
     } catch(error){
@@ -49,7 +49,7 @@ async function getTienda(){
 async function investigacionCreated(jsonInves){
     
     try{
-        const response = await axios.post(`http://localhost:3001/api/v1/investigacionCreated`, jsonInves)
+        const response = await axios.post(`http://149.50.131.95:3001/api/v1/investigacionCreated`, jsonInves)
         
         if(response.data.status === 'ok'){
 

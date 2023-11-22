@@ -23,7 +23,7 @@ id.value = route.params.key
 
 async function getFilterInvesDelete() {
     try {
-        const response = await axios.get(`http://localhost:3001/api/v1/getuser/${id.value}`)
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/getuser/${id.value}`)
         nombre.value = response.data[0].nombre
         email.value = response.data[0].email
         rol.value = response.data[0].rol
@@ -38,7 +38,7 @@ async function getFilterInvesDelete() {
 async function eliminarInvestigacion() {
     try {
         //alert(id.value);
-        await axios.delete(`http://localhost:3001/api/v1/delete/user/${id.value}`);
+        await axios.delete(`http://149.50.131.95:3001/api/v1/delete/user/${id.value}`);
     } catch (error) {
         console.log(error)
     }

@@ -26,7 +26,7 @@ console.log(id.value)
 async function getFilterLineaDelete(){
     
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/lineasFilter/${id.value}`)
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/lineasFilter/${id.value}`)
         
         lineaDelete.value =  response.data
         
@@ -40,7 +40,7 @@ async function getFilterLineaDelete(){
 async function eliminarLinea(){
           
     try{
-        await axios.delete(`http://localhost:3001/api/v1/lineasDelete/${id.value}`);
+        await axios.delete(`http://149.50.131.95:3001/api/v1/lineasDelete/${id.value}`);
 
     } catch(error){
         console.log(error)

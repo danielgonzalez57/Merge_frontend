@@ -29,7 +29,7 @@ console.log(id.value)
 async function getFilterMedicionDelete(){
     
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/medicionFilter/${id.value}`)
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/medicionFilter/${id.value}`)
         
         medicionDelele.value =  response.data
         
@@ -43,7 +43,7 @@ async function getFilterMedicionDelete(){
 async function eliminarMedicion(key){
           
     try{
-        const response = await axios.delete(`http://localhost:3001/api/v1/mediciondelete/${key}`);
+        const response = await axios.delete(`http://149.50.131.95:3001/api/v1/mediciondelete/${key}`);
     } catch(error){
         console.log(error)
     }

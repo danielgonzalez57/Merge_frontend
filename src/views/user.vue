@@ -25,7 +25,7 @@ id.value = route.params.key;
 async function getMedicion() {
     try {
         // CONSULTAR LA TABLA DE USUARIOS
-        const response = await axios.get(`http://localhost:3001/api/v1/getUser`);
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/getUser`);
         info.value = response.data
         //console.log(info._rawValue)
     } catch (error) {

@@ -22,7 +22,7 @@ id.value = route.params.key
 
 async function getFilterInvesDelete() {
     try {
-        const response = await axios.get(`http://localhost:3001/api/v1/investProducts/${id.value}`)
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/investProducts/${id.value}`)
         idArticulo.value = response.data.id_art
         codigoSap.value = response.data.cod_sim_daka
         descrip.value = response.data.descrip
@@ -37,7 +37,7 @@ async function getFilterInvesDelete() {
 async function eliminarInvestigacion() {
     try {
         //alert(id.value);
-        await axios.delete(`http://localhost:3001/api/v1/investProducts/delete/${id.value}`);
+        await axios.delete(`http://149.50.131.95:3001/api/v1/investProducts/delete/${id.value}`);
     } catch (error) {
         console.log(error)
     }

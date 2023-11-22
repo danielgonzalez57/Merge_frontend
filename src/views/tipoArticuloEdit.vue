@@ -35,7 +35,7 @@ user_crea: ''
 async function getFilterTipoArticulo(){
     
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/tipoArticuloFilter/${id.value}`)
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/tipoArticuloFilter/${id.value}`)
 
         console.log(response.data)
         tipoArticuloEdit.value =  response.data
@@ -50,7 +50,7 @@ async function getFilterTipoArticulo(){
 async function UpdateTipoArticulo(jsonTA, id){
     
     try{
-        const response = await axios.put(`http://localhost:3001/api/v1/tipoArticuloUpdate/${id.value}`, jsonTA)
+        const response = await axios.put(`http://149.50.131.95:3001/api/v1/tipoArticuloUpdate/${id.value}`, jsonTA)
         
         if(response.data.status === 'ok'){
 
@@ -84,7 +84,7 @@ async function UpdateTipoArticulo(jsonTA, id){
 // FUNCTION PARA LLENAR SELECT
 async function getArticulo(){
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/articuloAll`);
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/articuloAll`);
         articulos.value = response.data.map(linea => ({
             label: linea.nombre,
             value: linea.id

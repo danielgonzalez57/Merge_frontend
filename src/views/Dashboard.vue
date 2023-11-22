@@ -19,7 +19,7 @@
       }, 
       methods:{
         getProducts(){
-          axios.get('http://localhost:3000/')
+          axios.get('http://149.50.131.95:3000/')
           .then(response => (
             this.products = response.data)
           );

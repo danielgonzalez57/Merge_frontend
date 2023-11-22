@@ -28,7 +28,7 @@ console.log(id.value)
 async function getFilterInvesDelete(){
     
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/InvestigacionFilter/${id.value}`)
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/InvestigacionFilter/${id.value}`)
         
         investigacionDelele.value =  response.data
         
@@ -42,7 +42,7 @@ async function getFilterInvesDelete(){
 async function eliminarInvestigacion(){
           
     try{
-        await axios.delete(`http://localhost:3001/api/v1/investigacionDelete/${id.value}`);
+        await axios.delete(`http://149.50.131.95:3001/api/v1/investigacionDelete/${id.value}`);
 
     } catch(error){
         console.log(error)

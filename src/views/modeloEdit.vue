@@ -35,7 +35,7 @@ user_crea: ''
 async function getFiltermodelo(){
     
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/modeloFilter/${id.value}`)
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/modeloFilter/${id.value}`)
 
         modeloEdit.value =  response.data
 
@@ -49,7 +49,7 @@ async function getFiltermodelo(){
 async function Updatemodelo(jsonM, id){
     
     try{
-        const response = await axios.put(`http://localhost:3001/api/v1/modeloUpdate/${id.value}`, jsonM)
+        const response = await axios.put(`http://149.50.131.95:3001/api/v1/modeloUpdate/${id.value}`, jsonM)
         
         if(response.data.status === 'ok'){
 
@@ -83,7 +83,7 @@ async function Updatemodelo(jsonM, id){
 // FUNCTION PARA LLENAR SELECT
 async function getTamCap(){
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/tamCapAll`);
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/tamCapAll`);
         tamCap.value = response.data.map(linea => ({
             label: linea.nombre,
             value: linea.id

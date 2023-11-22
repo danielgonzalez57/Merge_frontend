@@ -17,7 +17,7 @@ const data = ref({
 
 const handleSubmit = async () => {
     // // Usando promesas
-    axios.post('http://localhost:3001/api/v1/create/user', data.value)
+    axios.post('http://149.50.131.95:3001/api/v1/create/user', data.value)
         .then(response => {
             let rtaFromMysqlDb = Object.keys(response.data)
             let error = rtaFromMysqlDb.includes("errors");
