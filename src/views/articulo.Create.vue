@@ -27,7 +27,7 @@ user_crea:`${usuario}`
 async function articuloCreated(){
     
     try{
-        const response = await axios.post(`http://149.50.131.95:3001/api/v1/articuloCreated`, jsonArticulo.value)
+        const response = await axios.post(`http://localhost:3001/api/v1/articuloCreated`, jsonArticulo.value)
         
         if(response.data.status === 'ok'){
 
@@ -62,7 +62,7 @@ async function articuloCreated(){
 // FUNCTION PARA LLENAR SELECT
 async function getLineas(){
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/getLineas`);
+        const response = await axios.get(`http://localhost:3001/api/v1/getLineas`);
         lineas.value = response.data[0].map(linea => ({
             label: linea.nombre,
             value: linea.Id

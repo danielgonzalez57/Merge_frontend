@@ -27,7 +27,7 @@ console.log(id.value)
 async function getFilterTamCapDelete(){
     
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/tamCapFilter/${id.value}`)
+        const response = await axios.get(`http://localhost:3001/api/v1/tamCapFilter/${id.value}`)
         
         tamCapDelele.value =  response.data
         
@@ -41,7 +41,7 @@ async function getFilterTamCapDelete(){
 async function eliminarTamCap(){
           
     try{
-        await axios.delete(`http://149.50.131.95:3001/api/v1/temCapDelete/${id.value}`);
+        await axios.delete(`http://localhost:3001/api/v1/temCapDelete/${id.value}`);
 
     } catch(error){
         console.log(error)

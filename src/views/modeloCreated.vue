@@ -27,7 +27,7 @@ user_crea: `${usuario}`,
 async function modeloCreated(){
     
     try{
-        const response = await axios.post(`http://149.50.131.95:3001/api/v1/modeloCreated`, jsonMod.value)
+        const response = await axios.post(`http://localhost:3001/api/v1/modeloCreated`, jsonMod.value)
         
         if(response.data.status === 'ok'){
 
@@ -57,7 +57,7 @@ async function modeloCreated(){
 // FUNCTION PARA LLENAR SELECT
 async function getTamCap(){
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/tamCapAll`);
+        const response = await axios.get(`http://localhost:3001/api/v1/tamCapAll`);
         tamCap.value = response.data.map(linea => ({
             label: linea.nombre,
             value: linea.id

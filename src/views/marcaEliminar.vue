@@ -26,7 +26,7 @@ console.log(id.value)
 async function getFilterMarcaDelete(){
     
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/marcasFilter/${id.value}`)
+        const response = await axios.get(`http://localhost:3001/api/v1/marcasFilter/${id.value}`)
         
         marcaDelete.value =  response.data
         
@@ -40,7 +40,7 @@ async function getFilterMarcaDelete(){
 async function eliminarMarca(){
           
     try{
-        await axios.delete(`http://149.50.131.95:3001/api/v1/marcaDelete/${id.value}`);
+        await axios.delete(`http://localhost:3001/api/v1/marcaDelete/${id.value}`);
 
     } catch(error){
         console.log(error)

@@ -34,7 +34,7 @@ user_crea:`${usuario}`//,
 async function getFilterMarca(){
     
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/marcasFilter/${id.value}`)
+        const response = await axios.get(`http://localhost:3001/api/v1/marcasFilter/${id.value}`)
         console.log(response)
 
         marcaEdit.value =  response.data
@@ -48,7 +48,7 @@ async function getFilterMarca(){
 async function postMarca(jsonL, id){
     
     try{
-        const response = await axios.put(`http://149.50.131.95:3001/api/v1/marcaUpdate/${id.value}`, jsonL)
+        const response = await axios.put(`http://localhost:3001/api/v1/marcaUpdate/${id.value}`, jsonL)
         
         if(response.data.status === 'ok'){
 

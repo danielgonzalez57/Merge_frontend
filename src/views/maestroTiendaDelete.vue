@@ -31,7 +31,7 @@ console.log(id.value)
 async function getFilterMaestroTiendaDelete(){
     
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/maestroTiendaFilter/${id.value}`)
+        const response = await axios.get(`http://localhost:3001/api/v1/maestroTiendaFilter/${id.value}`)
         
         maestroTiendaDelele.value =  response.data
         
@@ -44,7 +44,7 @@ async function getFilterMaestroTiendaDelete(){
 async function eliminarMaestroTienda(){
           
     try{
-        await axios.delete(`http://149.50.131.95:3001/api/v1/maestroTiendaDelete/${id.value}`);
+        await axios.delete(`http://localhost:3001/api/v1/maestroTiendaDelete/${id.value}`);
 
     } catch(error){
 

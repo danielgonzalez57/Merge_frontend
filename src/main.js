@@ -1,5 +1,7 @@
 import './assets/main.css'
+
 import { createApp } from 'vue'
+
 import { createPinia } from 'pinia'
 import { plugin, defaultConfig } from '@formkit/vue'
 import DataTable from 'datatables.net-vue3';
@@ -12,6 +14,8 @@ import createPersistedState  from 'pinia-plugin-persistedstate'
 import axios from 'axios'
 import config from '/formkit.config.js'
 
+
+
 window.axios = axios;
 DataTable.use(DataTablesCore);
 
@@ -21,6 +25,7 @@ pinia.use(({store}) =>{
     store.router = markRaw(router)
 })
 pinia.use(createPersistedState)
+
 
 const app = createApp(App)
 
@@ -36,10 +41,11 @@ document.addEventListener('keydown', function(event) {
   });
 
 
-app.use(plugin, defaultConfig(config))
-app.use(createPinia())
-app.use(router)
-app.mount('#app')
+
+  app.use(plugin, defaultConfig(config))
+  app.use(createPinia())
+  app.use(router)
+  app.mount('#app')
 
 
 

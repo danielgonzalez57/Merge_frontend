@@ -26,7 +26,7 @@ user_crea:`${usuario}`
 async function lineasCreated(){
     
     try{
-        const response = await axios.post(`http://149.50.131.95:3001/api/v1/lineasCreated`, jsonMarca.value)
+        const response = await axios.post(`http://localhost:3001/api/v1/lineasCreated`, jsonMarca.value)
         
         if(response.data.status === 'ok'){
 

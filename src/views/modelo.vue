@@ -24,7 +24,7 @@ id.value = route.params.key
 // FUNCTION PARA LLENAR TABLE
 async function getmodelo(){
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/modeloAll`);
+        const response = await axios.get(`http://localhost:3001/api/v1/modeloAll`);
 
         info.value =  response.data
 

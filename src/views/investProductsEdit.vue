@@ -73,7 +73,7 @@ const jsonInvesEdit = ref({
 async function getFilterInvestigacionPro(){
     
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/investProducts/${id.value}`)
+        const response = await axios.get(`http://localhost:3001/api/v1/investProducts/${id.value}`)
         investigacionProEdit.value =  response.data
     } catch(error){
         console.log(error)
@@ -84,7 +84,7 @@ async function getFilterInvestigacionPro(){
 async function postInvestigacionProductpro(jsonInvesPro, id){
     
     try{
-        const response = await axios.put(`http://149.50.131.95:3001/api/v1/investProductUpdate/${id.value}`, jsonInvesPro)
+        const response = await axios.put(`http://localhost:3001/api/v1/investProductUpdate/${id.value}`, jsonInvesPro)
         
         if(response.data.status === 'ok'){
 
@@ -117,7 +117,7 @@ async function postInvestigacionProductpro(jsonInvesPro, id){
 // SELCCIONAR DATOS -------------------------------------------------------------------------- //
 async function getMediciones(){
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/medicionAll`);
+        const response = await axios.get(`http://localhost:3001/api/v1/medicionAll`);
 
         medicionget.value =  response.data
         //console.log(medicionget.value)
@@ -128,7 +128,7 @@ async function getMediciones(){
 }
 async function getArticulo(){
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/articuloAll`);
+        const response = await axios.get(`http://localhost:3001/api/v1/articuloAll`);
 
         articuloget.value =  response.data
   
@@ -138,7 +138,7 @@ async function getArticulo(){
 }
 async function getTipoArt(){
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/tipoArticuloAll`);
+        const response = await axios.get(`http://localhost:3001/api/v1/tipoArticuloAll`);
 
         tipoartget.value =  response.data
  
@@ -149,7 +149,7 @@ async function getTipoArt(){
 }
 async function getTamano(){
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/tamCapAll`);
+        const response = await axios.get(`http://localhost:3001/api/v1/tamCapAll`);
 
         tamanoget.value =  response.data
         //console.log(tamanoget.value)
@@ -161,7 +161,7 @@ async function getTamano(){
 }
 async function getModelo(){ 
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/modeloAll`);
+        const response = await axios.get(`http://localhost:3001/api/v1/modeloAll`);
 
         modeloget.value =  response.data
         //console.log(modeloget.value)
@@ -172,7 +172,7 @@ async function getModelo(){
 }
 async function getMarca(){ 
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/marcasAll`);
+        const response = await axios.get(`http://localhost:3001/api/v1/marcasAll`);
 
         marcaget.value =  response.data
         //console.log(modeloget.value)

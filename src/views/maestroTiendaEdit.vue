@@ -43,7 +43,7 @@ user_crea:''
 async function getFilterMaestroTienda(){
     
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/maestroTiendaFilter/${id.value}`)
+        const response = await axios.get(`http://localhost:3001/api/v1/maestroTiendaFilter/${id.value}`)
         console.log(response.data)
 
         maestroTiendaEdit.value =  response.data
@@ -57,7 +57,7 @@ async function getFilterMaestroTienda(){
 async function updateMaestroTienda(jsonMaestroTienda, id){
     
     try{
-        const response = await axios.put(`http://149.50.131.95:3001/api/v1/maestroTiendaUpdate/${id.value}`, jsonMaestroTienda)
+        const response = await axios.put(`http://localhost:3001/api/v1/maestroTiendaUpdate/${id.value}`, jsonMaestroTienda)
         
         if(response.data.status === 'ok'){
 
@@ -90,7 +90,7 @@ async function updateMaestroTienda(jsonMaestroTienda, id){
 // FUNCTION PARA LLENAR TABLE
 async function getCiudades(){
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/getCiudades`);
+        const response = await axios.get(`http://localhost:3001/api/v1/getCiudades`);
         ciudades.value = response.data[0].map(ciudad => ({
             label: ciudad.nombre,
             value: ciudad.Id

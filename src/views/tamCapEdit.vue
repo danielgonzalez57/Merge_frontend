@@ -35,7 +35,7 @@ user_crea: ''
 async function getFilterTamCap(){
     
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/tamCapFilter/${id.value}`)
+        const response = await axios.get(`http://localhost:3001/api/v1/tamCapFilter/${id.value}`)
 
         TamCapEdit.value =  response.data
 
@@ -49,7 +49,7 @@ async function getFilterTamCap(){
 async function UpdateTamCap(jsonTC, id){
     
     try{
-        const response = await axios.put(`http://149.50.131.95:3001/api/v1/temCapUpdate/${id.value}`, jsonTC)
+        const response = await axios.put(`http://localhost:3001/api/v1/temCapUpdate/${id.value}`, jsonTC)
         
         if(response.data.status === 'ok'){
 
@@ -83,7 +83,7 @@ async function UpdateTamCap(jsonTC, id){
 // FUNCTION PARA LLENAR SELECT
 async function getTipo(){
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/tipoArticuloAll`);
+        const response = await axios.get(`http://localhost:3001/api/v1/tipoArticuloAll`);
         tamCap.value = response.data.map(linea => ({
             label: linea.nombre,
             value: linea.id

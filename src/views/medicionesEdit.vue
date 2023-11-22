@@ -32,7 +32,7 @@ console.log(id.value)
 async function getFilterMedicion(){
     
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/medicionFilter/${id.value}`)
+        const response = await axios.get(`http://localhost:3001/api/v1/medicionFilter/${id.value}`)
         console.log(response.data)
         medicionEdit.value =  response.data
         
@@ -45,7 +45,7 @@ async function getFilterMedicion(){
 
 async function getInvestigacion(){
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/investigacionAll`);
+        const response = await axios.get(`http://localhost:3001/api/v1/investigacionAll`);
 
         info.value =  response.data
         console.log(info.value)

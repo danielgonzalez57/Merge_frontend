@@ -56,7 +56,7 @@ const data = ref({
 // DATA
 async function getMediciones(){
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/medicionAll`);
+        const response = await axios.get(`http://localhost:3001/api/v1/medicionAll`);
 
         medicionget.value =  response.data
 
@@ -66,7 +66,7 @@ async function getMediciones(){
 }
 async function getArticulo(){
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/articuloAll`);
+        const response = await axios.get(`http://localhost:3001/api/v1/articuloAll`);
 
         articuloget.value =  response.data
   
@@ -76,7 +76,7 @@ async function getArticulo(){
 }
 async function getTipoArt(){
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/tipoArticuloAll`);
+        const response = await axios.get(`http://localhost:3001/api/v1/tipoArticuloAll`);
 
         tipoartget.value =  response.data
  
@@ -87,7 +87,7 @@ async function getTipoArt(){
 }
 async function getTamano(){
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/tamCapAll`);
+        const response = await axios.get(`http://localhost:3001/api/v1/tamCapAll`);
 
         tamanoget.value =  response.data
         //console.log(tamanoget.value)
@@ -99,10 +99,10 @@ async function getTamano(){
 }
 async function getModelo(){ 
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/modeloAll`);
+        const response = await axios.get(`http://localhost:3001/api/v1/modeloAll`);
 
         modeloget.value =  response.data
-        //console.log(modeloget.value)
+        console.log(modeloget.value)
 
     } catch(error){
         console.log(error)
@@ -110,10 +110,10 @@ async function getModelo(){
 }
 async function getMarca(){ 
     try{
-        const response = await axios.get(`http://149.50.131.95:3001/api/v1/marcasAll`);
+        const response = await axios.get(`http://localhost:3001/api/v1/marcasAll`);
 
         marcaget.value =  response.data
-        //console.log(modeloget.value)
+        console.log(marcaget.value)
 
     } catch(error){
         console.log(error)
@@ -125,7 +125,7 @@ async function getMarca(){
 async function crearInvestPro(dataJson){
    
     // Usando promesas
-    axios.post('http://149.50.131.95:3001/api/v1/invesProductCreated', dataJson)
+    axios.post('http://localhost:3001/api/v1/invesProductCreated', dataJson)
         .then(response => {
             let rtaFromMysqlDb = Object.keys(response.data)
             let error = rtaFromMysqlDb.includes("errors");
@@ -154,8 +154,6 @@ $(document).ready(function() {
     $('#id_medicion').on('change', function() {
         var valorSeleccionado = $(this).val()
        id_medicion.value = valorSeleccionado
-
-        
       });
 
 });
@@ -170,6 +168,7 @@ $(document).ready(function() {
 });
 
 const arrayTipoArticulo = ref([])
+
 $(document).ready(function() {
     $('#id_tipo').on('change', function() {
         var valorSeleccionado = $(this).val()
@@ -180,6 +179,7 @@ $(document).ready(function() {
 });
 
 const arraytamano = ref([])
+
 $(document).ready(function() {
     $('#id_tam_cap').on('change', function() {
         var valorSeleccionado = $(this).val()
@@ -194,11 +194,14 @@ const arraymodelo = ref([])
 $(document).ready(function() {
     $('#id_modelo').on('change', function() {
         var valorSeleccionado = $(this).val()
-        // arraymodelo.value =  modelo.value.filter(data => data.idtamano == valorSeleccionado)
+        var keySeleccionado = $(this).find(':selected').data('key');
+        arraymarca.value =  marcaget.value.filter(data => data.id_marca == keySeleccionado)
         id_modelo.value = valorSeleccionado
       });
 
 });
+
+const arraymarca = ref([])
 
 $(document).ready(function() {
     $('#id_marca').on('change', function() {
@@ -272,7 +275,11 @@ function crearDataInvest(){
             </div>
             <div class="activity">
                 <section class="container_form1">
-                    <div class="container_form">
+                    <div class="filtrador" style="width:50%;">
+                                <label for="">Comprobar modelo</label>
+                                <input type="text" class="input-modelo" placeholder="Coloca el modelo">
+                                <button>Buscar</button>
+                            </div>
                         <FormKit type="form" #default="{ value }" @submit="crearDataInvest" :value="data"
                             submit-label="Registrar" method="post" action="/">
 
@@ -283,13 +290,16 @@ function crearDataInvest(){
                                     id="id_medicion"
                                     v-model="id_medicion"
                                     name="id_medicion"
-                                    style="width: 40%; "
+                                    style="width:50%;"
                                 >
                                     <option value="">Seleccione Medicion</option>
                                     <option v-for="obj in medicionget" :key="obj.id" :value="obj.id">{{ obj.id }}</option>
                                 </select>
 
                             </div>
+
+                            
+
 
                            <!--NUEVO SELECT ARTICULO-->
                            <label class="label_filter" for="">Articulo</label>
@@ -298,7 +308,7 @@ function crearDataInvest(){
                                     id="id_art"
                                     v-model="id_art"
                                     name="id_art"
-                                    style="width: 40%; "
+                                    style="width:50%;"
                                 >
                                 <option value="">Seleccione un Articulo</option>
                                     <option v-for="obj in articuloget" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
@@ -312,7 +322,7 @@ function crearDataInvest(){
                                     id="id_tipo"
                                     v-model="id_tipo"
                                     name="id_tipo"
-                                    style="width: 40%; "
+                                    style="width:50%;"
                                 >
                                 <option value="">Seleccione un Tipo</option>
                                     <option v-for="obj in arrayTipoArticulo" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
@@ -327,7 +337,7 @@ function crearDataInvest(){
                                 id="id_tam_cap"
                                 v-model="id_tam_cap"
                                 name="id_tam_cap"
-                                style="width: 40%; "
+                                style="width:50%;"
                             >
                                 <option value="">Seleccione un tamaño</option>
                                 <option v-for="obj in arraytamano" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
@@ -342,10 +352,10 @@ function crearDataInvest(){
                                     id="id_modelo"
                                     v-model="id_modelo"
                                     name="id_modelo"
-                                    style="width: 40%; "
+                                    style="width:50%;"
                                 >
                                     <option value="">Seleccione un modelo</option>
-                                    <option v-for="obj in arraymodelo" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
+                                    <option v-for="obj in arraymodelo" :data-key="obj.id_marca" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
                                 </select>
                             </div>
 
@@ -355,10 +365,9 @@ function crearDataInvest(){
                                     id="id_marca"
                                     v-model="id_marca"
                                     name="id_marca"
-                                    style="width: 40%; "
-                                >
+                                    style="width:50%;">
                                     <option value="">Seleccione una marca</option>
-                                    <option v-for="obj in marcaget" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
+                                    <option v-for="obj in arraymarca" :key="obj.id_marca"  :value="obj.id">{{ obj.nombre }}</option>
                                 </select>
                             </div>
 
@@ -385,13 +394,13 @@ function crearDataInvest(){
                                 }" help="" />
 
                             <FormKit v-model="user_crea" type="text" label="Usuario de creación" value="user_crea"
-                                prefix-icon="" placeholder="" validation="required" disabled
+                                prefix-icon="" placeholder="" validation="required" disabled 
                                 :validation-messages="{
                                     required: '',
                                 }" help="" />
                             <!-- <pre wrap>{{ value }}</pre> -->
                         </FormKit>
-                    </div>
+                    
                 </section>
             </div>
         </div>
@@ -403,7 +412,22 @@ function crearDataInvest(){
 <style>
 [data-invalid] .formkit-inner {
     border-color: red;
-    box-shadow: 0 0 0 1px red;
+    box-shadow: 0 0 0 lid  red;
+}
+
+.input-modelo{
+    padding: 7px;
+    border-radius: 3px;
+    border: 1px solid  ;
+}
+
+.formkit-inner {
+   width: 100%;
+}
+.formkit-form{
+    
+    width: 80%;
+    
 }
 
 .filtrador{
@@ -418,5 +442,10 @@ function crearDataInvest(){
     font-weight: 600;
     font-size: 14px;
 }
+
+
+
 </style> 
+
+
 
