@@ -17,7 +17,7 @@ export default {
       }, 
       methods:{
         getProducts(){
-          axios.get('http://149.50.131.95:3000/')
+          axios.get('http://149.50.131.95:3001/')
           .then(response => (
             this.products = response.data)
           );

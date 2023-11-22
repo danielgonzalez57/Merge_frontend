@@ -19,8 +19,8 @@ const precio = ref()
 const multiplicationResult = ref(0);
 
 watch([cant, precio], () => {
-      multiplicationResult.value = cant.value * precio.value;
-    });
+    multiplicationResult.value = cant.value * precio.value;
+});
 
 // INPUTS 
 const id_medicion = ref('')
@@ -46,94 +46,95 @@ const data = ref({
     descrip: "",
     cant: "",
     precio: "",
-    sub_total: 10, 
-    user_crea: localStorage.usuario, 
+    sub_total: 10,
+    user_crea: localStorage.usuario,
 
-    user_mod: localStorage.usuario 
+    user_mod: localStorage.usuario,
+    searchModelInput: ""
 
 });
 
 // DATA
-async function getMediciones(){
-    try{
+async function getMediciones() {
+    try {
         const response = await axios.get(`http://149.50.131.95:3001/api/v1/medicionAll`);
 
-        medicionget.value =  response.data
+        medicionget.value = response.data
 
-    } catch(error){
+    } catch (error) {
         console.log(error)
     }
 }
-async function getArticulo(){
-    try{
+async function getArticulo() {
+    try {
         const response = await axios.get(`http://149.50.131.95:3001/api/v1/articuloAll`);
 
-        articuloget.value =  response.data
-  
-    } catch(error){
+        articuloget.value = response.data
+
+    } catch (error) {
         console.log(error)
     }
 }
-async function getTipoArt(){
-    try{
+async function getTipoArt() {
+    try {
         const response = await axios.get(`http://149.50.131.95:3001/api/v1/tipoArticuloAll`);
 
-        tipoartget.value =  response.data
- 
+        tipoartget.value = response.data
 
-    } catch(error){
+
+    } catch (error) {
         console.log(error)
     }
 }
-async function getTamano(){
-    try{
+async function getTamano() {
+    try {
         const response = await axios.get(`http://149.50.131.95:3001/api/v1/tamCapAll`);
 
-        tamanoget.value =  response.data
+        tamanoget.value = response.data
         //console.log(tamanoget.value)
-     
 
-    } catch(error){
+
+    } catch (error) {
         console.log(error)
     }
 }
-async function getModelo(){ 
-    try{
+async function getModelo() {
+    try {
         const response = await axios.get(`http://149.50.131.95:3001/api/v1/modeloAll`);
 
-        modeloget.value =  response.data
+        modeloget.value = response.data
         console.log(modeloget.value)
 
-    } catch(error){
+    } catch (error) {
         console.log(error)
     }
 }
-async function getMarca(){ 
-    try{
+async function getMarca() {
+    try {
         const response = await axios.get(`http://149.50.131.95:3001/api/v1/marcasAll`);
 
-        marcaget.value =  response.data
+        marcaget.value = response.data
         console.log(marcaget.value)
 
-    } catch(error){
+    } catch (error) {
         console.log(error)
     }
 }
 
 
 // CREAR INVESTIGACION PROD
-async function crearInvestPro(dataJson){
-   
+async function crearInvestPro(dataJson) {
+
     // Usando promesas
     axios.post('http://149.50.131.95:3001/api/v1/invesProductCreated', dataJson)
         .then(response => {
             let rtaFromMysqlDb = Object.keys(response.data)
             let error = rtaFromMysqlDb.includes("errors");
-            if(error){
+            if (error) {
                 // EL DATO HA FALLADO AL CREARSE
                 alert(response.data.errors[0].message);
 
-            }else {
+            } else {
                 // REGISTRO CREADO EXITOSAMENTE
                 alert("investigacion registrado con exito.!");
                 window.location.reload();
@@ -150,104 +151,126 @@ async function crearInvestPro(dataJson){
 Select2()
 
 //metodo change de la lista articulos
-$(document).ready(function() {
-    $('#id_medicion').on('change', function() {
+$(document).ready(function () {
+    $('#id_medicion').on('change', function () {
         var valorSeleccionado = $(this).val()
-       id_medicion.value = valorSeleccionado
-      });
+        id_medicion.value = valorSeleccionado
+    });
 
 });
 
-$(document).ready(function() {
-    $('#id_art').on('change', function() {
+$(document).ready(function () {
+    $('#id_art').on('change', function () {
         var valorSeleccionado = $(this).val()
-        arrayTipoArticulo.value =  tipoartget.value.filter(data => data.id_articulo == valorSeleccionado)
+        arrayTipoArticulo.value = tipoartget.value.filter(data => data.id_articulo == valorSeleccionado)
         id_art.value = valorSeleccionado
-      });
+    });
 
 });
 
 const arrayTipoArticulo = ref([])
 
-$(document).ready(function() {
-    $('#id_tipo').on('change', function() {
+$(document).ready(function () {
+    $('#id_tipo').on('change', function () {
         var valorSeleccionado = $(this).val()
-        arraytamano.value =  tamanoget.value.filter(data => data.id_tipo == valorSeleccionado)
+        arraytamano.value = tamanoget.value.filter(data => data.id_tipo == valorSeleccionado)
         id_tipo.value = valorSeleccionado
-      });
+    });
 
 });
 
 const arraytamano = ref([])
 
-$(document).ready(function() {
-    $('#id_tam_cap').on('change', function() {
+$(document).ready(function () {
+    $('#id_tam_cap').on('change', function () {
         var valorSeleccionado = $(this).val()
-        arraymodelo.value =  modeloget.value.filter(data => data.id_tam_cap == valorSeleccionado)
+        arraymodelo.value = modeloget.value.filter(data => data.id_tam_cap == valorSeleccionado)
         id_tam_cap.value = valorSeleccionado
-      });
+    });
 
 });
 
 const arraymodelo = ref([])
 
-$(document).ready(function() {
-    $('#id_modelo').on('change', function() {
+$(document).ready(function () {
+    $('#id_modelo').on('change', function () {
         var valorSeleccionado = $(this).val()
         var keySeleccionado = $(this).find(':selected').data('key');
-        arraymarca.value =  marcaget.value.filter(data => data.id_marca == keySeleccionado)
+        arraymarca.value = marcaget.value.filter(data => data.id_marca == keySeleccionado)
         id_modelo.value = valorSeleccionado
-      });
+    });
 
 });
 
 const arraymarca = ref([])
 
-$(document).ready(function() {
-    $('#id_marca').on('change', function() {
+$(document).ready(function () {
+    $('#id_marca').on('change', function () {
         var valorSeleccionado = $(this).val()
         // arraymodelo.value =  modelo.value.filter(data => data.idtamano == valorSeleccionado)
         id_marca.value = valorSeleccionado
-      });
+    });
 
 });
 
 
-onMounted( async () => {
+onMounted(async () => {
 
-await getMediciones();
-await getArticulo();
-await getTipoArt();
-await getTamano();
-await getModelo();
-await getMarca();
+    await getMediciones();
+    await getArticulo();
+    await getTipoArt();
+    await getTamano();
+    await getModelo();
+    await getMarca();
 
 });
 
-function crearDataInvest(){
+function crearDataInvest() {
 
     const dataJson = {
-        id_medicion:id_medicion.value, 
-        id_art:id_art.value,
-        id_tipo:id_tipo.value,
-        id_tam_cap:id_tam_cap.value ,
-        id_modelo:id_modelo.value ,
-        id_marca:id_marca.value ,
-        descrip:descrip.value,
-        cant:cant.value ,
-        precio:precio.value ,
-        sub_total:sub_total.value ,
-        cod_sim_daka:cod_sim_daka.value ,
-        user_crea:user_crea.value
+        id_medicion: id_medicion.value,
+        id_art: id_art.value,
+        id_tipo: id_tipo.value,
+        id_tam_cap: id_tam_cap.value,
+        id_modelo: id_modelo.value,
+        id_marca: id_marca.value,
+        descrip: descrip.value,
+        cant: cant.value,
+        precio: precio.value,
+        sub_total: sub_total.value,
+        cod_sim_daka: cod_sim_daka.value,
+        user_crea: user_crea.value
     }
     // FUNCTION PARA CREAR
     crearInvestPro(dataJson)
 
 }
 
+function searchModel() {
+    console.log(data.value.searchModelInput)
+    axios.post('http://149.50.131.95:3001/api/v1/searchModelInvestProduct', {
+        model: data.value.searchModelInput
+    })
+        .then(function (response) {
+            console.log(response.data);
+            if(response.data.length != 0){
+                // encontro un modelo
+                alert(`
+                Modelo:   ${response.data[0].Modelo} 
+                Marca:    ${response.data[0].Marca}
+                TipoArt:  ${response.data[0].TipoArt}
+                Articulo: ${response.data[0].Articulo}
+                `);
+            } else {
+                alert("No se encontro el modelo, por favor cree uno nuevo");
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
 </script>
 <template>
-
     <Nav :class="{ close: valor }" />
     <section class="dashboard">
 
@@ -276,131 +299,110 @@ function crearDataInvest(){
             <div class="activity">
                 <section class="container_form1">
                     <div class="filtrador" style="width:50%;">
-                                <label for="">Comprobar modelo</label>
-                                <input type="text" class="input-modelo" placeholder="Coloca el modelo">
-                                <button>Buscar</button>
-                            </div>
-                        <FormKit type="form" #default="{ value }" @submit="crearDataInvest" :value="data"
-                            submit-label="Registrar" method="post" action="/">
+                        <label for="">Comprobar modelo</label>
+                        <input type="text" class="input-modelo" v-model="data.searchModelInput" placeholder="Coloca el modelo">
+                        <button type="button" @click="searchModel">Buscar</button>
+                    </div>
+                    <FormKit type="form" #default="{ value }" @submit="crearDataInvest" :value="data"
+                        submit-label="Registrar" method="post" action="/">
 
-                            <!--NUEVO SELECT  MEDICION-->
-                            <label class="label_filter" for="">Id medicion</label>
-                            <div class="filtrador">
-                                <select required class="js-example-basic-single filter-medicion"
-                                    id="id_medicion"
-                                    v-model="id_medicion"
-                                    name="id_medicion"
-                                    style="width:50%;"
-                                >
-                                    <option value="">Seleccione Medicion</option>
-                                    <option v-for="obj in medicionget" :key="obj.id" :value="obj.id">{{ obj.id }}</option>
-                                </select>
+                        <!--NUEVO SELECT  MEDICION-->
+                        <label class="label_filter" for="">Id medicion</label>
+                        <div class="filtrador">
+                            <select required class="js-example-basic-single filter-medicion" id="id_medicion"
+                                v-model="id_medicion" name="id_medicion" style="width:50%;">
+                                <option value="">Seleccione Medicion</option>
+                                <option v-for="obj in medicionget" :key="obj.id" :value="obj.id">{{ obj.id }}</option>
+                            </select>
 
-                            </div>
-
-                            
+                        </div>
 
 
-                           <!--NUEVO SELECT ARTICULO-->
-                           <label class="label_filter" for="">Articulo</label>
-                           <div class="filtrador">
-                                <select required class="js-example-basic-single"
-                                    id="id_art"
-                                    v-model="id_art"
-                                    name="id_art"
-                                    style="width:50%;"
-                                >
+
+
+                        <!--NUEVO SELECT ARTICULO-->
+                        <label class="label_filter" for="">Articulo</label>
+                        <div class="filtrador">
+                            <select required class="js-example-basic-single" id="id_art" v-model="id_art" name="id_art"
+                                style="width:50%;">
                                 <option value="">Seleccione un Articulo</option>
-                                    <option v-for="obj in articuloget" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
-                                    </select>
-                            </div>
+                                <option v-for="obj in articuloget" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
+                            </select>
+                        </div>
 
-                            <!--NUEVO SELECT TIPO-->
-                            <label class="label_filter" for="">Tipo articulo</label>
-                            <div class="filtrador">
-                                <select required class="js-example-basic-single"
-                                    id="id_tipo"
-                                    v-model="id_tipo"
-                                    name="id_tipo"
-                                    style="width:50%;"
-                                >
+                        <!--NUEVO SELECT TIPO-->
+                        <label class="label_filter" for="">Tipo articulo</label>
+                        <div class="filtrador">
+                            <select required class="js-example-basic-single" id="id_tipo" v-model="id_tipo" name="id_tipo"
+                                style="width:50%;">
                                 <option value="">Seleccione un Tipo</option>
-                                    <option v-for="obj in arrayTipoArticulo" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
-                                    </select>
-                            </div>
+                                <option v-for="obj in arrayTipoArticulo" :key="obj.id" :value="obj.id">{{ obj.nombre }}
+                                </option>
+                            </select>
+                        </div>
 
 
-                            <!--NUEVO SELECT TAMANO-->
+                        <!--NUEVO SELECT TAMANO-->
                         <label class="label_filter" for="">Tamaño capacidad</label>
                         <div class="filtrador">
-                            <select required class="js-example-basic-single"
-                                id="id_tam_cap"
-                                v-model="id_tam_cap"
-                                name="id_tam_cap"
-                                style="width:50%;"
-                            >
+                            <select required class="js-example-basic-single" id="id_tam_cap" v-model="id_tam_cap"
+                                name="id_tam_cap" style="width:50%;">
                                 <option value="">Seleccione un tamaño</option>
                                 <option v-for="obj in arraytamano" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
                             </select>
                         </div>
 
 
-                            <!--NUEVO SELECT MODELO-->
-                            <label class="label_filter" for="">Modelo</label>
-                            <div class="filtrador">
-                                <select required class="js-example-basic-single"
-                                    id="id_modelo"
-                                    v-model="id_modelo"
-                                    name="id_modelo"
-                                    style="width:50%;"
-                                >
-                                    <option value="">Seleccione un modelo</option>
-                                    <option v-for="obj in arraymodelo" :data-key="obj.id_marca" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
-                                </select>
-                            </div>
+                        <!--NUEVO SELECT MODELO-->
+                        <label class="label_filter" for="">Modelo</label>
+                        <div class="filtrador">
+                            <select required class="js-example-basic-single" id="id_modelo" v-model="id_modelo"
+                                name="id_modelo" style="width:50%;">
+                                <option value="">Seleccione un modelo</option>
+                                <option v-for="obj in arraymodelo" :data-key="obj.id_marca" :key="obj.id" :value="obj.id">{{
+                                    obj.nombre }}</option>
+                            </select>
+                        </div>
 
-                            <label class="label_filter" for="">Marca</label>
-                            <div class="filtrador">
-                                <select required class="js-example-basic-single"
-                                    id="id_marca"
-                                    v-model="id_marca"
-                                    name="id_marca"
-                                    style="width:50%;">
-                                    <option value="">Seleccione una marca</option>
-                                    <option v-for="obj in arraymarca" :key="obj.id_marca"  :value="obj.id">{{ obj.nombre }}</option>
-                                </select>
-                            </div>
+                        <label class="label_filter" for="">Marca</label>
+                        <div class="filtrador">
+                            <select required class="js-example-basic-single" id="id_marca" v-model="id_marca"
+                                name="id_marca" style="width:50%;">
+                                <option value="">Seleccione una marca</option>
+                                <option v-for="obj in arraymarca" :key="obj.id_marca" :value="obj.id">{{ obj.nombre }}
+                                </option>
+                            </select>
+                        </div>
 
-                            <FormKit v-model="descrip" type="text" label="Descripción" value="descrip"
-                                prefix-icon="textarea" placeholder="Descripción" maxlength="99" minlength="10"
-                                validation="required" :validation-messages="{
-                                    required: 'Escriba una descripción',
-                                }" help="" />
+                        <FormKit v-model="descrip" type="text" label="Descripción" value="descrip" prefix-icon="textarea"
+                            placeholder="Descripción" maxlength="99" minlength="10" validation="required"
+                            :validation-messages="{
+                                required: 'Escriba una descripción',
+                            }" help="" />
 
-                            <FormKit v-model="cant" type="number" label="Cantidad" value="cant" prefix-icon="number"
-                                placeholder="Cantidad" validation="required" :validation-messages="{
-                                    required: 'Ingrese la cantidad',
-                                }" help="" />
+                        <FormKit v-model="cant" type="number" label="Cantidad" value="cant" prefix-icon="number"
+                            placeholder="Cantidad" validation="required" :validation-messages="{
+                                required: 'Ingrese la cantidad',
+                            }" help="" />
 
-                            <FormKit v-model="precio" type="number" step="0.01" label="Precio" value="precio"
-                                prefix-icon="number" placeholder="Precio" validation="required" :validation-messages="{
-                                    required: 'Ingre el precio',
-                                }" help="" />
+                        <FormKit v-model="precio" type="number" step="0.01" label="Precio" value="precio"
+                            prefix-icon="number" placeholder="Precio" validation="required" :validation-messages="{
+                                required: 'Ingre el precio',
+                            }" help="" />
 
-                            <FormKit v-model="sub_total" type="number" step="0.01 " label="SubTotal" value="sub_total"
-                                prefix-icon="number" :value="multiplicationResult"  placeholder="SubTotal" validation="required" disabled
-                                :validation-messages="{
-                                    required: '',
-                                }" help="" />
+                        <FormKit v-model="sub_total" type="number" step="0.01 " label="SubTotal" value="sub_total"
+                            prefix-icon="number" :value="multiplicationResult" placeholder="SubTotal" validation="required"
+                            disabled :validation-messages="{
+                                required: '',
+                            }" help="" />
 
-                            <FormKit v-model="user_crea" type="text" label="Usuario de creación" value="user_crea"
-                                prefix-icon="" placeholder="" validation="required" disabled 
-                                :validation-messages="{
-                                    required: '',
-                                }" help="" />
-                            <!-- <pre wrap>{{ value }}</pre> -->
-                        </FormKit>
-                    
+                        <FormKit v-model="user_crea" type="text" label="Usuario de creación" value="user_crea"
+                            prefix-icon="" placeholder="" validation="required" disabled :validation-messages="{
+                                required: '',
+                            }" help="" />
+                        <!-- <pre wrap>{{ value }}</pre> -->
+                    </FormKit>
+
                 </section>
             </div>
         </div>
@@ -412,39 +414,37 @@ function crearDataInvest(){
 <style>
 [data-invalid] .formkit-inner {
     border-color: red;
-    box-shadow: 0 0 0 lid  red;
+    box-shadow: 0 0 0 lid red;
 }
 
-.input-modelo{
+.input-modelo {
     padding: 7px;
     border-radius: 3px;
-    border: 1px solid  ;
+    border: 1px solid;
 }
 
 .formkit-inner {
-   width: 100%;
-}
-.formkit-form{
-    
-    width: 80%;
-    
+    width: 100%;
 }
 
-.filtrador{
+.formkit-form {
+
+    width: 80%;
+
+}
+
+.filtrador {
     margin-bottom: 1rem;
 }
 
-.filtrador .filter-medicion{
+.filtrador .filter-medicion {
     padding: 1rem;
 }
 
-.label_filter{
+.label_filter {
     font-weight: 600;
     font-size: 14px;
 }
-
-
-
 </style> 
 
 
