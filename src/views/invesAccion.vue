@@ -17,6 +17,9 @@ const router = useRouter()
 const valor = ref(false);
 const info = ref([]);
 
+const usuario = ref('')
+usuario.value = localStorage.usuario;
+
 // URL
 const id = ref('')
 id.value = route.params.key 
@@ -24,7 +27,7 @@ id.value = route.params.key
 // FUNCTION PARA LLENAR TABLE
 async function getInvestigacion(){
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/investigacionAll`);
+        const response = await axios.post(`http://localhost:3001/api/v1/dataUSerFilter`, {valor: usuario.value});
 
         info.value =  response.data
 

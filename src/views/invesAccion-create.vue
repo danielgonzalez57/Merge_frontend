@@ -5,6 +5,8 @@ import Nav from '../components/Nav.vue'
 import { ref, onMounted, computed} from 'vue';
 import {  useRoute, useRouter } from 'vue-router'
 import Swal from 'sweetalert2'
+import Select2 from '../funciones/select2'
+
 
 const route = useRoute()
 const router = useRouter()
@@ -14,7 +16,7 @@ const usuario = localStorage.usuario;
 const id = ref('')
 id.value = route.params.key 
 
-import Select2 from '../funciones/select2'
+
 
 const info = ref();
 

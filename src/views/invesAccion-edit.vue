@@ -4,9 +4,9 @@ import Swal from 'sweetalert2'
 
 import { ref, onMounted} from 'vue';
 import {  useRoute, useRouter } from 'vue-router'
-const usuario = localStorage.usuario;
 import Select2 from '../funciones/select2'
 
+const usuario = localStorage.usuario;
 const route = useRoute()
 const router = useRouter()
 const valor = ref(false)
