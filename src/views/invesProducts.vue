@@ -18,6 +18,9 @@ const router = useRouter()
 const valor = ref(false);
 const info = ref([]);
 
+const usuario = ref('')
+usuario.value = localStorage.usuario;
+
 // URL
 const id = ref('')
 id.value = route.params.key 
@@ -25,7 +28,8 @@ id.value = route.params.key
 // FUNCTION PARA LLENAR TABLE
 async function getMedicion(){
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/investProducts`);
+        //const response = await axios.get(`http://localhost:3001/api/v1/investProducts`);
+        const response = await axios.post(`http://localhost:3001/api/v1/dataInvProdFilter`, {valor: usuario.value});
         info.value =  response.data
         //console.log(info.value)
     } catch(error){
