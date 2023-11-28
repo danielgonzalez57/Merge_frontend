@@ -17,18 +17,21 @@ const json = ref({
     nro_facturas:'',
 });
 
-const id_invest = ref('')
+const id_invest = ref([])
 const hora = ref('')
 const user_crea = ref(usuario)
 const user_mod = ref('')
 const nro_visitantes = ref('')
 const nro_facturas = ref('')
 
+
 async function getInvestigacion(){
     try{
         const response = await axios.get(`http://localhost:3001/api/v1/investigacionAll`);
-        info.value =  response.data
-        console.log(info.value)
+        info.value = response.data.map(invest => ({
+            title: invest.id,
+            value: invest.id,
+        }));
     } catch(error){
         console.log(error)
     }
@@ -38,14 +41,6 @@ onMounted( async () => {
 await getInvestigacion();
 });
 
-$(document).ready(function() {
-    $('#id_invest').on('change', function() {
-        var valorSeleccionado = $(this).val()
-        id_invest.value = valorSeleccionado
-      });
-});
-
-Select2()
 
 function addDataC(){
 
@@ -91,8 +86,7 @@ const jsonE = {
 
             <div class="activity">
             <section class="container_form1">
-                
-                <!-- <form class="form" @:submit.prevent="$event => mediciones.medicionCreate(json)" > -->
+            
                     <div class="container">
                         <FormKit
                             type="form"
@@ -101,18 +95,18 @@ const jsonE = {
                         >
 
                         <label class="label_filter" for="">Id investigacion</label>
-                            <div class="filtrador">
-                                <select required class="js-example-basic-single filter-medicion"
-                                    id="id_invest"
-                                    v-model="id_invest"
-                                    name="id_invest"
-                                    style="width: 40%;"
-                                > 
-                                    <option  value="">Seleccione id investigacion</option>
-                                    <option v-for="obj in info" :key="obj.id" :value="obj.id">{{ obj.id }}</option>
-                                </select>
-
-                            </div>
+                            <v-combobox
+                                clearable
+                                required
+                                chips
+                                v-model="id_invest"
+                                name="id_invest"
+                                placeholder="Selecciona tu tienda"
+                                :items="info"
+                                variant="outlined"
+                                style="width: 50%;"
+                                :return-object="false"
+                            ></v-combobox>
 
                             <FormKit
                                 type="select"

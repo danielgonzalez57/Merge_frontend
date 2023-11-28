@@ -4,6 +4,7 @@ import Nav from '../components/Nav.vue'
 
 // LIBRERIAS
 import axios from 'axios';
+const rol = localStorage.rol;
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
 import DataTable from 'datatables.net-vue3';
@@ -21,10 +22,13 @@ const info = ref([]);
 const id = ref('')
 id.value = route.params.key 
 
+const usuario = ref('')
+usuario.value = localStorage.usuario;
+
 // FUNCTION PARA LLENAR TABLE
 async function getInvestigacion(){
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/investigacionAll`);
+        const response = await axios.post(`http://localhost:3001/api/v1/dataUSerFilter`, {valor: usuario.value});
 
         info.value =  response.data
 
@@ -91,9 +95,30 @@ const columns = ref([
                     <div class="header-tools">
                     <div class="tools">
                         <ul> 
-                            <li>
+                            <li v-if="rol == 'inves'">
                                 <router-link to="/invesAccion-create">
-                                    <button class="topi">
+                                    <button class="topi" >
+                                        Crear
+                                    </button>
+                                </router-link>
+                            </li>
+                            <li v-if="rol == 'admin'">
+                                <router-link to="/invesAccion-create">
+                                    <button class="topi" >
+                                        Crear
+                                    </button>
+                                </router-link>
+                            </li>
+                            <li v-if="rol == 'admaster'">
+                                <router-link to="/invesAccion-create">
+                                    <button class="topi" >
+                                        Crear
+                                    </button>
+                                </router-link>
+                            </li>
+                            <li v-if="rol == 'rrss'">
+                                <router-link to="/investigacionRrss">
+                                    <button class="topi" >
                                         Crear
                                     </button>
                                 </router-link>
@@ -125,9 +150,10 @@ const columns = ref([
                 </div>
 
             </div>
-
+            
         </div>
     </section>
+    
 </template>
 
 

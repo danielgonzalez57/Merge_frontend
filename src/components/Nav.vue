@@ -71,6 +71,44 @@ const claseNav = () => {
                 
 
             </ul>
+            
+            <ul class="nav-links" v-if="rol == 'rrss'">
+
+                <!-- OPCIONES -->
+                <li>
+                    <router-link class="black" to="/dashboard">
+                        <i class="ri-home-2-line"></i>
+                        <span class="link-name">Dashboard</span>
+                    </router-link>
+                </li>
+
+                  <!-- OPCIONES -->
+                <li>
+                    <router-link class="black" to="/InvesAccion">
+                        <i class="ri-attachment-line"></i>
+                        <span class="link-name">Investigacion</span>
+                    </router-link>
+                </li>
+
+                <!-- OPCIONES -->
+                <li>
+                    <router-link class="black" to="/mediciones">
+                        <i class="ri-dashboard-2-line"></i>
+                        <span class="link-name">Mediciones</span>
+                    </router-link>
+                </li>
+                
+                  <!-- OPCIONES -->
+                
+                <li>
+                    <router-link class="black" to="/investProducts">
+                        <i class="ri-store-2-line"></i>
+                        <span class="link-name">Investigacion de Producto</span>
+                    </router-link>
+                </li>
+                
+
+            </ul>
 
             <ul class="nav-links" v-if="rol == 'admin'">
 
@@ -225,7 +263,7 @@ const claseNav = () => {
     
 </template>
 
-<style scoped>
+<style >
 ::-webkit-scrollbar{
   width: .3rem;
   border-radius: .5rem;
@@ -247,6 +285,8 @@ const claseNav = () => {
 .black{
     color: aliceblue;
 }
+
+
 </style>
 
 

@@ -14,6 +14,12 @@ import createPersistedState  from 'pinia-plugin-persistedstate'
 import axios from 'axios'
 import config from '/formkit.config.js'
 
+// Vuetify
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+
 
 
 window.axios = axios;
@@ -40,8 +46,12 @@ document.addEventListener('keydown', function(event) {
     }
   });
 
+  const vuetify = createVuetify({
+    components,
+    directives,
+  })
 
-
+  app.use(vuetify)
   app.use(plugin, defaultConfig(config))
   app.use(createPinia())
   app.use(router)

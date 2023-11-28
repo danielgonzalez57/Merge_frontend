@@ -33,23 +33,19 @@ async function getFilterMedicion(){
     
     try{
         const response = await axios.get(`http://localhost:3001/api/v1/medicionFilter/${id.value}`)
-        console.log(response.data)
         medicionEdit.value =  response.data
-        
-
     } catch(error){
         console.log(error)
-
     }
 }
 
 async function getInvestigacion(){
     try{
         const response = await axios.get(`http://localhost:3001/api/v1/investigacionAll`);
-
-        info.value =  response.data
-        console.log(info.value)
-
+        info.value = response.data.map(invest => ({
+            title: invest.id,
+            value: invest.id,
+        }));
     } catch(error){
         console.log(error)
     }
@@ -62,7 +58,6 @@ onMounted( async () => {
    
    
    id_invest.value = medicionEdit.value.id_invest
-   $('#id_invest').val(id_invest.value).trigger('change')
    hora.value = medicionEdit.value.hora
    user_crea.value = medicionEdit.value.user_crea
    user_mod.value = usuario
@@ -129,19 +124,19 @@ Select2()
                             submit-label="Actualizar"
                         >
 
-                            
-
-                            <div class="filtrador">
-                                <select disabled class="js-example-basic-single filter-medicion"
-                                    id="id_invest"
-                                    v-model="id_invest"
-                                    name="id_invest"
-                                    style="width: 40%; "
-                                >
-                                    <option  value="">Seleccione id investigacion</option>
-                                    <option v-for="obj in info" :key="obj.id" :value="obj.id">{{ obj.id }}</option>
-                                </select>
-                            </div>
+                            <label class="label_filter" for="">Id investigacion</label>
+                            <v-combobox
+                                clearable
+                                required
+                                chips
+                                v-model="id_invest"
+                                name="id_invest"
+                                placeholder="Selecciona tu tienda"
+                                :items="info"
+                                variant="outlined"
+                                style="width: 50%;"
+                                :return-object="false"
+                            ></v-combobox>
 
                             <FormKit
                                 type="select"
@@ -185,7 +180,7 @@ Select2()
 
                             <FormKit
                                 type="text"
-                                label="nro_visitantes"
+                                label="Numero de visitantes"
                                 name="nro_visitantes"
                                 placeholder="nro_visitantes"
                                 validation="required"
@@ -196,7 +191,7 @@ Select2()
                             />
                             <FormKit
                                 type="text"
-                                label="nro_facturas"
+                                label="Numero de facturas"
                                 name="nro_facturas"
                                 placeholder="Nombre del nro_facturas"
                                 validation="required"

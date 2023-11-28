@@ -30,7 +30,6 @@ import Modelo from '../views/modelo.vue'
 import ModeloCreated from '../views/modeloCreated.vue'
 import ModeloEdit from '../views/modeloEdit.vue'
 import ModeloDelete from '../views/modeloDelete.vue'
-// CHRISTIAN
 import Articulo from '../views/articulo.vue'
 import ArticuloCreate from '../views/articulo.Create.vue'
 import ArticuloEdit from '../views/articuloEdit.vue'
@@ -45,12 +44,13 @@ import LineaDelete from '../views/lineaDelete.vue'
 import LineaEdit from '../views/lineaEdit.vue'
 import userEdit from '../views/userEdit.vue'
 import userDelete from '../views/userDelete.vue'
-// DILAN
 import InvesProducts from '../views/invesProducts.vue'
-import InvestProductsCreate from '../views/InvestProductsCreate.vue'
+import InvestProductsCreate from '../views/InvestProductsCreate2.vue'
 import InvesProductsDelete from '../views/InvesProductsDelete.vue'
 import InvestProductsEdit from '../views/investProductsEdit.vue'
 import prueba from '../views/prueba.vue'
+import investigacionProdRrss from '../views/investigacionProdRrss.vue'
+import investigacionRrss from '../views/investigacionRrss.vue'
 
 
 const router = createRouter({
@@ -320,6 +320,16 @@ const router = createRouter({
       path: '/prueba',
       name: 'prueba', 
       component: prueba
+    },
+    {
+      path: '/investigacionRrss',
+      name: 'investigacionRrss', 
+      component: investigacionRrss
+    },
+    {
+      path: '/investigacionProdRrss',
+      name: 'investigacionProdRrss', 
+      component: investigacionProdRrss
     },
     
   ]

@@ -14,25 +14,33 @@ const usuario = localStorage.usuario;
 const id = ref('')
 id.value = route.params.key 
 
+import Select2 from '../funciones/select2'
+
 const info = ref();
 
 const fecha = ref('')
-const id_tienda = ref([])
-const motivo = ref('')
+const id_tienda = ref('')
+const motivo = ref('RRSS')
 const investigador = ref('')
 const user_crea = ref(usuario)
 const user_mod = ref('')
 
 
+const jsonI = ref({
 
+fecha:'', 
+id_tienda:'',
+motivo:'',
+investigador:'',
+user_crea:`${usuario}`
+
+});
 
 async function getTienda(){
     try{
         const response = await axios.get(`http://localhost:3001/api/v1/maestroTiendaAll`);
-        info.value = response.data.map(maestro => ({
-            title: maestro.nombre,
-            value: maestro.id,
-        }));
+        info.value =  response.data
+        console.log(info.value)
     } catch(error){
         console.log(error)
     }
@@ -77,6 +85,15 @@ onMounted( async () => {
 await getTienda();
 });
 
+$(document).ready(function() {
+    $('#id_tienda').on('change', function() {
+        var valorSeleccionado = $(this).val()
+        id_tienda.value = valorSeleccionado
+      });
+});
+
+Select2()
+
 function crearData(){
 
 const jsonInves = {
@@ -119,7 +136,7 @@ investigacionCreated(jsonInves)
                 <!-- NAVBAR -->
                 <div class="title">
                     <i class="ri-pie-chart-box-line icono-dash"></i>
-                    <span class="text">Investigacion</span>
+                    <span class="text">Investigacion RRSS</span>
                 </div>
 
             </div>
@@ -143,20 +160,19 @@ investigacionCreated(jsonInves)
                                     required: 'debe colocar una fecha.'
                                     }"
                             />
-                            
                             <label class="label_filter" for="">Tienda</label>
-                            <v-combobox
-                                required
-                                clearable
-                                chips
-                                name="id_tienda"
-                                v-model="id_tienda"
-                                placeholder="Selecciona tu tienda"
-                                :items="info"
-                                variant="outlined"
-                                style="width: 50%;"
-                                :return-object="false"
-                            ></v-combobox>
+                            <div class="filtrador">
+                                <select required class="js-example-basic-single filter-medicion"
+                                    id="id_tienda"
+                                    v-model="id_tienda"
+                                    name="id_tienda"
+                                    style="width: 40%;"
+                                > 
+                                    <option  value="">Seleccione la tienda</option>
+                                    <option v-for="obj in info" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
+                                </select>
+
+                            </div>
                             
                             <FormKit
                                 type="select"
@@ -165,7 +181,7 @@ investigacionCreated(jsonInves)
                                 class="formKitt"
                                 v-model="motivo"
                                 placeholder="Escoge un motivo"
-                                :options="['RUTINA', 'INAUGURACION', 'RRSS']"
+                                :options="['RRSS']"
                                 validation="required"
                                 :validation-messages="{
                                     required: 'Debes colocar el motivo de la investigacion.',

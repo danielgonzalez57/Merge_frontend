@@ -19,7 +19,7 @@ id.value = route.params.key
 const data = ref({
     id: "",
     nombre: "",
-    email: "",
+    email: "", 
     password: "",
     password2: "",
     rol: ""

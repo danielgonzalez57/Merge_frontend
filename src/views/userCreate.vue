@@ -88,53 +88,81 @@ const handleIconClick = (node, e) => {
 
             <div class="activity">
                 <section class="container_form1">
+
                     <div class="container_form">
-                        <FormKit type="form" #default="{ value }" @submit="handleSubmit" :value="data"
-                            submit-label="Registrar" method="post" action="/ta_relacion_laboral">
-                            <FormKit v-model="data.nombre" type="text" label="Nombre" value="nombre" prefix-icon="text"
-                                placeholder="Nombre y apellido" help="Ingresa tu nombre completo." />
-                            <FormKit v-model="data.email" type="text" label="Correo electronico" name="email"
-                                prefix-icon="email" placeholder="email@tiendasdaka.com" validation="required|email"
-                                :validation-messages="{
-                                    required: 'Debes colocar un correo electronico.',
-                                    email: 'Debe tener @ y .com'
-                                }" help="Ingresa tu correo electronico." />
-                            <FormKit v-model="data.password" type="password" label="Contraseña" name="password"
-                                prefix-icon="password" placeholder="Ej. Daka2023*" validation="required"
-                                :validation-messages="{
-                                    required: 'Debes colocar una contraseña.',
-                                }" @suffix-icon-click="handleIconClick" help="Ingresa tu contraseña."
-                                suffix-icon="eyeClosed" />
-                            <FormKit v-model="data.password2" type="password" label="Confirmar contraseña" name="password2"
-                                prefix-icon="password" placeholder="Ej. Daka2023*" validation="required"
-                                :validation-messages="{
-                                    required: 'Debes colocar una contraseña.',
-                                }" suffix-icon="eyeClosed" @suffix-icon-click="handleIconClick"
-                                help="Confirma tu contraseña." />
-                            <FormKit v-model="data.rol" type="select" label="Tipo de rol:" name="favorite_food"
-                                placeholder="Permiso de usuario" prefix-icon="select" :options="[
-                                    { label: 'Administrador de usuarios', value: 'admin' },
-                                    { label: 'Administrsdor de maestros', value: 'admaster' },
-                                    { label: 'Investigador', value: 'inves' },
-                                ]" validation="required" :validation-messages="{
-    required: 'Debes escoger un rol.',
-}" help="Asigna los permisos a este usuario." />
 
-                            <!-- <FormKit type="date" label="Fecha de nacimiento"
-                                validation="required|date_between:1990-01-01 00:00:00,1999-12-31 23:59:59"
-                                :validation-messages="{
-                                    date_between: 'Solos para los nacidos en los años 90s.',
-                                    required: 'debe colocar una fecha de nacimiento.'
-                                }" /> -->
-                            <!-- 
-                            <FormKit type="textarea" name="instructions" label="Descripcion del usuario"
-                                placeholder="Usuario de tienda daka, 2023"
-                                :help="`${value.instructions ? value.instructions.length : 0} / 120`"
-                                validation="length:0,120" validation-visibility="live" :validation-messages="{
-                                    length: 'Debe contener menos de 120 caracteres.',
-                                }" /> -->
+                        <FormKit type="form" 
+                        #default="{ value }" 
+                        @submit="handleSubmit" 
+                        :value="data"
+                        submit-label="Registrar" 
+                        method="post" 
+                        action="/ta_relacion_laboral">
 
-                            <!-- <pre wrap>{{ value }}</pre> -->
+                            <FormKit v-model="data.nombre" 
+                            type="text" 
+                            label="Nombre de usuario" 
+                            value="nombre" 
+                            prefix-icon="text"
+                            placeholder="Nombre de usuario"
+                            help="Ingresa tu nombre de usuario."/>
+
+                            <FormKit v-model="data.email" 
+                            type="text" 
+                            label="Correo electronico" 
+                            name="email"
+                            prefix-icon="email" 
+                            placeholder="email@tiendasdaka.com" 
+                            validation="required|email"
+                            :validation-messages="{
+                                required: 'Debes colocar un correo electronico.',
+                                email: 'Debe tener @ y .com'
+                            }" help="Ingresa tu correo electronico." />
+
+                            <FormKit v-model="data.password" 
+                            type="password" 
+                            label="Contraseña"
+                            name="password"
+                            prefix-icon="password" 
+                            placeholder="Ej. Daka2023*" 
+                            validation="required"
+                            :validation-messages="{
+                                required: 'Debes colocar una contraseña.',
+                            }" 
+                            @suffix-icon-click="handleIconClick" 
+                            help="Ingresa tu contraseña."
+                            suffix-icon="eyeClosed" />
+
+                            <FormKit v-model="data.password2" 
+                            type="password" 
+                            label="Confirmar contraseña" 
+                            name="password2"
+                            prefix-icon="password" 
+                            placeholder="Ej. Daka2023*" 
+                            validation="required"
+                            :validation-messages="{
+                                required: 'Debes colocar una contraseña.',
+                            }" 
+                            suffix-icon="eyeClosed" 
+                            @suffix-icon-click="handleIconClick"
+                            help="Confirma tu contraseña." />
+
+                            <FormKit 
+                            v-model="data.rol" 
+                            type="select" 
+                            label="Tipo de rol:" 
+                            name="favorite_food"
+                            placeholder="Permiso de usuario" prefix-icon="select" :options="[
+                                { label: 'Administrador de usuarios', value: 'admin' },
+                                { label: 'Administrsdor de maestros', value: 'admaster' },
+                                { label: 'Investigador', value: 'inves' },
+                                { label: 'Redes sociales', value: 'rrss' }
+                            ]" 
+                            validation="required" 
+                            :validation-messages="{
+                                required: 'Debes escoger un rol.',
+                            }" help="Asigna los permisos a este usuario." />
+
                         </FormKit>
                     </div>
                 </section>
