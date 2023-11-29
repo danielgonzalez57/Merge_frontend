@@ -152,8 +152,13 @@ const jsonA = {
                     <i class="ri-pie-chart-box-line icono-dash"></i>
                     <span class="text">Editar Articulo</span>
                 </div>
+                <router-link to="/articulo">
+                    <v-btn prepend-icon="mdi-arrow-left" color="green-accent-4">
+                        Volver
+                    </v-btn>
+                </router-link>
             </div>
-
+            <br>
             <div class="activity">
             <section class="container_form1">
 

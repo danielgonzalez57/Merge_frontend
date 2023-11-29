@@ -5,12 +5,11 @@ import axios from 'axios';
 //import { ref } from 'vue';
 
 import {  useRoute, useRouter } from 'vue-router'
-const router = useRouter()
 
 // LIBRERIAS
 import { ref, onMounted } from 'vue';
 const route = useRoute()
-
+const router = useRouter()
 // URL
 const id = ref('')
 id.value = route.params.key 
@@ -19,7 +18,7 @@ id.value = route.params.key
 const data = ref({
     id: "",
     nombre: "",
-    email: "",
+    email: "", 
     password: "",
     password2: "",
     rol: ""
@@ -114,8 +113,14 @@ const handleIconClick = (node, e) => {
                     <i class="ri-pie-chart-box-line icono-dash"></i>
                     <span class="text">Registro de usuario</span>
                 </div>
-            </div>
+                <router-link to="/usuario">
+                    <v-btn prepend-icon="mdi-arrow-left" color="green-accent-4">
+                        Volver
+                    </v-btn>
+                </router-link>
 
+            </div>
+            <br>
             <div class="activity">
                 <section class="container_form1">
                     <div class="container_form">

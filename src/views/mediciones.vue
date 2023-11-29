@@ -26,16 +26,13 @@ usuario.value = localStorage.usuario;
 const id = ref('')
 id.value = route.params.key 
 
+
+
 // FUNCTION PARA LLENAR TABLE
 async function getMedicion(){
     try{
-      //  const response = await axios.get(`http://localhost:3001/api/v1/medicionAll`);
-      const response = await axios.post(`http://localhost:3001/api/v1/dataMedicionFilter`, {valor: usuario.value});
-
+        const response = await axios.post(`http://localhost:3001/api/v1/dataMedicionFilter`, {valor: usuario.value});
         info.value =  response.data
-
-        console.log(info.value)
-
     } catch(error){
 
         console.log(error)

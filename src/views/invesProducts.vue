@@ -13,8 +13,9 @@ import DataTablesCore from 'datatables.net';
 DataTable.use(DataTablesCore);
  
 // VARIABLES
-const route = useRoute()
-const router = useRouter()
+const route = useRoute();
+const rol = localStorage.rol;
+const router = useRouter();
 const valor = ref(false);
 const info = ref([]);
 
@@ -25,13 +26,13 @@ usuario.value = localStorage.usuario;
 const id = ref('')
 id.value = route.params.key 
 
+
+
 // FUNCTION PARA LLENAR TABLE
 async function getMedicion(){
     try{
-        //const response = await axios.get(`http://localhost:3001/api/v1/investProducts`);
         const response = await axios.post(`http://localhost:3001/api/v1/dataInvProdFilter`, {valor: usuario.value});
         info.value =  response.data
-        //console.log(info.value)
     } catch(error){
         console.log(error)
     }
@@ -92,8 +93,29 @@ const columns = ref([
                     <div class="header-tools">
                     <div class="tools">
                         <ul> 
-                            <li>
+                            <li  v-if="rol == 'inves'">
                                 <router-link to="/investProductsCreate">
+                                    <button class="topi">
+                                        Crear
+                                    </button>
+                                </router-link>
+                            </li>
+                            <li  v-if="rol == 'admin'">
+                                <router-link to="/investProductsCreate">
+                                    <button class="topi">
+                                        Crear
+                                    </button>
+                                </router-link>
+                            </li>
+                            <li  v-if="rol == 'admaster'">
+                                <router-link to="/investProductsCreate">
+                                    <button class="topi">
+                                        Crear
+                                    </button>
+                                </router-link>
+                            </li>
+                            <li  v-if="rol == 'rrss'">
+                                <router-link to="/investigacionProdRrss">
                                     <button class="topi">
                                         Crear
                                     </button>

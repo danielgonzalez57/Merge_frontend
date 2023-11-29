@@ -29,7 +29,7 @@
     "vue-good-table": "^2.21.11",
     "vue-router": "^4.2.4",
     "vue-session": "^1.0.0",
-    "vuetify": "^3.4.2"
+    "vuetify": "^3.4.3"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",

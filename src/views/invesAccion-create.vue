@@ -16,33 +16,25 @@ const usuario = localStorage.usuario;
 const id = ref('')
 id.value = route.params.key 
 
-
-
 const info = ref();
 
 const fecha = ref('')
-const id_tienda = ref('')
+const id_tienda = ref([])
 const motivo = ref('')
 const investigador = ref('')
 const user_crea = ref(usuario)
 const user_mod = ref('')
 
 
-const jsonI = ref({
 
-fecha:'', 
-id_tienda:'',
-motivo:'',
-investigador:'',
-user_crea:`${usuario}`
-
-});
 
 async function getTienda(){
     try{
         const response = await axios.get(`http://localhost:3001/api/v1/maestroTiendaAll`);
-        info.value =  response.data
-        console.log(info.value)
+        info.value = response.data.map(maestro => ({
+            title: maestro.nombre,
+            value: maestro.id,
+        }));
     } catch(error){
         console.log(error)
     }
@@ -86,15 +78,6 @@ async function investigacionCreated(jsonInves){
 onMounted( async () => {
 await getTienda();
 });
-
-$(document).ready(function() {
-    $('#id_tienda').on('change', function() {
-        var valorSeleccionado = $(this).val()
-        id_tienda.value = valorSeleccionado
-      });
-});
-
-Select2()
 
 function crearData(){
 
@@ -140,9 +123,14 @@ investigacionCreated(jsonInves)
                     <i class="ri-pie-chart-box-line icono-dash"></i>
                     <span class="text">Investigacion</span>
                 </div>
+                <router-link to="/invesAccion">
+                    <v-btn prepend-icon="mdi-arrow-left" color="green-accent-4">
+                        Volver
+                    </v-btn>
+                </router-link>
 
             </div>
-
+            <br>
             <div class="activity">
                 <section class="container_form1">
 
@@ -162,19 +150,20 @@ investigacionCreated(jsonInves)
                                     required: 'debe colocar una fecha.'
                                     }"
                             />
+                            
                             <label class="label_filter" for="">Tienda</label>
-                            <div class="filtrador">
-                                <select required class="js-example-basic-single filter-medicion"
-                                    id="id_tienda"
-                                    v-model="id_tienda"
-                                    name="id_tienda"
-                                    style="width: 40%;"
-                                > 
-                                    <option  value="">Seleccione la tienda</option>
-                                    <option v-for="obj in info" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
-                                </select>
-
-                            </div>
+                            <v-combobox
+                                required
+                                clearable
+                                chips
+                                name="id_tienda"
+                                v-model="id_tienda"
+                                placeholder="Selecciona tu tienda"
+                                :items="info"
+                                variant="outlined"
+                                style="width: 50%;"
+                                :return-object="false"
+                            ></v-combobox>
                             
                             <FormKit
                                 type="select"
