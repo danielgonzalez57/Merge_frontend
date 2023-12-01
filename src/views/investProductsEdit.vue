@@ -119,8 +119,11 @@ async function getMediciones(){
     try{
         const response = await axios.get(`http://localhost:3001/api/v1/medicionAll`);
 
-        medicionget.value =  response.data
-        //console.log(medicionget.value)
+        medicionget.value =  response.data.map(medi => ({
+            title: medi.id,
+            value: medi.id,
+        }));
+        
 
     } catch(error){
         console.log(error)
@@ -130,7 +133,10 @@ async function getArticulo(){
     try{
         const response = await axios.get(`http://localhost:3001/api/v1/articuloAll`);
 
-        articuloget.value =  response.data
+        articuloget.value =  response.data.map(art => ({
+            title: art.nombre,
+            value: art.id,
+        }));
   
     } catch(error){
         console.log(error)
@@ -140,7 +146,10 @@ async function getTipoArt(){
     try{
         const response = await axios.get(`http://localhost:3001/api/v1/tipoArticuloAll`);
 
-        tipoartget.value =  response.data
+        tipoartget.value =  response.data.map(tipoArt => ({
+            title: tipoArt.nombre,
+            value: tipoArt.id,
+        }));
  
 
     } catch(error){
@@ -151,8 +160,10 @@ async function getTamano(){
     try{
         const response = await axios.get(`http://localhost:3001/api/v1/tamCapAll`);
 
-        tamanoget.value =  response.data
-        //console.log(tamanoget.value)
+        tamanoget.value =  response.data.map(tamCap => ({
+            title: tamCap.nombre,
+            value: tamCap.id,
+        }));
      
 
     } catch(error){
@@ -163,8 +174,11 @@ async function getModelo(){
     try{
         const response = await axios.get(`http://localhost:3001/api/v1/modeloAll`);
 
-        modeloget.value =  response.data
-        //console.log(modeloget.value)
+        modeloget.value =  response.data.map(modelo => ({
+            title: modelo.nombre,
+            value: modelo.id,
+        }));
+        
 
     } catch(error){
         console.log(error)
@@ -174,8 +188,11 @@ async function getMarca(){
     try{
         const response = await axios.get(`http://localhost:3001/api/v1/marcasAll`);
 
-        marcaget.value =  response.data
-        //console.log(modeloget.value)
+        marcaget.value =  response.data.map(marca => ({
+            title: marca.nombre,
+            value: marca.id,
+        }));
+        
 
     } catch(error){
         console.log(error)
@@ -329,89 +346,89 @@ Select2()
 
                            <!--NUEVO SELECT  MEDICION-->
                            <label class="label_filter" for="">Id medicion</label>
-                            <div class="filtrador">
-                                <select required class="js-example-basic-single filter-medicion"
-                                    id="id_medicion"
-                                    v-model="id_medicion"
-                                    name="id_medicion"
-                                    style="width: 40%; "
-                                >
-                                    <option value="">Seleccione Medicion</option>
-                                    <option v-for="obj in medicionget" :key="obj.id" :value="obj.id">{{ obj.id }}</option>
-                                </select>
+                           <v-combobox
+                                clearable
+                                required
+                                chips
+                                v-model="id_medicion"
+                                name="id_medicion"
+                                placeholder="Selecciona el id medicion"
+                                :items="medicionget"
+                                variant="outlined"
+                                style="width: 50%;"
+                                :return-object="false"
+                            ></v-combobox>
 
-                            </div>
-
-                           <!--NUEVO SELECT ARTICULO-->
-                           <label class="label_filter" for="">Articulo</label>
-                           <div class="filtrador">
-                                <select required class="js-example-basic-single filter-medicion"
-                                    id="id_art"
+                            <label class="label_filter" for="">Articulo</label>
+                                <v-combobox
+                                    clearable
+                                    required
+                                    chips
                                     v-model="id_art"
                                     name="id_art"
-                                    style="width: 40%; "
-                                >
-                                <option value="">Seleccione un Articulo</option>
-                                    <option v-for="obj in articuloget" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
-                                    </select>
-                            </div>
+                                    placeholder="Selecciona el articulo"
+                                    :items="articuloget"
+                                    variant="outlined"
+                                    style="width: 50%;"
+                                    :return-object="false"
+                                ></v-combobox>
 
-                            <!--NUEVO SELECT TIPO-->
-                            <label class="label_filter" for="">Tipo articulo</label>
-                            <div class="filtrador">
-                                <select required class="js-example-basic-single filter-medicion"
-                                    id="id_tipo"
+                                <label class="label_filter" for="">Tipo articulo</label>
+                                <v-combobox
+                                    clearable
+                                    required
+                                    chips
                                     v-model="id_tipo"
                                     name="id_tipo"
-                                    style="width: 40%; "
-                                >
-                                <option value="">Seleccione un Tipo</option>
-                                    <option v-for="obj in tipoartget" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
-                                    </select>
-                            </div>
+                                    placeholder="Selecciona el tipo articulo"
+                                    :items="tipoartget"
+                                    variant="outlined"
+                                    style="width: 50%;"
+                                    :return-object="false"
+                                ></v-combobox>
 
+                                <label class="label_filter" for="">Tamaño Capacidad</label>
+                                <v-combobox
+                                    clearable
+                                    required
+                                    chips
+                                    v-model="id_tam_cap"
+                                    name="id_tam_cap"
+                                    placeholder="Selecciona el tamaño capacidad"
+                                    :items="tamanoget"
+                                    variant="outlined"
+                                    style="width: 50%;"
+                                    :return-object="false"
+                                ></v-combobox>
 
-                            <!--NUEVO SELECT TAMANO-->
-                        <label class="label_filter" for="">Tamaño capacidad</label>
-                        <div class="filtrador">
-                            <select required class="js-example-basic-single filter-medicion"
-                                id="id_tam_cap"
-                                v-model="id_tam_cap"
-                                name="id_tam_cap"
-                                style="width: 40%; "
-                            >
-                                <option value="">Seleccione un tamaño</option>
-                                <option v-for="obj in tamanoget" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
-                            </select>
-                        </div>
-
-
-                            <!--NUEVO SELECT MODELO-->
-                            <label class="label_filter" for="">Modelo</label>
-                            <div class="filtrador">
-                                <select required class="js-example-basic-single filter-medicion"
-                                    id="id_modelo"
+                                <label class="label_filter" for="">Modelo</label>
+                                <v-combobox
+                                    clearable
+                                    required
+                                    chips
                                     v-model="id_modelo"
                                     name="id_modelo"
-                                    style="width: 40%; "
-                                >
-                                    <option value="">Seleccione un modelo</option>
-                                    <option v-for="obj in modeloget" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
-                                </select>
-                            </div>
+                                    placeholder="Selecciona el modelo"
+                                    :items="modeloget"
+                                    variant="outlined"
+                                    style="width: 50%;"
+                                    :return-object="false"
+                                ></v-combobox>
 
-                            <label class="label_filter" for="">Marca</label>
-                            <div class="filtrador">
-                                <select required class="js-example-basic-single filter-medicion"
-                                    id="id_marca"
+                                <label class="label_filter" for="">Marca</label>
+                                <v-combobox
+                                    clearable
+                                    required
+                                    chips
                                     v-model="id_marca"
                                     name="id_marca"
-                                    style="width: 40%; "
-                                >
-                                    <option value="">Seleccione una marca</option>
-                                    <option v-for="obj in marcaget" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
-                                </select>
-                            </div>
+                                    placeholder="Selecciona una marca"
+                                    :items="marcaget"
+                                    variant="outlined"
+                                    style="width: 50%;"
+                                    :return-object="false"
+                                ></v-combobox>
+                    
 
                             <FormKit v-model="descrip" type="text" label="Descripción" value="descrip"
                                  placeholder="Descripción" maxlength="99" minlength="10"
@@ -435,12 +452,18 @@ Select2()
                                     required: '',
                                 }" help="" />
 
-                            <FormKit v-model="user_crea" type="text" label="Usuario de creación" value="user_crea"
+                            <FormKit v-model="user_crea" type="text" label="Creado por" value="user_crea"
                                  placeholder="" validation="required" disabled
                                 :validation-messages="{
                                     required: '',
                                 }" help="" />
-                            <!-- <pre wrap>{{ value }}</pre> -->
+
+                            <FormKit v-model="user_mod" type="text" label="Modificado por" value="user_mod"
+                                 placeholder="" validation="required" disabled
+                                :validation-messages="{
+                                    required: '',
+                                }" help="" />
+                           
                         </FormKit>
                     </div>
                 </section>

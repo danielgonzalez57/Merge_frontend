@@ -19,7 +19,7 @@ import Select2 from '../funciones/select2'
 const info = ref();
 
 const fecha = ref('')
-const id_tienda = ref('')
+const id_tienda = ref()
 const motivo = ref('RRSS')
 const investigador = ref('')
 const user_crea = ref(usuario)
@@ -39,8 +39,10 @@ user_crea:`${usuario}`
 async function getTienda(){
     try{
         const response = await axios.get(`http://localhost:3001/api/v1/maestroTiendaAll`);
-        info.value =  response.data
-        console.log(info.value)
+        info.value = response.data.map(maestro => ({
+            title: maestro.nombre,
+            value: maestro.id
+        }));
     } catch(error){
         console.log(error)
     }
@@ -161,18 +163,18 @@ investigacionCreated(jsonInves)
                                     }"
                             />
                             <label class="label_filter" for="">Tienda</label>
-                            <div class="filtrador">
-                                <select required class="js-example-basic-single filter-medicion"
-                                    id="id_tienda"
-                                    v-model="id_tienda"
-                                    name="id_tienda"
-                                    style="width: 40%;"
-                                > 
-                                    <option  value="">Seleccione la tienda</option>
-                                    <option v-for="obj in info" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
-                                </select>
-
-                            </div>
+                            <v-combobox
+                                required
+                                clearable
+                                chips
+                                name="id_tienda"
+                                v-model="id_tienda"
+                                placeholder="Selecciona tu tienda"
+                                :items="info"
+                                variant="outlined"
+                                style="width: 50%;"
+                                :return-object="false"
+                            ></v-combobox>
                             
                             <FormKit
                                 type="select"

@@ -332,7 +332,7 @@ function crearDataInvest(){
                                     <option v-for="obj in articuloget" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
                                     </select>
                             </div>
-
+    
                             <!--NUEVO SELECT TIPO-->
                             <label class="label_filter" for="">Tipo articulo</label>
                             <div class="filtrador">

@@ -4,6 +4,9 @@ import axios from 'axios';
 import { ref, onMounted, watch } from 'vue';
 import Select2 from '../funciones/select2'
 const valor = ref(false)
+import Swal from 'sweetalert2'
+import router from '../router/index'
+import {useRoute } from 'vue-router'
 
 //SELECT CON DATA
 const medicionget = ref()
@@ -13,26 +16,84 @@ const tamanoget = ref()
 const modeloget = ref()
 const marcaget = ref()
 
+const route = useRoute()
+const param = ref()
+
+param.value = route.params.key
+
+
+
+
 // INPUT QUE SE MULTIPLICAN
 const cant = ref(1)
 const precio = ref()
 const multiplicationResult = ref(0);
 
 watch([cant, precio], () => {
-      multiplicationResult.value = cant.value * precio.value;
-    });
+    multiplicationResult.value = cant.value * precio.value;
+});
 
-// INPUTS 
-const id_medicion = ref('')
-const id_art = ref('')
-const id_tipo = ref('')
-const id_tam_cap = ref('')
-const id_modelo = ref('')
-const id_marca = ref('')
+// const busqueda = ref();
+// const busqueda2 = ref();
+// const busqueda3 = ref();
+// const busqueda4 = ref();
+// const busqueda5 = ref();
+// INPUTS
+const id_medicion = ref()
+const id_art = ref()
+const id_tipo = ref()
+const id_tam_cap = ref()
+const id_modelo = ref()
+const id_marca = ref()
 const descrip = ref('')
 const cod_sim_daka = ref('')
 const sub_total = ref(multiplicationResult)
 const user_crea = ref(localStorage.usuario)
+
+
+
+async function searchModel() {
+    await axios.post('http://localhost:3001/api/v1/searchModelInvestProduct', {model: data.value.searchModelInput})
+        .then(function (response) {
+
+            if(response.data.length != 0){
+                id_art.value =  response.data[0].Articulo
+                id_tipo.value =  response.data[0].TipoArt
+                id_tam_cap.value =  response.data[0].TamañoCap
+                id_modelo.value =  response.data[0].id_Modelo
+                id_marca.value =  response.data[0].Marca
+            } else {
+                Swal.fire({
+                    title: "El modelo no existe!",
+                    text: "Desea crea un nuevo modelo?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Crear"
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Swal.fire({
+                        // title: "Modelo Creador!",
+                        // text: ":).",
+                        // icon: "success"
+                        // });
+                         router.push('/modeloClientes');
+
+                    }
+                });
+            }
+
+
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
+
+
+
 
 
 const data = ref({
@@ -46,10 +107,9 @@ const data = ref({
     descrip: "",
     cant: "",
     precio: "",
-    sub_total: 10, 
-    user_crea: localStorage.usuario, 
-
-    user_mod: localStorage.usuario 
+    sub_total: 10,
+    user_crea: localStorage.usuario,
+    user_mod: localStorage.usuario
 
 });
 
@@ -57,65 +117,135 @@ const data = ref({
 async function getMediciones(){
     try{
         const response = await axios.get(`http://localhost:3001/api/v1/medicionAll`);
-
-        medicionget.value =  response.data
+        medicionget.value = response.data.map(medi => ({
+            title: medi.id,
+            value: medi.id,
+        }));
 
     } catch(error){
         console.log(error)
     }
 }
 async function getArticulo(){
+
+
     try{
         const response = await axios.get(`http://localhost:3001/api/v1/articuloAll`);
 
-        articuloget.value =  response.data
-  
+        articuloget.value = response.data.map(art => ({
+            title: art.nombre,
+            value: art.id,
+        }));
+
     } catch(error){
         console.log(error)
     }
 }
+
 async function getTipoArt(){
-    try{
-        const response = await axios.get(`http://localhost:3001/api/v1/tipoArticuloAll`);
 
-        tipoartget.value =  response.data
- 
+   const valorSeleccionado = id_art.value?.value
+
+
+   let RUTA = ''
+
+    if(param.value === 'new'){
+        RUTA = `http://localhost:3001/api/v1/tipoArticuloFilterDos/${valorSeleccionado}`
+    }
+    else{
+        RUTA = 'http://localhost:3001/api/v1/tipoArticuloAll'
+    }
+
+   try{
+        const response = await axios.get(RUTA);
+        tipoartget.value =  response.data.map(tipoArt => ({
+            title: tipoArt.nombre,
+            value: tipoArt.id,
+        }));
+
 
     } catch(error){
         console.log(error)
     }
 }
+
 async function getTamano(){
-    try{
-        const response = await axios.get(`http://localhost:3001/api/v1/tamCapAll`);
 
-        tamanoget.value =  response.data
-        //console.log(tamanoget.value)
-     
+    const valorSeleccionado = id_tipo.value?.value
+    let RUTA = ''
+
+    if(param.value === 'new'){
+        RUTA = `http://localhost:3001/api/v1/tamCapFilterSelect/${valorSeleccionado}`
+    }
+    else{
+        RUTA = 'http://localhost:3001/api/v1/tamCapAll'
+    }
+    try{
+        const response = await axios.get(RUTA);
+
+        tamanoget.value =  response.data.map(tamCap => ({
+            title: tamCap.nombre,
+            value: tamCap.id,
+        }));
+
 
     } catch(error){
         console.log(error)
     }
 }
-async function getModelo(){ 
+
+async function getModelo(){
+
+
+    // const valorSeleccionado = id_tam_cap.value?.value
+    let RUTA = ''
+
+    if(param.value === 'new'){
+        RUTA = `http://localhost:3001/api/v1/modeloAll`
+    }
+    else{
+        RUTA = 'http://localhost:3001/api/v1/modeloAll'
+    }
+
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/modeloAll`);
-        modeloget.value =  response.data
+        const response = await axios.get(RUTA);
+        modeloget.value =  response.data.map(modelo => ({
+            title: modelo.nombre,
+            value: modelo.id,
+            id_marca: modelo.id_marca
+        }));
+
     } catch(error){
         console.log(error)
     }
 }
-async function getMarca(){ 
+async function getMarca(){
+    const valorSeleccionado = id_modelo.value?.id_marca
+    console.log(valorSeleccionado)
+    let RUTA = ''
+
+    if(param.value === 'new'){
+        RUTA = `http://localhost:3001/api/v1/marcasAll`
+    }
+    else{
+        RUTA = 'http://localhost:3001/api/v1/marcasAll'
+    }
+
+
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/marcasAll`);
-        marcaget.value =  response.data
+        const response = await axios.get('http://localhost:3001/api/v1/marcasAll');
+        marcaget.value =  response.data.map(marca => ({
+            title: marca.nombre,
+            value: marca.id,
+        }));
+
     } catch(error){
         console.log(error)
     }
 }
 // CREAR INVESTIGACION PROD
 async function crearInvestPro(dataJson){
-   
+
     // Usando promesas
     axios.post('http://localhost:3001/api/v1/invesProductCreated', dataJson)
         .then(response => {
@@ -138,91 +268,26 @@ async function crearInvestPro(dataJson){
         });
 }
 
-// STYLE DE SELECT 2
-Select2()
-
-//metodo change de la lista articulos
-$(document).ready(function() {
-    $('#id_medicion').on('change', function() {
-        var valorSeleccionado = $(this).val()
-       id_medicion.value = valorSeleccionado
-      });
-
-});
-
-$(document).ready(function() {
-    $('#id_art').on('change', function() {
-        var valorSeleccionado = $(this).val()
-        arrayTipoArticulo.value =  tipoartget.value.filter(data => data.id_articulo == valorSeleccionado)
-        id_art.value = valorSeleccionado
-      });
-
-});
-
-const arrayTipoArticulo = ref([])
-
-$(document).ready(function() {
-    $('#id_tipo').on('change', function() {
-        var valorSeleccionado = $(this).val()
-        arraytamano.value =  tamanoget.value.filter(data => data.id_tipo == valorSeleccionado)
-        id_tipo.value = valorSeleccionado
-      });
-
-});
-
-const arraytamano = ref([])
-
-$(document).ready(function() {
-    $('#id_tam_cap').on('change', function() {
-        var valorSeleccionado = $(this).val()
-        arraymodelo.value =  modeloget.value.filter(data => data.id_tam_cap == valorSeleccionado)
-        id_tam_cap.value = valorSeleccionado
-      });
-
-});
-
-const arraymodelo = ref([])
-
-$(document).ready(function() {
-    $('#id_modelo').on('change', function() {
-        var valorSeleccionado = $(this).val()
-        var keySeleccionado = $(this).find(':selected').data('key');
-        arraymarca.value =  marcaget.value.filter(data => data.id_marca == keySeleccionado)
-        id_modelo.value = valorSeleccionado
-      });
-
-});
-
-const arraymarca = ref([])
-
-$(document).ready(function() {
-    $('#id_marca').on('change', function() {
-        var valorSeleccionado = $(this).val()
-        id_marca.value = valorSeleccionado
-      });
-
-});
-
-
 onMounted( async () => {
 
 await getMediciones();
 await getArticulo();
+
 await getTipoArt();
 await getTamano();
 await getModelo();
 await getMarca();
 
+
 });
 
 function crearDataInvest(){
-
     const dataJson = {
-        id_medicion:id_medicion.value, 
-        id_art:id_art.value,
-        id_tipo:id_tipo.value,
-        id_tam_cap:id_tam_cap.value ,
-        id_modelo:id_modelo.value ,
+        id_medicion:id_medicion.value,
+        id_art: param.value === 'new' ? id_art.value.value : id_art.value,
+        id_tipo:param.value === 'new' ? id_tipo.value.value : id_tipo.value,
+        id_tam_cap: param.value === 'new' ? id_tam_cap.value.value : id_tam_cap.value,
+        id_modelo: param.value === 'new' ? id_modelo.value.value : id_modelo.value, 
         id_marca:id_marca.value ,
         descrip:descrip.value,
         cant:cant.value ,
@@ -233,12 +298,15 @@ function crearDataInvest(){
     }
     // FUNCTION PARA CREAR
     crearInvestPro(dataJson)
-
 }
 
-</script>
-<template>
+function alerta(){
+    alert('hola')
+}
 
+
+</script>
+<template >
     <Nav :class="{ close: valor }" />
     <section class="dashboard">
 
@@ -263,152 +331,173 @@ function crearDataInvest(){
                     <i class="ri-pie-chart-box-line icono-dash"></i>
                     <span class="text">Investición de producto RRSS</span>
                 </div>
+
+                <router-link to="/investProducts">
+                    <v-btn prepend-icon="mdi-arrow-left" color="green-lighten-1">
+                        Volver
+                    </v-btn>
+                </router-link>
+
             </div>
+            <br>
             <div class="activity">
                 <section class="container_form1">
 
                         <label for="">Buscador de articulo por modelo</label>
                         <div class="input-container">
-                            <input required="" placeholder="Coloca el modelo" type="text">
-                            <button class="invite-btn" type="button">
+                            <input required="" placeholder="Coloca el modelo" type="text" v-model="data.searchModelInput">
+                            <button class="invite-btn" type="button" @click="searchModel">
                                 Buscar
                             </button>
                         </div>
                         <br>
-                        <FormKit type="form" #default="{ value }" @submit="crearDataInvest" :value="data"
-                            submit-label="Registrar" method="post" action="/">
+                            <FormKit
+                                type="form"
+                                :return-object="false"
+                                @submit="crearDataInvest"
+                                :value="data"
+                                submit-label="Registrar" method="post" action="/">
 
-                            <!--NUEVO SELECT  MEDICION-->
-                            <label class="label_filter" for="">Id medicion</label>
-                            <div class="filtrador">
-                                <select required class="js-example-basic-single filter-medicion"
-                                    id="id_medicion"
+                                <!--NUEVO SELECT  MEDICION-->
+                                <label class="label_filter" for="">Id medicion</label>
+                                <v-combobox
+                                    required
+                                    chips
                                     v-model="id_medicion"
                                     name="id_medicion"
-                                    style="width:50%;"
-                                >
-                                    <option value="">Seleccione Medicion</option>
-                                    <option v-for="obj in medicionget" :key="obj.id" :value="obj.id">{{ obj.id }}</option>
-                                </select>
+                                    placeholder="Selecciona el id medicion"
+                                    :items="medicionget"
+                                    variant="outlined"
+                                    style="width: 50%;"
+                                    :return-object="false"
+                                ></v-combobox>
 
-                            </div>
-
-                            
-
-
-                           <!--NUEVO SELECT ARTICULO-->
-                           <label class="label_filter" for="">Articulo</label>
-                           <div class="filtrador">
-                                <select required class="js-example-basic-single"
-                                    id="id_art"
+                                <label class="label_filter" for="">Articulo</label>
+                                <v-combobox
+                                    readonly
+                                    
+                                    required
+                                    chips
                                     v-model="id_art"
                                     name="id_art"
-                                    style="width:50%;"
-                                >
-                                <option value="">Seleccione un Articulo</option>
-                                    <option v-for="obj in articuloget" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
-                                    </select>
-                            </div>
+                                    @update:modelValue="getTipoArt"
+                                    placeholder="Selecciona el articulo"
+                                    :items="articuloget"
+                                    variant="outlined"
+                                    style="width: 50%;"
+                                    :return-object="true"
+                                ></v-combobox>
 
-                            <!--NUEVO SELECT TIPO-->
-                            <label class="label_filter" for="">Tipo articulo</label>
-                            <div class="filtrador">
-                                <select required class="js-example-basic-single"
-                                    id="id_tipo"
+                                <label class="label_filter" for="">Tipo articulo</label>
+                                <v-combobox
+                                    readonly  
+                                    
+                                    required
+                                    chips
                                     v-model="id_tipo"
+                                    @update:modelValue="getTamano"
                                     name="id_tipo"
-                                    style="width:50%;"
-                                >
-                                <option value="">Seleccione un Tipo</option>
-                                    <option v-for="obj in arrayTipoArticulo" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
-                                    </select>
-                            </div>
+                                    placeholder="Selecciona el tipo articulo"
+                                    :items="tipoartget"
+                                    variant="outlined"
+                                    style="width: 50%;"
+                                    :return-object="true"
 
+                                ></v-combobox>
 
-                            <!--NUEVO SELECT TAMANO-->
-                        <label class="label_filter" for="">Tamaño capacidad</label>
-                        <div class="filtrador">
-                            <select required class="js-example-basic-single"
-                                id="id_tam_cap"
-                                v-model="id_tam_cap"
-                                name="id_tam_cap"
-                                style="width:50%;"
-                            >
-                                <option value="">Seleccione un tamaño</option>
-                                <option v-for="obj in arraytamano" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
-                            </select>
-                        </div>
+                                <label class="label_filter" for="">Tamaño Capacidad</label>
+                                <v-combobox
+                                    readonly 
+                                    
+                                    required
+                                    chips
+                                    v-model="id_tam_cap"
+                                    name="id_tam_cap"
+                                    @update:modelValue="getModelo"
+                                    placeholder="Selecciona el tamaño capacidad"
+                                    :items="tamanoget"
+                                    variant="outlined"
+                                    style="width: 50%;"
+                                ></v-combobox>
 
-
-                            <!--NUEVO SELECT MODELO-->
-                            <label class="label_filter" for="">Modelo</label>
-                            <div class="filtrador">
-                                <select required class="js-example-basic-single"
-                                    id="id_modelo"
+                                <label class="label_filter" for="">Modelo</label>
+                                <v-combobox
+                                    readonly 
+                                    
+                                    required
+                                    chips
                                     v-model="id_modelo"
+                                    @update:modelValue="getMarca"
                                     name="id_modelo"
-                                    style="width:50%;"
-                                >
-                                    <option value="">Seleccione un modelo</option>
-                                    <option v-for="obj in arraymodelo" :data-key="obj.id_marca" :key="obj.id" :value="obj.id">{{ obj.nombre }}</option>
-                                </select>
-                            </div>
+                                    placeholder="Selecciona el modelo"
+                                    :items="modeloget"
+                                    variant="outlined"
+                                    style="width: 50%;"
 
-                            <label class="label_filter" for="">Marca</label>
-                            <div class="filtrador">
-                                <select required class="js-example-basic-single"
-                                    id="id_marca"
+                                ></v-combobox>
+
+                                <label class="label_filter" for="">Marca</label>
+                                <v-combobox
+                                    readonly 
+                                    
+                                    required
+                                    chips
                                     v-model="id_marca"
                                     name="id_marca"
-                                    style="width:50%;">
-                                    <option value="">Seleccione una marca</option>
-                                    <option v-for="obj in arraymarca" :key="obj.id_marca"  :value="obj.id">{{ obj.nombre }}</option>
-                                </select>
-                            </div>
+                                    placeholder="Selecciona una marca"
+                                    :items="marcaget"
+                                    variant="outlined"
+                                    style="width: 50%;"
+                                    :return-object="false"
+                                ></v-combobox>
 
-                            <FormKit v-model="descrip" type="text" label="Descripción" value="descrip"
-                                prefix-icon="textarea" placeholder="Descripción" maxlength="99" minlength="10"
-                                validation="required" :validation-messages="{
-                                    required: 'Escriba una descripción',
-                                }" help="" />
+                                <FormKit v-model="descrip" type="text" label="Descripción" value="descrip"
+                                     placeholder="Descripción" maxlength="99" minlength="10"
+                                    validation="required" :validation-messages="{
+                                        required: 'Escriba una descripción',
+                                    }" help="" />
 
-                            <FormKit v-model="cant" type="number" label="Cantidad" value="cant" prefix-icon="number"
-                                placeholder="Cantidad" validation="required" :validation-messages="{
-                                    required: 'Ingrese la cantidad',
-                                }" help="" />
+                                <FormKit v-model="cant" type="number" label="Cantidad" value="cant" disabled
+                                    placeholder="Cantidad" validation="required" :validation-messages="{
+                                        required: 'Ingrese la cantidad',
+                                    }" help="" />
 
-                            <FormKit v-model="precio" type="number" step="0.01" label="Precio" value="precio"
-                                prefix-icon="number" placeholder="Precio" validation="required" :validation-messages="{
-                                    required: 'Ingrese el precio',
-                                }" help="" />
+                                <FormKit v-model="precio" type="number" step="0.01" label="Precio" value="precio"
+                                     placeholder="Precio" validation="required" :validation-messages="{
+                                        required: 'Ingrese el precio',
+                                    }" help="" />
 
-                            <FormKit v-model="sub_total" type="number" step="0.01 " label="SubTotal" value="sub_total"
-                                prefix-icon="number" :value="multiplicationResult"  placeholder="SubTotal" validation="required" disabled
-                                :validation-messages="{
-                                    required: '',
-                                }" help="" />
+                                <FormKit v-model="sub_total" type="number" step="0.01 " label="SubTotal" value="sub_total"
+                                     :value="multiplicationResult"  placeholder="SubTotal" validation="required" disabled
+                                    :validation-messages="{
+                                        required: '',
+                                    }" help="" />
 
-                            <FormKit v-model="user_crea" type="text" label="Usuario de creación" value="user_crea"
-                                prefix-icon="" placeholder="" validation="required" disabled 
-                                :validation-messages="{
-                                    required: '',
-                                }" help="" />
-                            <!-- <pre wrap>{{ value }}</pre> -->
-                        </FormKit>
-                    
+                                <FormKit v-model="user_crea" type="text" label="Usuario de creación" value="user_crea"
+                                placeholder="" validation="required" disabled
+                                    :validation-messages="{
+                                        required: '',
+                                    }" help="" />
+                                <!-- <pre wrap>{{ value }}</pre> -->
+                            </FormKit>
+
                 </section>
             </div>
         </div>
         <br>
         <br>
     </section>
+
 </template>
 
-<style>
+
+<style >
 [data-invalid] .formkit-inner {
     border-color: red;
     box-shadow: 0 0 0 lid  red;
 }
+
+
 
 .input-modelo{
     padding: 7px;
@@ -420,9 +509,9 @@ function crearDataInvest(){
    width: 100%;
 }
 .formkit-form{
-    
+
     width: 80%;
-    
+
 }
 
 .filtrador{
@@ -508,7 +597,7 @@ function crearDataInvest(){
 
 
 
-</style> 
+</style>
 
 
 

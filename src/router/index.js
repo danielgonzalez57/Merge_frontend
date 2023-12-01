@@ -51,6 +51,7 @@ import InvestProductsEdit from '../views/investProductsEdit.vue'
 import prueba from '../views/prueba.vue'
 import investigacionProdRrss from '../views/investigacionProdRrss.vue'
 import investigacionRrss from '../views/investigacionRrss.vue'
+import modeloClientes from '../views/modeloClientes.vue'
 
 
 const router = createRouter({
@@ -296,7 +297,7 @@ const router = createRouter({
     // DILAN
 
     {
-      path: '/investProductsCreate',
+      path: '/investProductsCreate/:key?',
       name: 'InvestProductsCreate',
       component: InvestProductsCreate
     },
@@ -330,6 +331,11 @@ const router = createRouter({
       path: '/investigacionProdRrss',
       name: 'investigacionProdRrss', 
       component: investigacionProdRrss
+    },
+    {
+      path: '/modeloClientes',
+      name: 'modeloClientes', 
+      component: modeloClientes
     },
     
   ]

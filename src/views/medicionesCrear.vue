@@ -2,7 +2,6 @@
 import { MedicionCrud } from '../stores/mediciones.js';
 import { ref, onMounted } from 'vue';
 const usuario = localStorage.usuario;
-import Select2 from '../funciones/select2'
 const valor = ref();
 
 const mediciones = MedicionCrud();
@@ -101,7 +100,7 @@ const jsonE = {
                                 chips
                                 v-model="id_invest"
                                 name="id_invest"
-                                placeholder="Selecciona tu tienda"
+                                placeholder="Selecciona el id investigacion"
                                 :items="info"
                                 variant="outlined"
                                 style="width: 50%;"

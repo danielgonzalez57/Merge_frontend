@@ -9,6 +9,7 @@ const isDark = useDark({
 });
 
 const toggleDark = useToggle(isDark);
+
 const authStore = useAuthStore();
 const rol = localStorage.rol;
 const cerrar = localStorage.class;

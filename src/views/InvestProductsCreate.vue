@@ -162,7 +162,7 @@ function crearDataInvest(){
                 <div class="title">
                     <i class="ri-pie-chart-box-line icono-dash"></i>
                     <span class="text">Investición de producto</span>
-                    <button>volver</button>
+                    
                 </div>
             </div>
             <div class="activity">
