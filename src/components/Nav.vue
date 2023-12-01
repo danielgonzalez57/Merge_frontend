@@ -228,19 +228,10 @@ const claseNav = () => {
                         <span class="link-name">Usuarios</span>
                     </router-link>
                 </li>
-
             </ul>
-
-             
-              
-            
 
             <ul class="logout-mode">
                 <!-- LOGOUT -->
-                <!-- <li ><a href="/" @click="authStore.logout()">
-                    <i class="ri-logout-box-line"></i>
-                    <span class="link-name">Logout</span>
-                </a></li> -->
                 <li>
                     <router-link class="black" to="/" @click="authStore.logout()">
                         <i class="ri-logout-box-line"></i>

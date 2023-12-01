@@ -1,66 +1,53 @@
 <script setup>
 import Nav from '../components/Nav.vue'
-// import Top from '../components/Top.vue'
 import axios from 'axios';
 
 // LIBRERIAS
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
-import DataTable from 'datatables.net-vue3';
-import DataTablesCore from 'datatables.net';
 
-DataTable.use(DataTablesCore);
 
 // VARIABLES
 const route = useRoute()
 const router = useRouter()
 const valor = ref(false);
 const info = ref([]);
+const loadingInfo = ref(false);
+const search = ref('')
 
 // URL
 const id = ref('');
 id.value = route.params.key;
 
+// NOMBRE DE COLUMNAS DE LA TABLAS
+const headers = [
+  {title: 'Id', align: 'start', sortable: false, key: 'id',},
+  {title: 'Nombre', align: 'start', sortable: false, key: 'nombre',},
+  {title: 'Email', key: 'email'},
+  {title: 'Rol', key: 'rol'},
+  {title: 'Estatus', key: 'estatus'},
+  {title: 'Editar', key: 'editar', sortable: false},
+  {title: 'Eliminar', key: 'eliminar', sortable: false},
+]
+
 // FUNCTION PARA LLENAR TABLE
-async function getMedicion() {
+async function getUser() {
+    loadingInfo.value = true
     try {
-        // CONSULTAR LA TABLA DE USUARIOS
         const response = await axios.get(`http://localhost:3001/api/v1/getUser`);
         info.value = response.data
-        //console.log(info._rawValue)
+        
     } catch (error) {
-        //EN CASO DE QUE DE UN ERROR
-        //console.log(error)
         alert("Error no controlado.!");
     }
+    loadingInfo.value = false
 }
 
 onMounted(async () => {
-    await getMedicion();
+    await getUser();
 });
 
-const columns = ref([
-    {
-        data: null, render: function (data, type, row, meta) {
-            return `${meta.row + 1}`
-        }
-    },
-    { data: 'nombre' },
-    { data: 'email' },
-    { data: 'estatus' },
-    { data: 'rol' },
-    {
-        data: 'id', render: (data, type, row, meta) => `
-    <i class="ri-edit-2-line edit-table" onclick="location.href='/userEdit/${data}';"></i>`
-    },
 
-
-    {
-        data: 'id', render: (data, type, row, meta,) => `
-        <i class="ri-delete-bin-5-line delete-table" onclick="location.href='/userDelete/${data}';"></i>
-    `},
-
-]);
 </script>
 
 <template>
@@ -74,7 +61,7 @@ const columns = ref([
 
             <div class="search-box">
                 <i class="ri-search-2-line"></i>
-                <input type="text" id="searchField" placeholder="Buscar (Ctrl + k)">
+                <input type="text" id="searchField" placeholder="Buscar (Ctrl + k)" v-model="search">
             </div>
 
             <img src="../assets/profile3.png" alt="imagen de perfil">
@@ -109,19 +96,55 @@ const columns = ref([
 
                     </div>
 
-                    <DataTable :data="info" :columns="columns">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>NOMBRE DE USUARIO</th>
-                                <th>CORREO ELECTRÓNICO</th>
-                                <th>ESTATUS</th>
-                                <th>Rol</th>
-                                <th>Editar</th>
-                                <th>Eliminar</th>
-                            </tr>
-                        </thead>
-                    </DataTable>
+                    <v-data-table 
+                      v-model:search="search"
+                      :loading="loadingInfo"
+                      :headers="headers"
+                      :items="info"
+                      :sort-by="[{ key: 'id', order: 'asc' }]"
+                    >
+                      <template v-slot:top >
+                        
+                        <v-card-title class="d-flex align-center pe-2">
+
+                            <v-icon icon="mdi-video-input-component"></v-icon> &nbsp;
+                        
+                            <v-spacer></v-spacer>
+
+                            <!-- BUSCADOR -->
+                            <v-text-field
+                              
+                              prepend-inner-icon="mdi-magnify"
+                              density="compact"
+                              label="Buscar"
+                              single-line
+                              flat
+                              hide-details
+                              variant="solo-filled"
+                            ></v-text-field>
+
+                        </v-card-title>
+                        
+                      </template>
+
+                        <!-- BOTONES ELIMINAR Y EDITAR -->
+                        <template v-slot:item.editar="{ item }">
+                          <router-link :to="{path:'userEdit/'+item.id}"> 
+                            <v-icon size="x-large" class="me-4" color="amber">
+                            mdi-pencil
+                          </v-icon>
+                          </router-link>
+                        </template>
+
+                        <template v-slot:item.eliminar="{ item }">
+                          <router-link :to="{path:'userDelete/'+item.id}"> 
+                            <v-icon size="x-large"  color="red-darken-3">
+                              mdi-delete
+                            </v-icon>
+                          </router-link>
+                        </template>
+
+                    </v-data-table>
                 </div>
 
             </div>

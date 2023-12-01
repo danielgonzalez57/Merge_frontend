@@ -1,5 +1,4 @@
 <script setup> 
-
 // COMPONENTES
 import Nav from '../components/Nav.vue'
 
@@ -7,16 +6,15 @@ import Nav from '../components/Nav.vue'
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
-import DataTable from 'datatables.net-vue3';
-import DataTablesCore from 'datatables.net';
- 
-DataTable.use(DataTablesCore);
- 
+
 // VARIABLES
 const route = useRoute()
 const router = useRouter()
 const valor = ref(false);
 const info = ref([]);
+const loadingInfo = ref(false);
+const search = ref('')
+const rol = localStorage.rol;
 
 // URL
 const id = ref('')
@@ -25,38 +23,40 @@ id.value = route.params.key
 const usuario = ref('')
 usuario.value = localStorage.usuario;
 
+// NOMBRE DE COLUMNAS DE LA TABLAS
+const headers = [
+  {title: 'Id', align: 'start', sortable: false, key: 'id',},
+  {title: 'Id investigacion', align: 'start', sortable: false, key: 'id_invest',},
+  {title: 'Hora', key: 'hora'},
+  {title: 'Numero visitantes', key: 'nro_visitantes'},
+  {title: 'Numero facturas', key: 'nro_facturas'},
+  {title: 'Editar', key: 'editar', sortable: false},
+  {title: 'Eliminar', key: 'eliminar', sortable: false},
+]
+
 // FUNCTION PARA LLENAR TABLE
 async function getMedicion(){
+    loadingInfo.value = true
     try{
-        const response = await axios.post(`http://localhost:3001/api/v1/dataMedicionFilter`, {valor: usuario.value});
-        info.value =  response.data
+        
+        if(rol === 'admin'){
+            const response = await axios.get(`http://localhost:3001/api/v1/medicionAll`);
+            info.value =  response.data
+        }else{
+            const response = await axios.post(`http://localhost:3001/api/v1/dataMedicionFilter`, {valor: usuario.value});
+            info.value =  response.data
+        }
     } catch(error){
 
         console.log(error)
 
     }
+    loadingInfo.value = false
 }
 
 onMounted( async () => {
-
    await getMedicion();
-
 });
-
-const columns = ref([
-    {data:null, render: function(data,type,row,meta){
-        return `${meta.row+1}`}},
-    {data:'id'},
-    {data:'id_invest'},
-    {data:'hora'},
-    {data:'id', render: (data,type,row,meta) => `
-    <i class="ri-edit-2-line edit-table" onclick="location.href='/medicionesEdit/${data}';"></i>`},
-
-    {data:'id', render: (data,type,row,meta,) => `
-        <i class="ri-delete-bin-5-line delete-table" onclick="location.href='/medicionesDelete/${data}';"></i>`},
-                                
-]);
-
 
 </script>
 
@@ -90,7 +90,6 @@ const columns = ref([
             </div>
             
             <div class="activity">
-
                 <div class="datatable-container">
                     <div class="header-tools">
                     <div class="tools">
@@ -105,26 +104,57 @@ const columns = ref([
                         </ul>
                     </div>
 
-                   
                     </div>
+                    <!-- DATATABLE -->
+                    <v-data-table 
+                      v-model:search="search"
+                      :loading="loadingInfo"
+                      :headers="headers"
+                      :items="info"
+                      :sort-by="[{ key: 'id', order: 'asc' }]"
+                    >
+                      <template v-slot:top >
+                        
+                        <v-card-title class="d-flex align-center pe-2">
 
-                    <DataTable :data="info" :columns="columns" :options="{ language:{
-                        search:'Buscar', zeroRecords: 'No Hay registros para mostrar',
-                        info: 'Mostrando del _START_ a _END_ de _TOTAL_ registros',
-                        infoFiltered: '(filtrado de un total de _MAX_ registros)',
-                        paginate:{first:'Primero', previous: 'Anterior', next:'Siguiente', last:'Ultimo'},
-                    }}">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Id Medicion</th>
-                                <th>Id Investigacion</th>
-                                <th>Hora</th>
-                                <th>Editar</th>
-                                <th>Eliminar</th>
-                            </tr>
-                        </thead>
-                    </DataTable>
+                            <v-icon icon="mdi-video-input-component"></v-icon> &nbsp;
+                        
+                            <v-spacer></v-spacer>
+
+                            <!-- BUSCADOR -->
+                            <v-text-field
+                              v-model="search"
+                              prepend-inner-icon="mdi-magnify"
+                              density="compact"
+                              label="Buscar"
+                              single-line
+                              flat
+                              hide-details
+                              variant="solo-filled"
+                            ></v-text-field>
+
+                        </v-card-title>
+                        
+                      </template>
+
+                        <!-- BOTONES ELIMINAR Y EDITAR -->
+                        <template v-slot:item.editar="{ item }">
+                          <router-link :to="{path:'medicionesEdit/'+item.id}"> 
+                            <v-icon size="x-large" class="me-4" color="amber">
+                            mdi-pencil
+                          </v-icon>
+                          </router-link>
+                        </template>
+
+                        <template v-slot:item.eliminar="{ item }">
+                          <router-link :to="{path:'medicionesDelete/'+item.id}"> 
+                            <v-icon size="x-large"  color="red-darken-3">
+                              mdi-delete
+                            </v-icon>
+                          </router-link>
+                        </template>
+
+                    </v-data-table>
                 </div>
 
             </div>

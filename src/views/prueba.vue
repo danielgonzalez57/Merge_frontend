@@ -16,6 +16,18 @@ const route = useRoute()
 const router = useRouter()
 const valor = ref(false);
 const info = ref([]);
+const loadingInfo = ref(false);
+
+
+const headers = [
+  {title: 'Id', align: 'start', sortable: false, key: 'id',},
+  {title: 'Id investigacion', align: 'start', sortable: false, key: 'id_invest',},
+  { title: 'Hora', key: 'hora' },
+  { title: 'Numero visitantes', key: 'nro_visitantes' },
+  { title: 'Numero facturas', key: 'nro_facturas' },
+  { title: 'Editar', key: 'editar', sortable: false },
+  { title: 'Eliminar', key: 'eliminar', sortable: false },
+]
 
 // URL
 const id = ref('')
@@ -26,11 +38,15 @@ usuario.value = localStorage.usuario;
 
 // FUNCTION PARA LLENAR TABLE
 async function getTipoArticulo(){
+  loadingInfo.value = true
     try{
       const response = await axios.get(`http://localhost:3001/api/v1/medicionAll`);
       info.value = response.data.map(invest => ({
+            id: invest.id,
             id_invest: invest.id_invest,
             hora: invest.hora,
+            nro_visitantes: invest.nro_visitantes,
+            nro_facturas: invest.nro_facturas,
         }));
 
         
@@ -38,125 +54,31 @@ async function getTipoArticulo(){
 
         console.log(error)
     }
+    loadingInfo.value = false
 }
-
-
 
     const search = ref('')
 
-    const items = ref([
-    {
-            name: 'Nebula GTX 3080',
-            image: '1.png',
-            price: 699.99,
-            rating: 5,
-            stock: true,
-          },
-          {
-            name: 'Galaxy RTX 3080',
-            image: '2.png',
-            price: 799.99,
-            rating: 4,
-            stock: false,
-          },
-          {
-            name: 'Orion RX 6800 XT',
-            image: '3.png',
-            price: 649.99,
-            rating: 3,
-            stock: true,
-          },
-          {
-            name: 'Vortex RTX 3090',
-            image: '4.png',
-            price: 1499.99,
-            rating: 4,
-            stock: true,
-          },
-          {
-            name: 'Cosmos GTX 1660 Super',
-            image: '5.png',
-            price: 299.99,
-            rating: 4,
-            stock: false,
-          },
-          {
-            name: 'Vortex RTX 3090',
-            image: '4.png',
-            price: 1499.99,
-            rating: 4,
-            stock: true,
-          },
-          {
-            name: 'Cosmos GTX 1660 Super',
-            image: '5.png',
-            price: 299.99,
-            rating: 4,
-            stock: false,
-          },
-          {
-            name: 'Vortex RTX 3090',
-            image: '4.png',
-            price: 1499.99,
-            rating: 4,
-            stock: true,
-          },
-          {
-            name: 'Cosmos GTX 1660 Super',
-            image: '5.png',
-            price: 299.99,
-            rating: 4,
-            stock: false,
-          },
-          {
-            name: 'Vortex RTX 3090',
-            image: '4.png',
-            price: 1499.99,
-            rating: 4,
-            stock: true,
-          },
-          {
-            name: 'Cosmos GTX 1660 Super',
-            image: '5.png',
-            price: 299.99,
-            rating: 4,
-            stock: false,
-          },
-          {
-            name: 'Vortex RTX 3090',
-            image: '4.png',
-            price: 1499.99,
-            rating: 4,
-            stock: true,
-          },
-          {
-            name: 'Cosmos GTX 1660 Super',
-            image: '5.png',
-            price: 299.99,
-            rating: 4,
-            stock: false,
-          },
-          {
-            name: 'Vortex RTX 3090',
-            image: '4.png',
-            price: 1499.99,
-            rating: 4,
-            stock: true,
-          },
-          {
-            name: 'Cosmos GTX 1660 Super',
-            image: '5.png',
-            price: 299.99,
-            rating: 1,
-            stock: false,
-          },
-      // ...resto de tus datos
-    ])
+   
+
+  function editItem(item) {
+  const editedIndex = item.id
+  // editedItem.value = { ...item }
+  // dialog.value = true
+
+  alert(editedIndex)
+}
+    function deleteItem (item) {
+  const editedIndex = info.value.indexOf(item)
+  // editedItem.value = { ...item }
+  // dialog.value = true
+
+  alert(editedIndex)
+}
     
 onMounted( async () => {
 
 await getTipoArticulo();
-
 });
 
 </script>
@@ -181,7 +103,15 @@ await getTipoArticulo();
         <div class="dash-content">
 
        
-            
+          <div class="overview">
+                <!-- NAVBAR -->
+                <div class="title">
+
+                    <i class="ri-dashboard-2-line"></i>
+                    <span class="text">Medicion</span>
+
+                </div>
+            </div>
             <div class="activity">
 
                 <div class="datatable-container">
@@ -205,160 +135,63 @@ await getTipoArticulo();
                    
                     </div>
                     <!-- TABLA -->
-                    <v-data-table dark
+                    <v-data-table 
+                      v-model:search="search"
+                      :loading="loadingInfo"
                       :headers="headers"
-                      :items="desserts"
-                      :sort-by="[{ key: 'calories', order: 'asc' }]"
+                      :items="info"
+                      :sort-by="[{ key: 'id_invest', order: 'desc' }]"
                     >
-                      <template v-slot:top>
-                        <v-toolbar
-                          flat
-                        >
+                      <template v-slot:top >
+                        
+                        <v-card-title class="d-flex align-center pe-2">
+                            <v-icon icon="mdi-video-input-component"></v-icon> &nbsp;
+                            
 
-                          <v-toolbar-title>My CRUD</v-toolbar-title>
+                            <v-spacer></v-spacer>
 
-                          <v-divider
-                            class="mx-4"
-                            inset
-                            vertical
-                          ></v-divider>
-
-                          <v-spacer></v-spacer>
-
-                          <v-dialog v-model="dialog"
-                            max-width="500px"
-                          >
-                            <template v-slot:activator="{ props }">
-                              <v-btn color="primary" dark class="mb-2" v-bind="props">
-                                New Item
-                              </v-btn>
-                            </template>
-
-                              <v-card>
-                                <v-card-title>
-                                  <span class="text-h5">{{ formTitle }}</span>
-                                </v-card-title>
-
-                                <v-card-text>
-                                  <v-container>
-                                    <v-row>
-                                      <v-col
-                                        cols="12"
-                                        sm="6"
-                                        md="4"
-                                      >
-                                        <v-text-field
-                                          v-model="editedItem.name"
-                                          label="Dessert name"
-                                        ></v-text-field>
-                                      </v-col>
-                                      <v-col
-                                        cols="12"
-                                        sm="6"
-                                        md="4"
-                                      >
-                                        <v-text-field
-                                          v-model="editedItem.calories"
-                                          label="Calories"
-                                        ></v-text-field>
-                                      </v-col>
-                                      <v-col
-                                        cols="12"
-                                        sm="6"
-                                        md="4"
-                                      >
-                                        <v-text-field
-                                          v-model="editedItem.fat"
-                                          label="Fat (g)"
-                                        ></v-text-field>
-                                      </v-col>
-                                      <v-col
-                                        cols="12"
-                                        sm="6"
-                                        md="4"
-                                      >
-                                        <v-text-field
-                                          v-model="editedItem.carbs"
-                                          label="Carbs (g)"
-                                        ></v-text-field>
-                                      </v-col>
-                                      <v-col
-                                        cols="12"
-                                        sm="6"
-                                        md="4"
-                                      >
-                                        <v-text-field
-                                          v-model="editedItem.protein"
-                                          label="Protein (g)"
-                                        ></v-text-field>
-                                      </v-col>
-                                    </v-row>
-                                  </v-container>
-                                </v-card-text>
-
-                                <v-card-actions>
-                                  <v-spacer></v-spacer>
-
-                                  <v-btn color="blue-darken-1" variant="text" @click="close">
-                                    Cancel
-                                  </v-btn>
-
-                                  <v-btn color="blue-darken-1" variant="text" @click="save">
-                                    Save
-                                  </v-btn>
-                                </v-card-actions>
-
-                              </v-card>
-
-                            </v-dialog>
-                            <v-dialog v-model="dialogDelete" max-width="500px">
-                              <v-card>
-                                <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
-                                <v-card-actions>
-                                  <v-spacer></v-spacer>
-                                  <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Cancel</v-btn>
-                                  <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">OK</v-btn>
-                                  <v-spacer></v-spacer>
-                                </v-card-actions>
-                              </v-card>
-                            </v-dialog>
-                          </v-toolbar>
+                            <v-text-field
+                              v-model="search"
+                              prepend-inner-icon="mdi-magnify"
+                              density="compact"
+                              label="Search"
+                              single-line
+                              flat
+                              hide-details
+                              variant="solo-filled"
+                            ></v-text-field>
+                          </v-card-title>
+                        
                       </template>
-
-                        <template v-slot:item.actions="{ item }">
-                          <v-icon
-                            size="small"
-                            class="me-2"
-                            @click="editItem(item)"
-                          >
+                        <!-- BOTONES ELIMINAR Y EDITAR -->
+                        <template v-slot:item.editar="{ item }">
+                          <router-link :to="{path:'medicionesEdit/'+item.id}"> 
+                            <v-icon size="x-large" class="me-4" color="amber">
                             mdi-pencil
                           </v-icon>
-                          <v-icon
-                            size="small"
-                            @click="deleteItem(item)"
-                          >
-                            mdi-delete
-                          </v-icon>
+                          </router-link>
                         </template>
-                        <template v-slot:no-data>
+
+                        <template v-slot:item.eliminar="{ item }">
+                          <router-link :to="{path:'medicionesDelete/'+item.id}"> 
+                            <v-icon size="x-large"  color="red-darken-3">
+                              mdi-delete
+                            </v-icon>
+                          </router-link>
+                        </template>
+                        
+
+                        <!-- <template v-slot:no-data>
                           <v-btn
                             color="primary"
                             @click="initialize"
                           >
                             Reset
                           </v-btn>
-                        </template>
-                                      </v-data-table>
-                                  </div>
-                                  <br>
-               
-              <v-data-table dark :items="info"></v-data-table>
-
-                    <v-combobox
-                        label="Combobox"
-                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                        variant="outlined"
-                    ></v-combobox>
+                        </template> -->
+                    </v-data-table>
+                    </div>
+                    <br>
                   
                 </div>
             </div>

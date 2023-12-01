@@ -14,7 +14,7 @@ const route = useRoute()
 // URL
 const id = ref('')
 id.value = route.params.key 
-//console.log(id.value)
+
 
 const data = ref({
     id: "",
@@ -29,15 +29,12 @@ async function getUser() {
     try {
         // CONSULTAR LA TABLA DE USUARIOS
         const response = await axios.get(`http://localhost:3001/api/v1/getUser/${id.value}`);
-        //info.value = response.data
         data.value.id = response.data[0].id;
         data.value.nombre = response.data[0].nombre;
         data.value.email = response.data[0].email;
-        data.value.password = response.data[0].password2;
+        data.value.password = response.data[0].password;
         data.value.rol = response.data[0].rol;
     } catch (error) {
-        //EN CASO DE QUE DE UN ERROR
-        //console.log(error)
         alert("Error no controlado.!");
     }
 }
@@ -121,31 +118,30 @@ const handleIconClick = (node, e) => {
                     <div class="container_form">
                         <FormKit type="form" #default="{ value }" @submit="handleSubmit" :value="data"
                             submit-label="Registrar" method="post" action="/ta_relacion_laboral">
+
                             <FormKit v-model="data.nombre" type="text" label="Nombre" prefix-icon="text"
                                 placeholder="Nombre y apellido" help="Ingresa tu nombre completo." />
+
                             <FormKit v-model="data.email" type="text" label="Correo electronico" name="email"
                                 prefix-icon="email" placeholder="email@tiendasdaka.com" validation="required|email"
                                 :validation-messages="{
                                     required: 'Debes colocar un correo electronico.',
                                     email: 'Debe tener @ y .com'
                                 }" help="Ingresa tu correo electronico." />
+
                             <FormKit v-model="data.password" type="password" label="Contraseña" name="password"
                                 prefix-icon="password" placeholder="Ej. Daka2023*" validation="required"
                                 :validation-messages="{
                                     required: 'Debes colocar una contraseña.',
                                 }" @suffix-icon-click="handleIconClick" help="Ingresa tu contraseña."
                                 suffix-icon="eyeClosed" />
-                            <!-- <FormKit v-model="data.password2" type="password" label="Confirmar contraseña" name="password2"
-                                prefix-icon="password" placeholder="Ej. Daka2023*" validation="required"
-                                :validation-messages="{
-                                    required: 'Debes colocar una contraseña.',
-                                }" suffix-icon="eyeClosed" @suffix-icon-click="handleIconClick"
-                                help="Confirma tu contraseña." /> -->
+
                             <FormKit v-model="data.rol" type="select" label="Tipo de rol:" name="favorite_food"
                                 placeholder="Permiso de usuario" prefix-icon="select" :options="[
                                     { label: 'Administrador de usuarios', value: 'admin' },
                                     { label: 'Administrsdor de maestros', value: 'admaster' },
                                     { label: 'Investigador', value: 'inves' },
+                                    { label: 'Redes sociales', value: 'rrss' }
                                 ]" validation="required" :validation-messages="{
     required: 'Debes escoger un rol.',
 }" help="Asigna los permisos a este usuario." />
