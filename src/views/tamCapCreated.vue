@@ -63,8 +63,6 @@ async function getTipo(){
             value: linea.id
         }));
 
-        console.log(articulos.value)
-
     } catch(error){
 
         console.log(error)
@@ -106,7 +104,14 @@ onMounted( async () => {
                     <span class="text">Tamaño Capacidad</span>
                 </div>
 
+                <router-link to="/tamCap">
+                    <v-btn prepend-icon="mdi-arrow-left" color="green-accent-4">
+                        Volver
+                    </v-btn>
+                </router-link>
+                
             </div>
+            <br>
 
             <div class="activity">
                 <section class="container_form1">

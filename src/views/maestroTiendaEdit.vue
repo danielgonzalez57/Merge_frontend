@@ -25,20 +25,7 @@ const tipo_tienda = ref('')
 // URL
 const id = ref('')
 id.value = route.params.key 
-console.log(id.value)
 
-
-const jsonMaestroTienEdit = ref({
-
-nombre:'', 
-id_ciudad:'',
-latitud:'',
-longitud:'',
-tipo_tienda:'',
-direccion:'',
-user_crea:''
-
-});
 
 async function getFilterMaestroTienda(){
     
@@ -95,8 +82,6 @@ async function getCiudades(){
             label: ciudad.nombre,
             value: ciudad.Id
         }));
-
-        console.log(ciudades.value[1])
 
     } catch(error){
 
@@ -168,7 +153,14 @@ function UpdateDataMaestroT(){
                     <span class="text">Editar Maestro de Tiendas</span>
                 </div>
 
+                <router-link to="/maestroTiendas">
+                    <v-btn prepend-icon="mdi-arrow-left" color="green-accent-4">
+                        Volver
+                    </v-btn>
+                </router-link>
+                
             </div>
+            <br>
 
             <div class="activity">
                 <section class="container_form1">

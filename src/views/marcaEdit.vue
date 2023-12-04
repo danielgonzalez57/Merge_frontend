@@ -134,9 +134,16 @@ const jsonL = {
                 <!-- NAVBAR -->
                 <div class="title">
                     <i class="ri-pie-chart-box-line icono-dash"></i>
-                    <span class="text">Articulo</span>
+                    <span class="text">Editar marca</span>
                 </div>
+                <router-link to="/marcas">
+                    <v-btn prepend-icon="mdi-arrow-left" color="green-accent-4">
+                        Volver
+                    </v-btn>
+                </router-link>
+                
             </div>
+            <br>
 
             <div class="activity">
             <section class="container_form1">

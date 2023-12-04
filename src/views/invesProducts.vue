@@ -7,14 +7,17 @@ import Nav from '../components/Nav.vue'
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
+import Swal from 'sweetalert2'
  
 // VARIABLES
 const route = useRoute();
+const router = useRouter()
 const rol = localStorage.rol;
 const valor = ref(false);
 const info = ref([]);
 const loadingInfo = ref(false);
 const search = ref('')
+
 
 // URL
 const id = ref('')
@@ -28,10 +31,10 @@ const headers = [
   {title: 'Id', align: 'start', sortable: false, key: 'Id',},
   {title: 'Id medicion', align: 'start', sortable: false, key: 'id_medicion',},
   {title: 'Marca', align: 'start', sortable: false, key: 'id_marca',},
-  { title: 'Descripcion', key: 'descrip' },
-  { title: 'Precio', key: 'precio' },
-  { title: 'Editar', key: 'editar', sortable: false },
-  { title: 'Eliminar', key: 'eliminar', sortable: false },
+  {title: 'Descripcion', key: 'descrip' },
+  {title: 'Precio', key: 'precio' },
+  {title: 'Editar', key: 'editar', sortable: false },
+  {title: 'Eliminar', key: 'eliminar', sortable: false },
 ]
 
 // FUNCTION PARA LLENAR TABLE
@@ -52,9 +55,49 @@ async function getinvestProd(){
     loadingInfo.value = false
 }
 
+async function eliminarInvestigacionPro(id) {
+    try {
+        await axios.delete(`http://localhost:3001/api/v1/investProducts/delete/${id}`);
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 onMounted( async () => {
    await getinvestProd();
 });
+
+function eliminardataPro(id){
+    Swal.fire({
+        title: "¿Desea eliminar este dato?",
+        text: "No podrás revertir esto!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Si, Eliminar!",
+        background: '#3A3B3C',
+        color: '#fff'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            router.push('/investProducts');
+            Swal.fire({
+            title: "Eliminado!",
+            text: "Data eliminada con exito!!!",
+            icon: "success",
+            background: '#3A3B3C',
+            color: '#fff'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                eliminarInvestigacionPro(id)
+                    location.reload();
+                }
+            });
+    
+        }
+    });
+}
 
 </script>
 
@@ -68,7 +111,7 @@ onMounted( async () => {
 
             <div class="search-box">
                 <i class="ri-search-2-line"></i>
-                <input type="text" id="searchField" placeholder="Buscar (Ctrl + k)">
+                <input type="text" id="searchField" placeholder="Buscar (Ctrl + k)" disabled>
             </div>
             <img src="../assets/profile3.png" alt="imagen de perfil">
         </div>
@@ -162,12 +205,10 @@ onMounted( async () => {
                           </router-link>
                         </template>
 
-                        <template v-slot:item.eliminar="{ item }">
-                          <router-link :to="{path:'invesProductsDelete/'+item.id}"> 
-                            <v-icon size="x-large"  color="red-darken-3">
+                        <template v-slot:item.eliminar="{ item }"> 
+                            <v-icon size="x-large"  color="red-darken-3" @click="eliminardataPro(item.Id)">
                               mdi-delete
                             </v-icon>
-                          </router-link>
                         </template>
 
                     </v-data-table>

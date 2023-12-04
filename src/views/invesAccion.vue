@@ -6,6 +6,7 @@ import Nav from '../components/Nav.vue'
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
+import Swal from 'sweetalert2'
 
 // VARIABLES
 const rol = localStorage.rol;
@@ -53,11 +54,52 @@ async function getInvestigacion(){
     loadingInfo.value = false
 }
 
+async function eliminarInvestigacion(id){
+          
+          try{
+              await axios.delete(`http://localhost:3001/api/v1/investigacionDelete/${id}`);
+      
+          } catch(error){
+              console.log(error)
+          }
+      
+      }
+
 onMounted( async () => {
 
    await getInvestigacion();
 
 });
+
+function eliminardata(id){
+    Swal.fire({
+        title: "¿Desea eliminar este dato?",
+        text: "No podrás revertir esto!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Si, Eliminar!",
+        background: '#3A3B3C',
+        color: '#fff'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            router.push('/invesAccion');
+            Swal.fire({
+            title: "Eliminado!",
+            text: "Data eliminada con exito!!!",
+            icon: "success"
+            }).then((result) => {
+            if (result.isConfirmed) {
+                    eliminarInvestigacion(id)
+                    location.reload();
+                }
+            });
+    
+        }
+    });
+}
 
 </script>
 
@@ -72,7 +114,7 @@ onMounted( async () => {
 
             <div class="search-box">
                 <i class="ri-search-2-line"></i>
-                <input type="text" id="searchField" placeholder="Buscar (Ctrl + k)">
+                <input type="text" id="searchField" placeholder="Buscar (Ctrl + k)" disabled>
             </div>
 
             <img src="../assets/profile3.png" alt="imagen de perfil">
@@ -173,11 +215,11 @@ onMounted( async () => {
                         </template>
 
                         <template v-slot:item.eliminar="{ item }">
-                          <router-link :to="{path:'invesAccion-delete/'+item.id}"> 
-                            <v-icon size="x-large"  color="red-darken-3">
+                          
+                            <v-icon size="x-large"  color="red-darken-3" @click="eliminardata(item.id)">
                               mdi-delete
                             </v-icon>
-                          </router-link>
+                          
                         </template>
 
                     </v-data-table>

@@ -10,24 +10,35 @@ const router = useRouter()
 const valor = ref(false)
 const usuario = localStorage.usuario;
 const tamCap = ref([])
+const marca = ref([])
+const tipoartget = ref([])
 
 // URL
 const id = ref('')
 id.value = route.params.key 
 
 
-const jsonMod = ref({
+const id_art = ref()
+const id_tam_cap = ref()
+const id_marca = ref()
+const pan_dulce = ref()
+const nombre = ref()
+const user_crea = ref(usuario)
 
+const jsonMod = ref({
 id_tam_cap:'',
+pan_dulce:'asdasd',
+id_marca:'',
 nombre:'', 
 user_crea: `${usuario}`,
 
 });
 
-async function modeloCreated(){
+async function modeloCreated(dataJson){
     
     try{
-        const response = await axios.post(`http://localhost:3001/api/v1/modeloCreated`, jsonMod.value)
+        console.log(jsonMod.value)
+        const response = await axios.post(`http://localhost:3001/api/v1/modeloCreated`, dataJson)
         
         if(response.data.status === 'ok'){
 
@@ -54,13 +65,64 @@ async function modeloCreated(){
     }
 }
 
-// FUNCTION PARA LLENAR SELECT
+async function getTipoArt(){
+
+try{
+     const response = await axios.get('http://localhost:3001/api/v1/tipoArticuloAll');
+     tipoartget.value =  response.data.map(tipoArt => ({
+         title: tipoArt.nombre,
+         value: tipoArt.id,
+         tipoArticulo: tipoArt.id,
+
+     }));
+
+ } catch(error){
+     console.log(error)
+ }
+}
+
 async function getTamCap(){
+
+const valorSeleccionado = id_art.value?.value
+
+
+let RUTA = `http://localhost:3001/api/v1/tamCapFilterSelect/${valorSeleccionado}`
+
+try{
+    const response = await axios.get(RUTA);
+
+    tamCap.value =  response.data.map(tamCap => ({
+        title: tamCap.nombre,
+        value: tamCap.id,
+    }));
+
+
+} catch(error){
+    console.log(error)
+}
+}
+
+// FUNCTION PARA LLENAR SELECT
+// async function getTamCap(){
+//     try{
+//         const response = await axios.get(`http://localhost:3001/api/v1/tamCapAll`);
+//         tamCap.value = response.data.map(linea => ({
+//             title: linea.nombre,
+//             value: linea.id
+//         }));
+
+//     } catch(error){
+
+//         console.log(error)
+//     }
+// }
+// FUNCTION PARA LLENAR SELECT
+async function getMarca(){
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/tamCapAll`);
-        tamCap.value = response.data.map(linea => ({
-            label: linea.nombre,
-            value: linea.id
+        const response = await axios.get(`http://localhost:3001/api/v1/marcasAll`);
+        marca.value = response.data.map(marca => ({
+            title: marca.nombre,
+            value: marca.id
         }));
 
     } catch(error){
@@ -70,12 +132,26 @@ async function getTamCap(){
 }
 
 
+
+
+
+function crearDataModel(){
+    const dataJson = {
+        id_tam_cap:id_tam_cap.value ,
+        id_marca :id_marca .value ,
+        nombre:nombre.value ,
+        user_crea:user_crea.value
+    }
+    // FUNCTION PARA CREAR
+    modeloCreated(dataJson)
+}
 onMounted( async () => {
 
+await getTipoArt();
 await getTamCap();
+await getMarca();
 
 });
-
 
 
 </script>
@@ -104,7 +180,7 @@ await getTamCap();
                 <!-- NAVBAR -->
                 <div class="title">
                     <i class="ri-pie-chart-box-line icono-dash"></i>
-                    <span class="text">Modelo</span>
+                    <span class="text">Crea un modelo</span>
                 </div>
 
             </div>
@@ -115,7 +191,7 @@ await getTamCap();
                     <div class="container">
                         <FormKit
                             type="form"
-                            @submit="modeloCreated"
+                            @submit="crearDataModel"
                             submit-label="Registrar Maestro"
                         >
 
@@ -124,31 +200,61 @@ await getTamCap();
                                 label="Modelo"
                                 placeholder="Modelo"
                                 validation="required"
-                                v-model="jsonMod.nombre"
+                                v-model="nombre"
                                 :validation-messages="{  
                                     required: 'Debe colocar el modelo.'
                                 }"
                             />
 
-                            <FormKit
-                                type="select"
-                                label="Tamaño Capacidad"
-                                name="id_tam_cap"
-                                class="formKitt"
-                                v-model="jsonMod.id_tam_cap"
-                                placeholder="Escoge un articulo"
-                                :options="tamCap"
-                                validation="required"
-                                :validation-messages="{
-                                    required: 'Debes Escoger un tamaño.',
-                                }"
-                            />
+                            <label class="label_filter" for="">Tipo de articulo</label>
+                            <v-combobox
+                                clearable
+                                required
+                                chips
+                                name="id_art"
+                                v-model="id_art"
+                                @update:modelValue="getTamCap"
+                                :items="tipoartget"
+                                placeholder="Selecciona el tamaño capacidad"
+                                variant="outlined"
+                                style="width: 50%;"
+                                :return-object="true"
+                            ></v-combobox>
+
+                            <label class="label_filter" for="">Tamaño Capacidad</label>
+                            <v-combobox
+                                clearable
+                                required
+                                chips
+                                v-model="id_tam_cap"
+                                name="id_invest"
+                                placeholder="Selecciona el tamaño capacidad"
+                                :items="tamCap"
+                                variant="outlined"
+                                style="width: 50%;"
+                                :return-object="false"
+                            ></v-combobox>
+
+                            <label class="label_filter" for="">Marca</label>
+                            <v-combobox
+                                clearable
+                                required
+                                chips
+                                v-model="id_marca"
+                                name="id_marca"
+                                placeholder="Selecciona la marca"
+                                :items="marca"
+                                variant="outlined"
+                                style="width: 50%;"
+                                :return-object="false"
+                            ></v-combobox>
+
 
                             <FormKit
                                 type="text"
                                 label="Creado por"
                                 name="user_crea"
-                                v-model="jsonMod.user_crea"
+                                v-model="user_crea"
                                 validation="required"
                                 disabled
                                 :validation-messages="{
