@@ -62,14 +62,18 @@ async function searchModel() {
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
-                    confirmButtonText: "Crear"
+                    confirmButtonText: "Crear",
+                    background: '#3A3B3C',
+                    color: '#fff'
                     }).then((result) => {
                     if (result.isConfirmed) {
-                        // Swal.fire({
-                        // title: "Modelo Creador!",
-                        // text: ":).",
-                        // icon: "success"
-                        // });
+                        Swal.fire({
+                        title: "Modelo Creador!",
+                        text: ":).",
+                        icon: "success",
+                        background: '#3A3B3C',
+                        color: '#fff'
+                        });
                          router.push('/modeloClientes');
 
                     }
@@ -247,8 +251,16 @@ async function crearInvestPro(dataJson){
 
             }else {
                 // REGISTRO CREADO EXITOSAMENTE
-                alert("investigacion registrado con exito.!");
-                window.location.reload();
+                Swal.fire({
+                    title: "Guardado!",
+                    text: "Data guardada con exito!!!",
+                    icon: "success"
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                            router.push('/investProducts');
+                        }
+                    });
+                
             }
 
         })

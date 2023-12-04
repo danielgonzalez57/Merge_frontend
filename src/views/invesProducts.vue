@@ -198,7 +198,7 @@ function eliminardataPro(id){
 
                         <!-- BOTONES ELIMINAR Y EDITAR -->
                         <template v-slot:item.editar="{ item }">
-                          <router-link :to="{path:'invesProductsEdit/'+item.id}"> 
+                          <router-link :to="{path:'invesProductsEdit/'+item.Id}"> 
                             <v-icon size="x-large" class="me-4" color="amber">
                             mdi-pencil
                           </v-icon>

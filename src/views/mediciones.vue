@@ -86,10 +86,12 @@ function eliminardata(id){
             Swal.fire({
             title: "Eliminado!",
             text: "Data eliminada con exito!!!",
-            icon: "success"
+            icon: "success",
+            background: '#3A3B3C',
+            color: '#fff'
             }).then((result) => {
             if (result.isConfirmed) {
-                eliminarMedicion(id)
+                    eliminarMedicion(id)
                     location.reload();
                 }
             });
