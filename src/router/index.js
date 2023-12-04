@@ -2,10 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../views/login.vue'
 import Dashboard from '../views/Dashboard.vue'
 import User from '../views/user.vue'
-import Investigacion from '../views/investigacion.vue'
 import userCreate from '../views/userCreate.vue'
-import InvestigacionCreate from '../views/investigacionCreate.vue'
-import investigacionEdit from '../views/investigacionEdit.vue'
 import InvesAccion from '../views/invesAccion.vue'
 import InvesAccionCreate from '../views/invesAccion-create.vue'
 import InvesAccionEdit from '../views/invesAccion-edit.vue'
@@ -86,21 +83,6 @@ const router = createRouter({
       path: '/userDelete/:key',
       name: 'userDelete',
       component: userDelete
-    },
-    {
-      path: '/investigacion',
-      name: 'Investigacion',
-      component: Investigacion
-    },
-    {
-      path: '/investigacionCreate',
-      name: 'InvestigacionCreate',
-      component: InvestigacionCreate
-    },
-    {
-      path: '/investigacionEdit',
-      name: 'investigacionEdit',
-      component: investigacionEdit
     },
     {
       path: '/invesAccion',

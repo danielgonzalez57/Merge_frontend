@@ -6,32 +6,42 @@ import Nav from '../components/Nav.vue'
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
-import DataTable from 'datatables.net-vue3';
-import DataTablesCore from 'datatables.net';
- 
-DataTable.use(DataTablesCore);
- 
+
 // VARIABLES
 const route = useRoute()
-const router = useRouter()
 const valor = ref(false);
 const info = ref([]);
+const loadingInfo = ref(false);
+const search = ref('')
+const rol = localStorage.rol;
+
 
 // URL
 const id = ref('')
 id.value = route.params.key 
 
+// NOMBRE DE COLUMNAS DE LA TABLAS
+const headers = [
+  {title: 'Id', align: 'start', sortable: false, key: 'id',},
+  {title: 'Tienda', align: 'start', sortable: false, key: 'nombre',},
+  {title: 'Ciudad', key: 'id_ciudad'},
+  {title: 'Latitud', key: 'latitud'},
+  {title: 'Longitud', key: 'longitud'},
+  {title: 'Direccion', key: 'direccion'},
+  {title: 'Editar', key: 'editar', sortable: false},
+  {title: 'Eliminar', key: 'eliminar', sortable: false},
+]
+
 // FUNCTION PARA LLENAR TABLE
 async function getMaestroTienda(){
+    loadingInfo.value = true
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/maestroTiendaAll`);
-
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/maestroTiendaAll`);
         info.value =  response.data
-
     } catch(error){
-
         console.log(error)
     }
+    loadingInfo.value = false
 }
 
 onMounted( async () => {
@@ -39,26 +49,6 @@ onMounted( async () => {
    await getMaestroTienda();
 
 });
-
-const columns = ref([
-    {data:null, render: function(data,type,row,meta){
-        return `${meta.row+1}`}},
-    {data:'longitud'},
-    {data:'id'},
-    {data:'nombre'},
-    {data:'id_ciudad'},
-    {data:'tipo_tienda'},
-    {data:'direccion'},
-    {data:'user_crea'},
-    {data:'fec_crea'},
-    {data:'id', render: (data,type,row,meta) => `
-    <i class="ri-edit-2-line edit-table" onclick="location.href='/maestroTiendasEdit/${data}';"></i>`},
-
-    {data:'id', render: (data,type,row,meta,) => `
-    <i class="ri-delete-bin-5-line delete-table" onclick="location.href='/maestroTiendaDelete/${data}';"></i>`},
-                                
-]);
-
 
 </script>
 
@@ -73,7 +63,7 @@ const columns = ref([
 
             <div class="search-box">
                 <i class="ri-search-2-line"></i>
-                <input type="text" id="searchField" placeholder="Buscar (Ctrl + k)">
+                <input type="text" id="searchField" placeholder="Buscar (Ctrl + k)" disabled>
             </div>
 
             <img src="../assets/profile3.png" alt="imagen de perfil">
@@ -110,28 +100,55 @@ const columns = ref([
                    
                     </div>
 
-                    <DataTable :data="info" :columns="columns" :options="{ language:{
-                        search:'Buscar', zeroRecords: 'No Hay registros para mostrar',
-                        info: 'Mostrando del _START_ a _END_ de _TOTAL_ registros',
-                        infoFiltered: '(filtrado de un total de _MAX_ registros)',
-                        paginate:{first:'Primero', previous: 'Anterior', next:'Siguiente', last:'Ultimo'},
-                    }}">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Longitud</th>
-                                <th>Id Maestro</th>
-                                <th>Nombre de la Tienda</th>
-                                <th>Ciudad</th>
-                                <th>Tipo de Tienda</th>
-                                <th>Direccion de la Tienda</th>
-                                <th>Creado por</th>
-                                <th>Fecha Creación</th>
-                                <th>Editar</th>
-                                <th>Eliminar</th>
-                            </tr>
-                        </thead>
-                    </DataTable>
+                    <v-data-table 
+                      v-model:search="search"
+                      :loading="loadingInfo"
+                      :headers="headers"
+                      :items="info"
+                      :sort-by="[{ key: 'id', order: 'asc' }]"
+                    >
+                      <template v-slot:top >
+                        
+                        <v-card-title class="d-flex align-center pe-2">
+
+                            <v-icon icon="mdi-video-input-component"></v-icon> &nbsp;
+                        
+                            <v-spacer></v-spacer>
+
+                            <!-- BUSCADOR -->
+                            <v-text-field
+                              v-model="search"
+                              prepend-inner-icon="mdi-magnify"
+                              density="compact"
+                              label="Buscar"
+                              single-line
+                              flat
+                              hide-details
+                              variant="solo-filled"
+                            ></v-text-field>
+
+                        </v-card-title>
+                        
+                      </template>
+
+                        <!-- BOTONES ELIMINAR Y EDITAR -->
+                        <template v-slot:item.editar="{ item }">
+                          <router-link :to="{path:'maestroTiendasEdit/'+item.id}"> 
+                            <v-icon size="x-large" class="me-4" color="amber">
+                            mdi-pencil
+                          </v-icon>
+                          </router-link>
+                        </template>
+
+                        <template v-slot:item.eliminar="{ item }">
+                          <router-link :to="{path:'maestroTiendaDelete/'+item.id}"> 
+                            <v-icon size="x-large"  color="red-darken-3">
+                              mdi-delete
+                            </v-icon>
+                          </router-link>
+                        </template>
+
+                    </v-data-table>
                 </div>
             </div>
         </div>

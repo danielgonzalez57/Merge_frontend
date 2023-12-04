@@ -68,7 +68,7 @@ const jsonE = {
 
         <div class="search-box">
             <i class="ri-search-2-line"></i>
-            <input type="text" id="searchField" placeholder="Buscar (Ctrl + k)">
+            <input type="text" id="searchField" placeholder="Buscar (Ctrl + k)" disabled>
         </div>
 
         <img src="../assets/profile3.png" alt="imagen de perfil">
@@ -81,7 +81,13 @@ const jsonE = {
                     <i class="ri-pie-chart-box-line icono-dash"></i>
                     <span class="text">Crear Mediciones</span>
                 </div>
+                <router-link to="/mediciones">
+                    <v-btn prepend-icon="mdi-arrow-left" color="green-accent-4">
+                        Volver
+                    </v-btn>
+                </router-link>
             </div>
+            <br>
 
             <div class="activity">
             <section class="container_form1">

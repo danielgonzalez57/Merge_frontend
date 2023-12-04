@@ -14,7 +14,6 @@ const usuario = localStorage.usuario;
 const id = ref('')
 id.value = route.params.key 
 
-import Select2 from '../funciones/select2'
 
 const info = ref();
 

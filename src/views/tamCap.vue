@@ -6,59 +6,44 @@ import Nav from '../components/Nav.vue'
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
-import DataTable from 'datatables.net-vue3';
-import DataTablesCore from 'datatables.net';
- 
-DataTable.use(DataTablesCore);
+
  
 // VARIABLES
 const route = useRoute()
-const router = useRouter()
 const valor = ref(false);
 const info = ref([]);
+const loadingInfo = ref(false);
+const search = ref('')
 
 // URL
 const id = ref('')
 id.value = route.params.key 
 
+// NOMBRE DE COLUMNAS DE LA TABLAS
+const headers = [
+  {title: 'Id', align: 'start', sortable: false, key: 'id',},
+  {title: 'Tamaño capacidad', align: 'start', sortable: false, key: 'nombre',},
+  {title: 'Tipo articulo', key: 'id_tipo'},
+  {title: 'Editar', key: 'editar', sortable: false},
+  {title: 'Eliminar', key: 'eliminar', sortable: false},
+]
+
 // FUNCTION PARA LLENAR TABLE
 async function getTamCap(){
+    loadingInfo.value = true
     try{
-        const response = await axios.get(`http://localhost:3001/api/v1/tamCapAll`);
-
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/tamCapAll`);
         info.value =  response.data
 
     } catch(error){
-
         console.log(error)
     }
+    loadingInfo.value = false
 }
 
 onMounted( async () => {
-
    await getTamCap();
-
 });
-
-const columns = ref([
-    {data:null, render: function(data,type,row,meta){
-        return `${meta.row+1}`}},
-    {data:'id'},
-    {data:'nombre'},
-    {data:'id_tipo'},
-    {data:'user_crea'},
-    {data:'fec_crea'},
-    {data:'id', render: (data,type,row,meta) => `
-    <router-link :to="/tamCapEdit">
-        <i class="ri-edit-2-line edit-table"></i>
-    </router-link>`},
-
-    {data:'id', render: (data,type,row,meta,) => `
-    <router-link :to="'/tamCapDelete/' + ${data}">
-        <i class="ri-delete-bin-5-line delete-table"></i>
-    </router-link>`},                                    
-]);
-
 
 </script>
 
@@ -73,7 +58,7 @@ const columns = ref([
 
             <div class="search-box">
                 <i class="ri-search-2-line"></i>
-                <input type="text" id="searchField" placeholder="Buscar (Ctrl + k)">
+                <input type="text" id="searchField" placeholder="Buscar (Ctrl + k)" disabled>
             </div>
 
             <img src="../assets/profile3.png" alt="imagen de perfil">
@@ -110,26 +95,55 @@ const columns = ref([
                    
                     </div>
 
-                    <DataTable :data="info" :columns="columns"
-                    :options="{ language:{
-                        search:'Buscar', zeroRecords: 'No Hay registros para mostrar',
-                        info: 'Mostrando del _START_ a _END_ de _TOTAL_ registros',
-                        infoFiltered: '(filtrado de un total de _MAX_ registros)',
-                        paginate:{first:'Primero', previous: 'Anterior', next:'Siguiente', last:'Ultimo'},
-                    }}">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Id Tamaño capacidad</th>
-                                <th>Tamaño</th>
-                                <th>Tipo Articulo</th>
-                                <th>Creado por</th>
-                                <th>Fecha</th>
-                                <th>Editar</th>
-                                <th>Eliminar</th>
-                            </tr>
-                        </thead>
-                    </DataTable>
+                    <v-data-table 
+                      v-model:search="search"
+                      :loading="loadingInfo"
+                      :headers="headers"
+                      :items="info"
+                      :sort-by="[{ key: 'id', order: 'asc' }]"
+                    >
+                      <template v-slot:top >
+                        
+                        <v-card-title class="d-flex align-center pe-2">
+
+                            <v-icon icon="mdi-video-input-component"></v-icon> &nbsp;
+                        
+                            <v-spacer></v-spacer>
+
+                            <!-- BUSCADOR -->
+                            <v-text-field
+                              v-model="search"
+                              prepend-inner-icon="mdi-magnify"
+                              density="compact"
+                              label="Buscar"
+                              single-line
+                              flat
+                              hide-details
+                              variant="solo-filled"
+                            ></v-text-field>
+
+                        </v-card-title>
+                        
+                      </template>
+
+                        <!-- BOTONES ELIMINAR Y EDITAR -->
+                        <template v-slot:item.editar="{ item }">
+                          <router-link :to="{path:'tamCapEdit/'+item.id}"> 
+                            <v-icon size="x-large" class="me-4" color="amber">
+                            mdi-pencil
+                          </v-icon>
+                          </router-link>
+                        </template>
+
+                        <template v-slot:item.eliminar="{ item }">
+                          <router-link :to="{path:'tamCapDelete/'+item.id}"> 
+                            <v-icon size="x-large"  color="red-darken-3">
+                              mdi-delete
+                            </v-icon>
+                          </router-link>
+                        </template>
+
+                    </v-data-table>
                 </div>
             </div>
         </div>

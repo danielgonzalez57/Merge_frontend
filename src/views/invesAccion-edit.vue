@@ -5,7 +5,6 @@ import Swal from 'sweetalert2'
 import { ref, onMounted} from 'vue';
 import {  useRoute, useRouter } from 'vue-router'
 const usuario = localStorage.usuario;
-import Select2 from '../funciones/select2'
 
 const route = useRoute()
 const router = useRouter()
@@ -110,33 +109,19 @@ onMounted( async () => {
     user_mod.value = usuario
 });
 
-// $(document).ready(function() {
-//     $('#id_tienda').on('change', function() {
-//         var valorSeleccionado = $(this).val()
-//         id_tienda.value = valorSeleccionado
-//       });
-// });
-// Select2()
 
 function UpdateData(){
 
-const jsonInves = {
-
-    id_tienda:id_tienda.value, 
-    motivo:motivo.value,
-    investigador:investigador.value,
-    user_crea:user_crea.value ,
-    user_mod:user_mod.value
-
-}
+    const jsonInves = {
+        id_tienda:id_tienda.value, 
+        motivo:motivo.value,
+        investigador:investigador.value,
+        user_crea:user_crea.value ,
+        user_mod:user_mod.value
+    }
    postInvestigacion(jsonInves, id)
 
 }
-
-
-
-
-
 
 </script>
 
@@ -164,7 +149,13 @@ const jsonInves = {
                     <i class="ri-pie-chart-box-line icono-dash"></i>
                     <span class="text">Investigacion</span>
                 </div>
+                <router-link to="/invesAccion">
+                    <v-btn prepend-icon="mdi-arrow-left" color="green-accent-4">
+                        Volver
+                    </v-btn>
+                </router-link>
             </div>
+            <br>
 
             <div class="activity">
             <section class="container_form1">

@@ -2,7 +2,7 @@
 import Nav from '../components/Nav.vue';
 import axios from 'axios';
 import { ref, onMounted, watch } from 'vue';
-import Select2 from '../funciones/select2'
+
 const valor = ref(false)
 import Swal from 'sweetalert2'
 import router from '../router/index'
@@ -33,11 +33,6 @@ watch([cant, precio], () => {
     multiplicationResult.value = cant.value * precio.value;
 });
 
-// const busqueda = ref();
-// const busqueda2 = ref();
-// const busqueda3 = ref();
-// const busqueda4 = ref();
-// const busqueda5 = ref();
 // INPUTS
 const id_medicion = ref()
 const id_art = ref()

@@ -1,7 +1,7 @@
 <script setup> 
 import Nav from '../components/Nav.vue'
 import { MedicionCrud } from '../stores/mediciones.js';
-import Select2 from '../funciones/select2'
+
 
 import { ref, onMounted} from 'vue';
 import {  useRoute, useRouter } from 'vue-router'
@@ -81,7 +81,7 @@ const jsonE = {
 
 }
 
-Select2()
+
 
 </script>
 
@@ -97,7 +97,7 @@ Select2()
 
             <div class="search-box">
                 <i class="ri-search-2-line"></i>
-                <input type="text" id="searchField" placeholder="Buscar (Ctrl + k)">
+                <input type="text" id="searchField" placeholder="Buscar (Ctrl + k)" disabled>
             </div>
 
             <img src="../assets/profile3.png" alt="imagen de perfil">
@@ -112,7 +112,13 @@ Select2()
                     <span class="text">Editar Mediciones</span>
                 </div>
 
+                <router-link to="/mediciones">
+                    <v-btn prepend-icon="mdi-arrow-left" color="green-accent-4">
+                        Volver
+                    </v-btn>
+                </router-link>
             </div>
+            <br>
 
             <div class="activity">
                 <section class="container_form1">

@@ -11,7 +11,6 @@ import { useRoute, useRouter } from 'vue-router'
 // VARIABLES
 const route = useRoute();
 const rol = localStorage.rol;
-const router = useRouter();
 const valor = ref(false);
 const info = ref([]);
 const loadingInfo = ref(false);
@@ -40,10 +39,10 @@ async function getinvestProd(){
     loadingInfo.value = true
         try{
             if(rol === 'admin'){
-                const response = await axios.get(`http://localhost:3001/api/v1/investProducts`);
+                const response = await axios.get(`http://149.50.131.95:3001/api/v1/investProducts`);
                 info.value =  response.data
             }else{
-                const response = await axios.post(`http://localhost:3001/api/v1/dataInvProdFilter`, {valor: usuario.value});
+                const response = await axios.post(`http://149.50.131.95:3001/api/v1/dataInvProdFilter`, {valor: usuario.value});
                 info.value =  response.data
             }
             

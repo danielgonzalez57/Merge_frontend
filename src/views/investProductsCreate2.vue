@@ -2,7 +2,6 @@
 import Nav from '../components/Nav.vue';
 import axios from 'axios';
 import { ref, onMounted, watch } from 'vue';
-import Select2 from '../funciones/select2'
 const valor = ref(false)
 import Swal from 'sweetalert2'
 import router from '../router/index'
@@ -21,9 +20,6 @@ const param = ref()
 
 param.value = route.params.key
 
-
-
-
 // INPUT QUE SE MULTIPLICAN
 const cant = ref()
 const precio = ref()
@@ -33,11 +29,7 @@ watch([cant, precio], () => {
     multiplicationResult.value = cant.value * precio.value;
 });
 
-// const busqueda = ref();
-// const busqueda2 = ref();
-// const busqueda3 = ref();
-// const busqueda4 = ref();
-// const busqueda5 = ref();
+
 // INPUTS
 const id_medicion = ref()
 const id_art = ref()
@@ -196,8 +188,6 @@ async function getTamano(){
 
 async function getModelo(){
 
-
-    // const valorSeleccionado = id_tam_cap.value?.value
     let RUTA = ''
 
     if(param.value === 'new'){
@@ -272,7 +262,6 @@ onMounted( async () => {
 
 await getMediciones();
 await getArticulo();
-
 await getTipoArt();
 await getTamano();
 await getModelo();
@@ -298,10 +287,6 @@ function crearDataInvest(){
     }
     // FUNCTION PARA CREAR
     crearInvestPro(dataJson)
-}
-
-function alerta(){
-    alert('hola')
 }
 
 
@@ -333,7 +318,7 @@ function alerta(){
                 </div>
 
                 <router-link to="/investProducts">
-                    <v-btn prepend-icon="mdi-arrow-left" color="green-lighten-1">
+                    <v-btn prepend-icon="mdi-arrow-left" color="green-accent-4">
                         Volver
                     </v-btn>
                 </router-link>

@@ -40,10 +40,10 @@ async function getMedicion(){
     try{
         
         if(rol === 'admin'){
-            const response = await axios.get(`http://localhost:3001/api/v1/medicionAll`);
+            const response = await axios.get(`http://149.50.131.95:3001/api/v1/medicionAll`);
             info.value =  response.data
         }else{
-            const response = await axios.post(`http://localhost:3001/api/v1/dataMedicionFilter`, {valor: usuario.value});
+            const response = await axios.post(`http://149.50.131.95:3001/api/v1/dataMedicionFilter`, {valor: usuario.value});
             info.value =  response.data
         }
     } catch(error){

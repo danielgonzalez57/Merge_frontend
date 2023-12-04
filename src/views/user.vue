@@ -34,7 +34,7 @@ const headers = [
 async function getUser() {
     loadingInfo.value = true
     try {
-        const response = await axios.get(`http://localhost:3001/api/v1/getUser`);
+        const response = await axios.get(`http://149.50.131.95:3001/api/v1/getUser`);
         info.value = response.data
         
     } catch (error) {
@@ -61,7 +61,7 @@ onMounted(async () => {
 
             <div class="search-box">
                 <i class="ri-search-2-line"></i>
-                <input type="text" id="searchField" placeholder="Buscar (Ctrl + k)" v-model="search">
+                <input type="text" id="searchField" placeholder="Buscar (Ctrl + k)" disabled>
             </div>
 
             <img src="../assets/profile3.png" alt="imagen de perfil">
@@ -113,7 +113,7 @@ onMounted(async () => {
 
                             <!-- BUSCADOR -->
                             <v-text-field
-                              
+                                v-model="search"
                               prepend-inner-icon="mdi-magnify"
                               density="compact"
                               label="Buscar"

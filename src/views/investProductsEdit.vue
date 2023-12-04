@@ -5,7 +5,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2'
 
 import { ref, onMounted, computed, watch  } from 'vue';
-import Select2 from '../funciones/select2'
+
 
 import {  useRoute, useRouter } from 'vue-router'
 const usuario = localStorage.usuario;
@@ -20,10 +20,6 @@ const marcaget = ref()
 const cant = ref()
 const precio = ref()
 const multiplicationResult = ref(0);
-
-
-
-
 const route = useRoute()
 const router = useRouter()
 const valor = ref(false)
@@ -49,26 +45,6 @@ console.log(id.value)
 watch([cant, precio], () => {
       multiplicationResult.value = cant.value * precio.value;
     });
-
-
-
-const jsonInvesEdit = ref({
-    id_medicion: "",
-    id_art: "",
-    id_tipo: "",
-    id_tam_cap: "",
-    id_modelo: "",
-    id_marca: "",
-    descrip: "",
-    cant: "",
-    precio: "",
-    sub_total: 10, // CALCULAR VALOR
-    cod_sim_daka: "",
-    user_crea: localStorage.usuario, // AQUI VA EL LOCALSTORAGE.USER_CREA
-    // FECHA DE CREACION ESTOS VALORES SE CREAN POR DEFECTO
-    user_mod: localStorage.usuario // AQUI VA EL LOCALSTORAGE.USER_CREA
-    // FECHA DE MODIFICACION ESTOS VALORES SE CREAN POR DEFECTO
-});
 
 async function getFilterInvestigacionPro(){
     
@@ -198,62 +174,6 @@ async function getMarca(){
         console.log(error)
     }
 }
-//metodo change de la lista articulos
-$(document).ready(function() {
-    $('#id_medicion').on('change', function() {
-        var valorSeleccionado = $(this).val()
-       id_medicion.value = valorSeleccionado
-
-        
-      });
-
-});
-$(document).ready(function() {
-    $('#id_art').on('change', function() {
-        var valorSeleccionado = $(this).val()
-        arrayTipoArticulo.value =  tipoartget.value.filter(data => data.id_articulo == valorSeleccionado)
-        id_art.value = valorSeleccionado
-      });
-
-});
-
-//metodo change de la lista tipos
-$(document).ready(function() {
-    $('#id_tipo').on('change', function() {
-        var valorSeleccionado = $(this).val()
-        arraytamano.value =  tamanoget.value.filter(data => data.id_tipo == valorSeleccionado)
-        id_tipo.value = valorSeleccionado
-      });
-
-});
-
-
-//metodo change de la lista tamanos
-$(document).ready(function() {
-    $('#id_tam_cap').on('change', function() {
-        var valorSeleccionado = $(this).val()
-        arraymodelo.value =  modeloget.value.filter(data => data.id_tam_cap == valorSeleccionado)
-        id_tam_cap.value = valorSeleccionado
-      });
-
-});
-
-$(document).ready(function() {
-    $('#id_modelo').on('change', function() {
-        var valorSeleccionado = $(this).val()
-        // arraymodelo.value =  modelo.value.filter(data => data.idtamano == valorSeleccionado)
-        id_modelo.value = valorSeleccionado
-      });
-
-});
-$(document).ready(function() {
-    $('#id_marca').on('change', function() {
-        var valorSeleccionado = $(this).val()
-        // arraymodelo.value =  modelo.value.filter(data => data.idtamano == valorSeleccionado)
-        id_marca.value = valorSeleccionado
-      });
-
-});
 
 onMounted( async () => {
     
@@ -300,9 +220,6 @@ function UpdateData(){
     postInvestigacionProductpro(jsonInvesPro, id)
 
 }
-
-Select2()
-
 </script>
 <template>
     <Nav :class="{ close: valor }" />
@@ -330,7 +247,7 @@ Select2()
                     <span class="text">Editar Investigacion de productos</span>
                 </div>
                 <router-link to="/investProducts">
-                    <v-btn prepend-icon="mdi-arrow-left" color="green-lighten-1">
+                    <v-btn prepend-icon="mdi-arrow-left" color="green-accent-4">
                         Volver
                     </v-btn>
                 </router-link>

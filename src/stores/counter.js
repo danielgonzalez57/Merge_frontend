@@ -17,7 +17,7 @@ export const useAuthStore = defineStore('auth', {
   },
   actions:{
       async login(json){
-          await axios.post(`http://localhost:3001/api/v1/auth`, json).then( 
+          await axios.post(`http://149.50.131.95:3001/api/v1/auth`, json).then( 
             (res) => {
               
               if(res.data.status === 'ok' ){
@@ -56,7 +56,6 @@ export const useAuthStore = defineStore('auth', {
                 }
               });
               }else{
-
                 Swal.fire({
                   icon: 'error',
                   title: 'Error',
@@ -69,7 +68,13 @@ export const useAuthStore = defineStore('auth', {
          
           }).catch(
             (errors)=>{
-              console.log(errors)
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error de sistema' ,
+                background: '#3A3B3C',
+                color: '#fff'
+              })
             }
           )
      },
